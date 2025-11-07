@@ -1,0 +1,116 @@
+---
+// src/components/ReviewCard.astro
+import { getMediaTypeBadge, getScoreBadge, formatMediaType } from '../lib/badges';
+
+interface Props {
+  title: string;
+  slug: string;
+  mediaType: string;
+  score: number;
+  onShelf: boolean;
+  date: Date;
+  artist?: string | string[];
+  developer?: string | string[];
+  director?: string | string[];
+  author?: string | string[];
+  excerpt?: string;
+  coverImage?: string;
+}
+
+const { 
+  title, 
+  slug, 
+  mediaType, 
+  score, 
+  onShelf, 
+  date, 
+  artist,
+  developer,
+  director,
+  author,
+  excerpt,
+  coverImage
+} = Astro.props;
+
+// Determine the creator credit based on media type
+const creatorField = artist || developer || director || author;
+const creator = Array.isArray(creatorField) ? creatorField.join(', ') : creatorField;
+
+// Generate default excerpt if none provided
+const displayExcerpt = excerpt || `Read the full review to see why this ${onShelf ? 'earned its place on the shelf' : 'didn\'t make the cut'}.`;
+---
+
+<article class="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden hover:shadow-lg dark:hover:shadow-gray-900/30 transition-shadow">
+  <div class="flex flex-col md:flex-row">
+    {coverImage ? (
+      <div class="w-full md:w-48 md:min-w-48 flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
+        <img 
+          src={coverImage} 
+          alt={`Cover art for ${title}`}
+          class="max-w-full max-h-48 object-contain"
+        />
+      </div>
+    ) : null}
+    
+    <div class="p-6 flex-1">
+    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+      <div class="flex-1">
+        <div class="flex items-center gap-3 mb-2 flex-wrap">
+          <span class={`px-2 py-1 rounded text-xs font-medium ${getMediaTypeBadge(mediaType)}`}>
+            {formatMediaType(mediaType)}
+          </span>
+          {onShelf && (
+            <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded text-xs font-medium">
+              ✓ On Shelf
+            </span>
+          )}
+        </div>
+        
+        <h3 class="text-xl font-bold mb-1">
+          <a 
+            href={`/reviews/${slug}`} 
+            class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          >
+            {title}
+          </a>
+        </h3>
+        
+        {creator && (
+          <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">
+            by {creator}
+          </p>
+        )}
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <div 
+          class={`flex items-center justify-center w-12 h-12 rounded-lg font-bold text-lg ${getScoreBadge(score)}`}
+          title={`Score: ${score}/10`}
+        >
+          {score}
+        </div>
+      </div>
+    </div>
+    
+    <p class="text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+      {displayExcerpt}
+    </p>
+    
+    <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-500">
+      <time datetime={date.toISOString()}>
+        {date.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        })}
+      </time>
+      <a 
+        href={`/reviews/${slug}`}
+        class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors font-medium"
+      >
+        Read more →
+      </a>
+    </div>
+  </div>
+</div>
+</article>
