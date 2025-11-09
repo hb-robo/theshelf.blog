@@ -1,9 +1,348 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
+// src/pages/shelf.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SpineDisplay from '../components/SpineDisplay.astro';
+import { getCollection } from 'astro:content';
+
+// Get all items on the shelf
+const allReviews = await getCollection('reviews');
+const shelfItems = allReviews.filter(r => r.data.onShelf);
+
+// Group by media type
+const byMediaType = {
+  music: shelfItems.filter(r => r.data.mediaType === 'music'),
+  game: shelfItems.filter(r => r.data.mediaType === 'game'),
+  film: shelfItems.filter(r => r.data.mediaType === 'film'),
+  book: shelfItems.filter(r => r.data.mediaType === 'book'),
+};
+
+// Calculate stats
+const totalOnShelf = shelfItems.length;
+const totalReviews = allReviews.length;
+const approvalRate = totalReviews > 0 
+  ? Math.round((totalOnShelf / totalReviews) * 100) 
+  : 0;
 ---
 
-<BaseLayout title="The Shelf In Question">
-    <div class="flex items-center justify-center mx-auto h-full">
-		<h1 class="">shelf placeholder</h1>
-	</div>
+<BaseLayout title="The Shelf - Made the Shelf">
+  <div class="shelf-container">
+    <!-- Header -->
+    <header class="max-w-6xl mx-auto px-4 py-12">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+        The Shelf
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">
+        {totalOnShelf} items earned their place • {approvalRate}% approval rate
+      </p>
+      <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
+        Physical space is limited. Every item here scored 7/10 or higher and earned permanent shelf space. 
+        Hover over spines to see titles, click to read the full review.
+      </p>
+    </header>
+
+    <!-- View Toggle -->
+    <div class="max-w-6xl mx-auto px-4 mb-8">
+      <div class="flex items-center gap-4">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+          View:
+        </label>
+        <div class="flex gap-2">
+          <button 
+            id="view-grouped"
+            class="px-4 py-2 rounded-lg text-sm font-medium transition-colors
+                   bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
+          >
+            By Media Type
+          </button>
+          <button 
+            id="view-mixed"
+            class="px-4 py-2 rounded-lg text-sm font-medium transition-colors
+                   border border-gray-300 dark:border-gray-700 
+                   hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            Mixed Shelf
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grouped View (default) -->
+    <div id="grouped-view" class="space-y-12">
+      {byMediaType.music.length > 0 && (
+        <section>
+          <div class="max-w-6xl mx-auto px-4 mb-4">
+            <h2 class="text-2xl font-bold mb-2">
+              Music
+              <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
+                ({byMediaType.music.length} {byMediaType.music.length === 1 ? 'album' : 'albums'})
+              </span>
+            </h2>
+          </div>
+          <div class="shelf-row">
+            <div class="shelf-scroll">
+              {byMediaType.music.map(item => (
+                <SpineDisplay
+                  title={item.data.title}
+                  creator={item.data.artist}
+                  mediaType={item.data.mediaType}
+                  subtype={item.data.subtype}
+                  spineImage={item.data.spineImage}
+                  reviewSlug={item.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {byMediaType.game.length > 0 && (
+        <section>
+          <div class="max-w-6xl mx-auto px-4 mb-4">
+            <h2 class="text-2xl font-bold mb-2">
+              Games
+              <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
+                ({byMediaType.game.length} {byMediaType.game.length === 1 ? 'game' : 'games'})
+              </span>
+            </h2>
+          </div>
+          <div class="shelf-row">
+            <div class="shelf-scroll">
+              {byMediaType.game.map(item => (
+                <SpineDisplay
+                  title={item.data.title}
+                  creator={item.data.developer}
+                  mediaType={item.data.mediaType}
+                  subtype={item.data.subtype}
+                  spineImage={item.data.spineImage}
+                  reviewSlug={item.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {byMediaType.film.length > 0 && (
+        <section>
+          <div class="max-w-6xl mx-auto px-4 mb-4">
+            <h2 class="text-2xl font-bold mb-2">
+              Films
+              <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
+                ({byMediaType.film.length} {byMediaType.film.length === 1 ? 'film' : 'films'})
+              </span>
+            </h2>
+          </div>
+          <div class="shelf-row">
+            <div class="shelf-scroll">
+              {byMediaType.film.map(item => (
+                <SpineDisplay
+                  title={item.data.title}
+                  creator={item.data.director}
+                  mediaType={item.data.mediaType}
+                  subtype={item.data.subtype}
+                  spineImage={item.data.spineImage}
+                  reviewSlug={item.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {byMediaType.book.length > 0 && (
+        <section>
+          <div class="max-w-6xl mx-auto px-4 mb-4">
+            <h2 class="text-2xl font-bold mb-2">
+              Books
+              <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
+                ({byMediaType.book.length} {byMediaType.book.length === 1 ? 'book' : 'books'})
+              </span>
+            </h2>
+          </div>
+          <div class="shelf-row">
+            <div class="shelf-scroll">
+              {byMediaType.book.map(item => (
+                <SpineDisplay
+                  title={item.data.title}
+                  creator={item.data.author}
+                  mediaType={item.data.mediaType}
+                  subtype={item.data.subtype}
+                  spineImage={item.data.spineImage}
+                  reviewSlug={item.slug}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
+
+    <!-- Mixed View (hidden by default) -->
+    <div id="mixed-view" class="hidden">
+      <section>
+        <div class="max-w-6xl mx-auto px-4 mb-4">
+          <h2 class="text-2xl font-bold mb-2">
+            The Shelf
+            <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
+              ({totalOnShelf} items)
+            </span>
+          </h2>
+        </div>
+        <div class="shelf-row">
+          <div class="shelf-scroll">
+            {shelfItems.map(item => {
+              const creator = item.data.artist || item.data.developer || item.data.director || item.data.author;
+              return (
+                <SpineDisplay
+                  title={item.data.title}
+                  creator={creator}
+                  mediaType={item.data.mediaType}
+                  subtype={item.data.subtype}
+                  spineImage={item.data.spineImage}
+                  reviewSlug={item.slug}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </div>
+
+    {totalOnShelf === 0 && (
+      <div class="max-w-6xl mx-auto px-4 text-center py-16">
+        <p class="text-xl text-gray-600 dark:text-gray-400">
+          The shelf is empty. Nothing has earned its place yet.
+        </p>
+      </div>
+    )}
+  </div>
 </BaseLayout>
+
+<style>
+  :root {
+    --shelf-scale: 1;
+  }
+
+  @media (max-width: 1024px) {
+    :root {
+      --shelf-scale: 0.85;
+    }
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --shelf-scale: 0.7;
+    }
+  }
+
+  @media (max-width: 640px) {
+    :root {
+      --shelf-scale: 0.6;
+    }
+  }
+
+  .shelf-container {
+    background: linear-gradient(to bottom, 
+      rgb(249 250 251) 0%, 
+      rgb(243 244 246) 100%
+    );
+    min-height: 100vh;
+    padding-bottom: 4rem;
+  }
+
+  :global(.dark) .shelf-container {
+    background: linear-gradient(to bottom, 
+      rgb(17 24 39) 0%, 
+      rgb(31 41 55) 100%
+    );
+  }
+
+  .shelf-row {
+    width: 100%;
+    background: rgb(229 231 235);
+    border-top: 2px solid rgb(209 213 219);
+    border-bottom: 2px solid rgb(209 213 219);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  :global(.dark) .shelf-row {
+    background: rgb(55 65 81);
+    border-top-color: rgb(75 85 99);
+    border-bottom-color: rgb(75 85 99);
+  }
+
+  .shelf-scroll {
+    display: flex;
+    gap: 2px;
+    padding: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgb(156 163 175) rgb(229 231 235);
+  }
+
+  :global(.dark) .shelf-scroll {
+    scrollbar-color: rgb(75 85 99) rgb(55 65 81);
+  }
+
+  .shelf-scroll::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .shelf-scroll::-webkit-scrollbar-track {
+    background: rgb(229 231 235);
+    border-radius: 4px;
+  }
+
+  .shelf-scroll::-webkit-scrollbar-thumb {
+    background: rgb(156 163 175);
+    border-radius: 4px;
+  }
+
+  .shelf-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgb(107 114 128);
+  }
+
+  :global(.dark) .shelf-scroll::-webkit-scrollbar-track {
+    background: rgb(55 65 81);
+  }
+
+  :global(.dark) .shelf-scroll::-webkit-scrollbar-thumb {
+    background: rgb(75 85 99);
+  }
+
+  :global(.dark) .shelf-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgb(107 114 128);
+  }
+</style>
+
+<script>
+  const groupedView = document.getElementById('grouped-view');
+  const mixedView = document.getElementById('mixed-view');
+  const groupedBtn = document.getElementById('view-grouped');
+  const mixedBtn = document.getElementById('view-mixed');
+
+  function showGrouped() {
+    groupedView?.classList.remove('hidden');
+    mixedView?.classList.add('hidden');
+    groupedBtn?.classList.add('bg-gray-900', 'dark:bg-gray-100', 'text-white', 'dark:text-gray-900');
+    groupedBtn?.classList.remove('border', 'border-gray-300', 'dark:border-gray-700', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
+    mixedBtn?.classList.remove('bg-gray-900', 'dark:bg-gray-100', 'text-white', 'dark:text-gray-900');
+    mixedBtn?.classList.add('border', 'border-gray-300', 'dark:border-gray-700', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
+  }
+
+  function showMixed() {
+    groupedView?.classList.add('hidden');
+    mixedView?.classList.remove('hidden');
+    mixedBtn?.classList.add('bg-gray-900', 'dark:bg-gray-100', 'text-white', 'dark:text-gray-900');
+    mixedBtn?.classList.remove('border', 'border-gray-300', 'dark:border-gray-700', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
+    groupedBtn?.classList.remove('bg-gray-900', 'dark:bg-gray-100', 'text-white', 'dark:text-gray-900');
+    groupedBtn?.classList.add('border', 'border-gray-300', 'dark:border-gray-700', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
+  }
+
+  groupedBtn?.addEventListener('click', showGrouped);
+  mixedBtn?.addEventListener('click', showMixed);
+</script>

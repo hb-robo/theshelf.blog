@@ -8,6 +8,7 @@ const reviewsCollection = defineCollection({
     date: z.date(),
     score: z.number().min(1).max(10),
     mediaType: z.enum(['music', 'game', 'film', 'book']),
+    subtype: z.string().optional(),  // e.g., 'ps3', 'switch', 'cd', 'bluray'
     onShelf: z.boolean(),
     
     // Optional fields
