@@ -1,9 +1,286 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"
+// src/pages/reviews/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import { getCollection } from 'astro:content';
+
+// Get all reviews
+const allReviews = await getCollection('reviews');
+
+// Sort by date (newest first) by default
+const reviews = allReviews.sort((a, b) => 
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+// Get unique media types and count
+const mediaTypes = [...new Set(reviews.map(r => r.data.mediaType))];
+const shelfCount = reviews.filter(r => r.data.onShelf).length;
 ---
 
-<BaseLayout title="Reviews">
-    <div class="flex items-center justify-center mx-auto h-full">
-		<h1 class="">reviews placeholder</h1>
-	</div>
+<BaseLayout title="All Reviews - Made the Shelf">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Page Header -->
+    <header class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+        All Reviews
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-400">
+        {reviews.length} total reviews • {shelfCount} made the shelf
+      </p>
+    </header>
+
+    <!-- Filters & Search -->
+    <div class="mb-8 space-y-4">
+      <!-- Search Bar -->
+      <div class="relative">
+        <input
+          type="text"
+          id="search"
+          placeholder="Search reviews by title, creator, or content..."
+          class="w-full px-4 py-3 pl-12 border border-gray-300 dark:border-gray-700 rounded-lg 
+                 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100
+                 focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                 placeholder-gray-400 dark:placeholder-gray-500"
+        />
+        <svg 
+          class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+
+      <!-- Filters Row -->
+      <div class="flex flex-wrap gap-4">
+        <!-- Media Type Filter -->
+        <div class="flex-1 min-w-[200px]">
+          <label for="media-filter" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Media Type
+          </label>
+          <select 
+            id="media-filter"
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                   bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100
+                   focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="all">All Types</option>
+            {mediaTypes.map(type => (
+              <option value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+            ))}
+          </select>
+        </div>
+
+        <!-- Score Filter -->
+        <div class="flex-1 min-w-[200px]">
+          <label for="score-filter" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Score
+          </label>
+          <select 
+            id="score-filter"
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                   bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100
+                   focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="all">All Scores</option>
+            <option value="on-shelf">On Shelf (7+)</option>
+            <option value="9+">Exceptional (9-10)</option>
+            <option value="7-8">Good to Excellent (7-8)</option>
+            <option value="5-6">Average (5-6)</option>
+            <option value="1-4">Below Average (1-4)</option>
+          </select>
+        </div>
+
+        <!-- Sort -->
+        <div class="flex-1 min-w-[200px]">
+          <label for="sort" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+            Sort By
+          </label>
+          <select 
+            id="sort"
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                   bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100
+                   focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="date-desc">Newest First</option>
+            <option value="date-asc">Oldest First</option>
+            <option value="score-desc">Highest Score</option>
+            <option value="score-asc">Lowest Score</option>
+            <option value="title-asc">Title (A-Z)</option>
+            <option value="title-desc">Title (Z-A)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Active Filters Display & Clear -->
+      <div class="flex items-center justify-between">
+        <div id="results-count" class="text-sm text-gray-600 dark:text-gray-400">
+          Showing {reviews.length} reviews
+        </div>
+        <button
+          id="clear-filters"
+          class="text-sm text-blue-600 dark:text-blue-400 hover:underline hidden"
+        >
+          Clear all filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Reviews Grid -->
+    <div id="reviews-container" class="space-y-6">
+      {reviews.map((review) => (
+        <div class="review-item" 
+             data-title={review.data.title.toLowerCase()}
+             data-creator={(Array.isArray(review.data.artist) ? review.data.artist.join(' ') : (review.data.artist || review.data.developer || review.data.director || review.data.author || '')).toLowerCase()}
+             data-media-type={review.data.mediaType}
+             data-score={review.data.score}
+             data-on-shelf={review.data.onShelf}
+             data-date={review.data.date.getTime()}
+        >
+          <ReviewCard
+            title={review.data.title}
+            slug={review.slug}
+            mediaType={review.data.mediaType}
+            score={review.data.score}
+            onShelf={review.data.onShelf}
+            date={review.data.date}
+            artist={review.data.artist}
+            developer={review.data.developer}
+            director={review.data.director}
+            author={review.data.author}
+            excerpt={review.data.excerpt}
+            coverImage={review.data.coverImage}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- No Results Message -->
+    <div id="no-results" class="hidden text-center py-16">
+      <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">No reviews found</h3>
+      <p class="text-gray-600 dark:text-gray-400">Try adjusting your filters or search query</p>
+    </div>
+  </div>
 </BaseLayout>
+
+<script>
+  // Get all filter elements
+  const searchInput = document.getElementById('search') as HTMLInputElement;
+  const mediaFilter = document.getElementById('media-filter') as HTMLSelectElement;
+  const scoreFilter = document.getElementById('score-filter') as HTMLSelectElement;
+  const sortSelect = document.getElementById('sort') as HTMLSelectElement;
+  const clearButton = document.getElementById('clear-filters') as HTMLButtonElement;
+  const resultsCount = document.getElementById('results-count') as HTMLDivElement;
+  const reviewsContainer = document.getElementById('reviews-container') as HTMLDivElement;
+  const noResults = document.getElementById('no-results') as HTMLDivElement;
+  const reviewItems = Array.from(document.querySelectorAll('.review-item')) as HTMLElement[];
+
+  function filterAndSort() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const mediaType = mediaFilter.value;
+    const scoreRange = scoreFilter.value;
+    const sortBy = sortSelect.value;
+
+    // Filter reviews
+    let filteredReviews = reviewItems.filter(item => {
+      // Search filter
+      const title = item.dataset.title || '';
+      const creator = item.dataset.creator || '';
+      const matchesSearch = title.includes(searchTerm) || creator.includes(searchTerm);
+
+      // Media type filter
+      const itemMediaType = item.dataset.mediaType || '';
+      const matchesMedia = mediaType === 'all' || itemMediaType === mediaType;
+
+      // Score filter
+      const score = parseInt(item.dataset.score || '0');
+      let matchesScore = true;
+      if (scoreRange === 'on-shelf') {
+        matchesScore = item.dataset.onShelf === 'true';
+      } else if (scoreRange === '9+') {
+        matchesScore = score >= 9;
+      } else if (scoreRange === '7-8') {
+        matchesScore = score >= 7 && score <= 8;
+      } else if (scoreRange === '5-6') {
+        matchesScore = score >= 5 && score <= 6;
+      } else if (scoreRange === '1-4') {
+        matchesScore = score >= 1 && score <= 4;
+      }
+
+      return matchesSearch && matchesMedia && matchesScore;
+    });
+
+    // Sort reviews
+    filteredReviews.sort((a, b) => {
+      const aScore = parseInt(a.dataset.score || '0');
+      const bScore = parseInt(b.dataset.score || '0');
+      const aTitle = a.dataset.title || '';
+      const bTitle = b.dataset.title || '';
+      const aDate = parseInt(a.dataset.date || '0');
+      const bDate = parseInt(b.dataset.date || '0');
+
+      switch (sortBy) {
+        case 'date-desc':
+          return bDate - aDate;
+        case 'date-asc':
+          return aDate - bDate;
+        case 'score-desc':
+          return bScore - aScore;
+        case 'score-asc':
+          return aScore - bScore;
+        case 'title-asc':
+          return aTitle.localeCompare(bTitle);
+        case 'title-desc':
+          return bTitle.localeCompare(aTitle);
+        default:
+          return 0;
+      }
+    });
+
+    // Update DOM
+    reviewItems.forEach(item => item.style.display = 'none');
+    filteredReviews.forEach(item => item.style.display = 'block');
+
+    // Reorder in DOM
+    filteredReviews.forEach(item => reviewsContainer.appendChild(item));
+
+    // Update results count
+    resultsCount.textContent = `Showing ${filteredReviews.length} review${filteredReviews.length !== 1 ? 's' : ''}`;
+
+    // Show/hide no results message
+    if (filteredReviews.length === 0) {
+      noResults.classList.remove('hidden');
+    } else {
+      noResults.classList.add('hidden');
+    }
+
+    // Show/hide clear button
+    const hasActiveFilters = searchTerm !== '' || mediaType !== 'all' || scoreRange !== 'all' || sortBy !== 'date-desc';
+    if (hasActiveFilters) {
+      clearButton.classList.remove('hidden');
+    } else {
+      clearButton.classList.add('hidden');
+    }
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', filterAndSort);
+  mediaFilter.addEventListener('change', filterAndSort);
+  scoreFilter.addEventListener('change', filterAndSort);
+  sortSelect.addEventListener('change', filterAndSort);
+
+  clearButton.addEventListener('click', () => {
+    searchInput.value = '';
+    mediaFilter.value = 'all';
+    scoreFilter.value = 'all';
+    sortSelect.value = 'date-desc';
+    filterAndSort();
+  });
+
+  // Initial sort
+  filterAndSort();
+</script>
