@@ -48,26 +48,26 @@ const approvalRate = totalReviews > 0
         </label>
         <div class="flex gap-2">
           <button 
-            id="view-grouped"
+            id="view-mixed"
             class="px-4 py-2 rounded-lg text-sm font-medium transition-colors
                    bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
           >
-            By Media Type
+            Mixed shelf
           </button>
           <button 
-            id="view-mixed"
+            id="view-grouped"
             class="px-4 py-2 rounded-lg text-sm font-medium transition-colors
                    border border-gray-300 dark:border-gray-700 
                    hover:bg-gray-100 dark:hover:bg-gray-800"
           >
-            Mixed Shelf
+            By Media Type
           </button>
         </div>
       </div>
     </div>
 
     <!-- Grouped View (default) -->
-    <div id="grouped-view" class="space-y-12">
+    <div id="grouped-view" class="space-y-12 hidden">
       {byMediaType.music.length > 0 && (
         <section>
           <div class="max-w-6xl mx-auto px-4 mb-4">
@@ -177,8 +177,8 @@ const approvalRate = totalReviews > 0
       )}
     </div>
 
-    <!-- Mixed View (hidden by default) -->
-    <div id="mixed-view" class="hidden">
+    <!-- Mixed View (default) -->
+    <div id="mixed-view" >
       <section>
         <div class="max-w-6xl mx-auto px-4 mb-4">
           <h2 class="text-2xl font-bold mb-2">
