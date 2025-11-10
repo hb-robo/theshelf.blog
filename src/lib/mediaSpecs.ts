@@ -7,6 +7,8 @@ export interface MediaSpec {
   bottomBuffer: number;  // Extra space below spine art (mm)
   label: string;         // Display name
   color?: string;        // Optional color for generated spines
+  topRounding?: string;  // Tailwind classes for top rounding (e.g., 'rounded-t-md')
+  bottomRounding?: string; // Tailwind classes for bottom rounding (e.g., 'rounded-b-sm')
 }
 
 /**
@@ -22,7 +24,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 2,
     bottomBuffer: 2,
     label: 'CD Jewel Case',
-    color: 'clear',
+    color: 'bg-blue-100',
   },
   'ps1': {
     height: 142,
@@ -80,7 +82,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 10,  // Early PS3 had clear plastic on top
     bottomBuffer: 4,
     label: 'PlayStation 3',
-    color: 'clear',
+    color: 'bg-slate-300',
   },
   'ps3-late': {
     height: 171,
@@ -104,7 +106,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 2,
     bottomBuffer: 2,
     label: 'PlayStation 5',
-    color: 'blue',
+    color: 'bg-blue-700',
   },
   'switch': {
     height: 171,
@@ -146,7 +148,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 4,
     bottomBuffer: 4,
     label: 'PlayStation 2',
-    color: 'black',
+    color: 'bg-slate-900',
   },
   'xbox': {
     height: 190,
