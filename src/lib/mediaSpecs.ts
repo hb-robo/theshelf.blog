@@ -17,7 +17,7 @@ export interface MediaSpec {
 export const MEDIA_SPECS: Record<string, MediaSpec> = {
   // CD-height cases (~142mm)
   'cd': {
-    height: 142,
+    height: 125,
     depth: 10,
     topBuffer: 2,
     bottomBuffer: 2,
