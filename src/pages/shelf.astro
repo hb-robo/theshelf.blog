@@ -190,19 +190,21 @@ const approvalRate = totalReviews > 0
         </div>
         <div class="shelf-row">
           <div class="shelf-scroll">
-            {shelfItems.map(item => {
-              const creator = item.data.artist || item.data.developer || item.data.director || item.data.author;
-              return (
-                <SpineDisplay
-                  title={item.data.title}
-                  creator={creator}
-                  mediaType={item.data.mediaType}
-                  subtype={item.data.subtype}
-                  spineImage={item.data.spineImage}
-                  reviewSlug={item.slug}
-                />
-              );
-            })}
+            {shelfItems
+              .sort((a, b) => a.data.title.localeCompare(b.data.title))
+              .map(item => {
+                const creator = item.data.artist || item.data.developer || item.data.director || item.data.author;
+                return (
+                  <SpineDisplay
+                    title={item.data.title}
+                    creator={creator}
+                    mediaType={item.data.mediaType}
+                    subtype={item.data.subtype}
+                    spineImage={item.data.spineImage}
+                    reviewSlug={item.slug}
+                  />
+                );
+              })}
           </div>
         </div>
       </section>
@@ -263,6 +265,7 @@ const approvalRate = totalReviews > 0
     border-top: 2px solid rgb(209 213 219);
     border-bottom: 2px solid rgb(209 213 219);
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    overflow: hidden;
   }
 
   :global(.dark) .shelf-row {
@@ -275,7 +278,8 @@ const approvalRate = totalReviews > 0
     display: flex;
     gap: 2px;
     padding: 1rem;
-    overflow-x: auto;
+    padding-left: max(1rem, calc((100vw - 1280px) / 2 + 1rem + 1rem + 3rem)); /* Align with max-w-6xl + its px-4 */
+    oeerflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
     
