@@ -8,11 +8,15 @@ export async function GET(context) {
     title: 'Made the Shelf',
     description: 'Media criticism with a physical constraint',
     site: context.site,
+    trailingSlash: false,
     items: reviews.map(review => ({
       title: review.data.title,
       pubDate: review.data.date,
       link: `/reviews/${review.slug}/`,
+      description: review.data.excerpt,
+      author: "Hayden Brown"
     })),
     stylesheet: '/pretty-feed-v3.xsl',
+    customData: '<language>en-us</language>',
   });
 }

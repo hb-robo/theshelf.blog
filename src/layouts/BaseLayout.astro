@@ -16,6 +16,12 @@ const { title } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="Made the Shelf"
+			href={new URL("rss.xml", Astro.site)}
+		/>
 	</head>
 	<body class="flex flex-col min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
 		<Navigation />
