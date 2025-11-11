@@ -26,7 +26,7 @@ const approvalRate = totalReviews > 0
 
 <BaseLayout title="The Shelf - Made the Shelf">
   <div
-    class="shelf-container min-h-screen pb-16 bg-linear-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+    class="shelf-container min-h-screen pb-16 bg-linear-to-b  bg-white dark:bg-black"
   >
     <!-- Header -->
     <header class="max-w-4xl mx-auto px-4 py-12">
@@ -34,7 +34,7 @@ const approvalRate = totalReviews > 0
         The Shelf
       </h1>
       <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">
-        {totalOnShelf} items earned their place • {approvalRate}% approval rate
+        {totalOnShelf} items earned a spot • {approvalRate}% of reviewed items shelved
       </p>
       <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
         Physical space is limited. Every item here scored 7/10 or higher and earned permanent shelf space. 
@@ -68,7 +68,7 @@ const approvalRate = totalReviews > 0
       </div>
     </div>
 
-    <!-- Grouped View (default) -->
+    <!-- Grouped View -->
     <div id="grouped-view" class="space-y-12 hidden">
       {byMediaType.music.length > 0 && (
         <section>
@@ -80,7 +80,7 @@ const approvalRate = totalReviews > 0
               </span>
             </h2>
           </div>
-          <div class="shelf-row w-full bg-gray-200 dark:bg-gray-700 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
+          <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
             <div
               class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
             >
@@ -109,7 +109,7 @@ const approvalRate = totalReviews > 0
               </span>
             </h2>
           </div>
-          <div class="shelf-row w-full bg-gray-200 dark:bg-gray-700 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
+          <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
             <div
               class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
             >
@@ -138,7 +138,7 @@ const approvalRate = totalReviews > 0
               </span>
             </h2>
           </div>
-          <div class="shelf-row w-full bg-gray-200 dark:bg-gray-700 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
+          <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
             <div
               class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
             >
@@ -167,7 +167,7 @@ const approvalRate = totalReviews > 0
               </span>
             </h2>
           </div>
-          <div class="shelf-row w-full bg-gray-200 dark:bg-gray-700 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
+          <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
             <div
               class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
             >
@@ -198,7 +198,7 @@ const approvalRate = totalReviews > 0
             </span>
           </h2>
         </div>
-        <div class="shelf-row w-full bg-gray-200 dark:bg-gray-700 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
+        <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
           <div
             class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
           >
