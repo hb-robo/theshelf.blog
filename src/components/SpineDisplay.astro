@@ -22,6 +22,8 @@ const heightPx = mmToPx(spec.height);
 const depthPx = mmToPx(spec.depth);
 const topBufferPx = mmToPx(spec.topBuffer);
 const bottomBufferPx = mmToPx(spec.bottomBuffer);
+const leftBufferPx = spec.leftBuffer ? mmToPx(spec.leftBuffer) : 0;
+const rightBufferPx = spec.rightBuffer ? mmToPx(spec.rightBuffer) : 0;
 
 // Format creator for display
 const creatorText = creator 
@@ -49,35 +51,61 @@ const colorClass = spec.color || 'bg-purple-400';
     <!-- Top Buffer (clear plastic, etc.) -->
     {spec.topBuffer > 0 && (
       <div 
-        class={`border-b ${colorClass} border-gray-300/30 dark:border-gray-600/30 ${spec.topRounding}`}
+        class={`${colorClass} ${spec.topRounding}`}
         style={`height: calc(${topBufferPx}px * var(--shelf-scale)); min-height: calc(${topBufferPx}px * var(--shelf-scale));`}
       />
     )}
     
     <!-- Spine Content -->
-    <div class="spine-content flex-1 relative overflow-hidden">
-      {spineImage ? (
-        <!-- Real spine image -->
-        <img 
-          src={spineImage}
-          alt={`${title} spine`}
-          class="absolute inset-0 w-full h-full object-fill"
-          loading="lazy"
+   <div 
+      class="spine-content flex-1 relative grid overflow-hidden"
+      style={`grid-template-columns: ${
+        leftBufferPx > 0 && rightBufferPx > 0
+          ? `calc(${leftBufferPx}px * var(--shelf-scale)) minmax(0, 1fr) calc(${rightBufferPx}px * var(--shelf-scale))`
+          : leftBufferPx > 0
+          ? `calc(${leftBufferPx}px * var(--shelf-scale)) minmax(0, 1fr)`
+          : rightBufferPx > 0
+          ? `minmax(0, 1fr) calc(${rightBufferPx}px * var(--shelf-scale))`
+          : `minmax(0, 1fr)`
+      };`}
+      >
+      <!-- Left Buffer -->
+      {leftBufferPx > 0 && (
+        <div 
+          class={`left-buffer ${colorClass}`}
         />
-      ) : (
-        <!-- Generated text spine -->
-        <div class="absolute inset-0 flex flex-col items-center justify-center p-1 bg-white dark:bg-gray-900 text-black dark:text-white">
-          <div class="spine-text transform rotate-90 text-center flex gap-1 items-baseline">
-            <span class="font-bold text-s leading-tight mb-1 line-clamp-3 whitespace-nowrap" style="font-size: calc(0.85rem * var(--shelf-scale));">
-              {title}
-            </span>
-            {creatorText && (
-              <span class="text-gray-600 dark:text-gray-400 text-[0.6rem] line-clamp-2 whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
-                by {creatorText}
+      )}
+
+      <!-- Middle Content -->
+      <div class="relative overflow-hidden w-full h-full">
+        {spineImage ? (
+          <img 
+            src={spineImage}
+            alt={`${title} spine`}
+            class="absolute inset-0 w-full h-full object-fill"
+            loading="lazy"
+          />
+        ) : (
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-1 bg-white dark:bg-gray-900 text-black dark:text-white">
+            <div class="spine-text transform rotate-90 text-center flex gap-1 items-baseline">
+              <span class="font-bold text-s leading-tight mb-1 line-clamp-3 whitespace-nowrap" style="font-size: calc(0.85rem * var(--shelf-scale));">
+                {title}
               </span>
-            )}
+              {creatorText && (
+                <span class="text-gray-600 dark:text-gray-400 text-[0.6rem] line-clamp-2 whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
+                  by {creatorText}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+      </div>
+
+      <!-- Right Buffer -->
+      {rightBufferPx > 0 && (
+        <div 
+          class={`right-buffer ${colorClass}`}
+        />
       )}
     </div>
     

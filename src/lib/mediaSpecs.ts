@@ -5,6 +5,8 @@ export interface MediaSpec {
   depth: number;         // Depth/thickness in mm
   topBuffer: number;     // Extra space above spine art (mm)
   bottomBuffer: number;  // Extra space below spine art (mm)
+  leftBuffer?: number;
+  rightBuffer?: number;
   label: string;         // Display name
   color?: string;        // Optional color for generated spines
   topRounding?: string;  // Tailwind classes for top rounding (e.g., 'rounded-t-md')
@@ -23,6 +25,8 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     depth: 10,
     topBuffer: 2,
     bottomBuffer: 2,
+    leftBuffer: 1,
+    rightBuffer: 1,
     label: 'CD Jewel Case',
     color: 'bg-blue-100',
   },
