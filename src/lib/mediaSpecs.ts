@@ -28,7 +28,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     leftBuffer: 1,
     rightBuffer: 1,
     label: 'CD Jewel Case',
-    color: 'bg-blue-100',
+    color: 'bg-blue-50',
   },
   'ps1': {
     height: 142,
@@ -36,23 +36,27 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 2,
     bottomBuffer: 2,
     label: 'PlayStation',
-    color: 'clear',
+    color: 'bg-gray-50',
   },
   'ds': {
-    height: 142,
-    depth: 14,
+    height: 123,
+    depth: 15,
     topBuffer: 3,
     bottomBuffer: 3,
     label: 'Nintendo DS',
-    color: 'darkgray',
+    color: 'bg-gray-700',
+    topRounding: 'rounded-t-md',
+    bottomRounding: 'rounded-b-md'
   },
   '3ds': {
-    height: 135,
-    depth: 14,
+    height: 123,
+    depth: 12,
     topBuffer: 3,
     bottomBuffer: 3,
     label: 'Nintendo 3DS',
-    color: 'white',
+    color: 'bg-neutral-50',
+    topRounding: 'rounded-t-lg',
+    bottomRounding: 'rounded-b-lg'
   },
   'vita': {
     height: 135,
@@ -60,15 +64,17 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 3,
     bottomBuffer: 3,
     label: 'PS Vita',
-    color: 'blue',
+    color: 'bg-blue-700',
   },
   'psp': {
-    height: 170,
-    depth: 14,
-    topBuffer: 3,
-    bottomBuffer: 3,
+    height: 175,
+    depth: 13,
+    topBuffer: 5,
+    bottomBuffer: 4,
     label: 'PSP',
-    color: 'clear',
+    color: 'bg-slate-100',
+    topRounding: 'rounded-t-lg',
+    bottomRounding: 'rounded-b-lg' 
   },
 
   // Blu-ray height cases (~171mm)
@@ -81,52 +87,54 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     color: 'blue',
   },
   'ps3': {
-    height: 171,
+    height: 169,
     depth: 14,
-    topBuffer: 10,  // Early PS3 had clear plastic on top
+    topBuffer: 15,  // Early PS3 had clear plastic on top
     bottomBuffer: 4,
     label: 'PlayStation 3',
-    color: 'bg-slate-300',
-  },
-  'ps3-late': {
-    height: 171,
-    depth: 14,
-    topBuffer: 4,   // Later PS3 cases standardized
-    bottomBuffer: 4,
-    label: 'PlayStation 3',
-    color: 'blue',
+    color: 'bg-gray-100',
+    topRounding: 'rounded-t-md',
+    bottomRounding: 'rounded-b-md'
   },
   'ps4': {
-    height: 171,
-    depth: 14,
+    height: 170,
+    depth: 13,
     topBuffer: 4,
     bottomBuffer: 4,
     label: 'PlayStation 4',
-    color: 'blue',
+    color: 'bg-blue-500',
+    topRounding: 'rounded-t-md',
+    bottomRounding: 'rounded-b-md'
   },
   'ps5': {
-    height: 171,
-    depth: 14,
-    topBuffer: 2,
-    bottomBuffer: 2,
+    height: 170,
+    depth: 13,
+    topBuffer: 4,
+    bottomBuffer: 4,
     label: 'PlayStation 5',
-    color: 'bg-blue-700',
+    color: 'bg-blue-500',
+    topRounding: 'rounded-t-md',
+    bottomRounding: 'rounded-b-md'
   },
   'switch': {
-    height: 171,
-    depth: 11,
-    topBuffer: 4,
+    height: 167,
+    depth: 10,
+    topBuffer: 3,
     bottomBuffer: 4,
     label: 'Nintendo Switch',
-    color: 'clear',
+    color: 'bg-slate-100',
+    topRounding: 'rounded-t-sm',
+    bottomRounding: 'rounded-b-sm'
   },
   'xboxone': {
-    height: 171,
-    depth: 14,
-    topBuffer: 4,
-    bottomBuffer: 4,
+    height: 168,
+    depth: 12,
+    topBuffer: 14,
+    bottomBuffer: 5,
     label: 'Xbox One',
-    color: 'grean',
+    color: 'bg-lime-500', // this is really off but no closer default class
+    topRounding: 'rounded-t-xs',
+    bottomRounding: 'rounded-b-xs'
   },
   'xboxseries': {
     height: 171,
@@ -147,12 +155,14 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     color: 'darkgray',
   },
   'ps2': {
-    height: 190,
+    height: 188,
     depth: 14,
-    topBuffer: 4,
-    bottomBuffer: 4,
+    topBuffer: 3,
+    bottomBuffer: 3,
     label: 'PlayStation 2',
-    color: 'bg-slate-900',
+    color: 'bg-slate-800',
+    topRounding: 'rounded-t-lg',
+    bottomRounding: 'rounded-b-lg'
   },
   'xbox': {
     height: 190,
@@ -163,20 +173,24 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     color: 'green',
   },
   'xbox360': {
-    height: 190,
+    height: 189,
     depth: 14,
     topBuffer: 4,
-    bottomBuffer: 4,
+    bottomBuffer: 3,
     label: 'Xbox 360',
-    color: 'green',
+    color: 'bg-lime-400',
+    topRounding: 'rounded-t-md',
+    bottomRounding: 'rounded-b-md'
   },
   'wii': {
-    height: 190,
+    height: 189,
     depth: 14,
     topBuffer: 4,
     bottomBuffer: 4,
     label: 'Wii',
-    color: 'white',
+    color: 'bg-neutral-50',
+    topRounding: 'rounded-t-lg',
+    bottomRounding: 'rounded-b-lg'
   },
   'wiiu': {
     height: 190,
