@@ -22,7 +22,7 @@ export function getScoreBadge(score: number): string {
   if (score >= 9) return 'bg-purple-600 text-white';
   if (score >= 8) return 'bg-blue-500 text-white';
   if (score >= 7) return 'bg-green-400 text-white';
-  if (score >= 6) return 'bg-yellowgreen-500 text-white';
+  if (score >= 6) return 'bg-lime-400 text-white';
   if (score >= 5) return 'bg-yellow-500 text-white';
   if (score >= 4) return 'bg-orange-600 text-white';
   if (score >= 3) return 'bg-red-400 text-white';
