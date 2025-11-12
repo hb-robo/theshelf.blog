@@ -16,7 +16,6 @@ export async function GET(context) {
       description: review.data.excerpt,
       author: "Hayden Brown"
     })),
-    stylesheet: '/pretty-feed-v3.xsl',
     customData: '<language>en-us</language>',
   });
 }
