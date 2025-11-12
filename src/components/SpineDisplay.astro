@@ -56,13 +56,12 @@ const imageExists = spinePath ? fs.existsSync(spinePath) : false;
   title={`${title}${creatorText ? ` by ${creatorText}` : ''}`}
 >
   <!-- Case Structure -->
-  <div class="spine-case h-full w-full relative flex flex-col bg-gray-100 dark:bg-gray-800 
-              hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors rounded-t-md">
+  <div class="spine-case h-full w-full relative flex flex-col bg-inherit ${spec.topRounding} ${spec.bottomRounding} overflow-hidden`}">
     
     <!-- Top Buffer (clear plastic, etc.) -->
     {spec.topBuffer > 0 && (
       <div 
-        class={` ${colorClass} ${spec.topRounding}`}
+        class={` ${colorClass} ${spec.topRounding} overflow-hidden`}
         style={`height: calc(${topBufferPx}px * var(--shelf-scale)); min-height: calc(${topBufferPx}px * var(--shelf-scale));`}
       />
     )}
@@ -117,7 +116,7 @@ const imageExists = spinePath ? fs.existsSync(spinePath) : false;
       <!-- Right Buffer -->
       {rightBufferPx > 0 && (
         <div 
-          class={`right-buffer ${colorClass}`}
+          class={`right-buffer ${colorClass} overflow-hidden`}
         />
       )}
     </div>
@@ -152,7 +151,7 @@ const imageExists = spinePath ? fs.existsSync(spinePath) : false;
   </div>
   
   <!-- Depth shadow effect -->
-  <div class="absolute inset-0 pointer-events-none shadow-sm group-hover:shadow-md transition-shadow"></div>
+  <div class={`absolute inset-0 pointer-events-none shadow-md group-hover:shadow-md transition-shadow ${spec.topRounding} ${spec.bottomRounding}`}></div>
 </a>
 
 <style>
