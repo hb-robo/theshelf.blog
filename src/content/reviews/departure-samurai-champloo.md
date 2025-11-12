@@ -1,17 +1,54 @@
 ---
-title: "Departure"
+title: "Demystifying the Legendary Samurai Champloo Soundtrack"
 date: 2025-11-15
-score: 7.5
-mediaType: music
-subtype: cd
-onShelf: true
-artist: 
-    - "Nujabes"
-    - "Fat Jon"
-genre: "Lo-fi Hip Hop"
+published: true
 excerpt: "The Samurai Champloo soundtrack that defined a generation of study playlists and launched lo-fi hip hop into the mainstream consciousness."
-coverImage: "/images/albums/departure-samurai-champloo.jpg"
-spineImage: "/images/albums/spines/departure-spine.png"
+media:
+  - title: "Departure"
+    releaseDate: 2004-06-23
+    madeTheShelf: true
+    shelfStatus: owned
+    score: 7.5
+    mediaType: music
+    subtype: cd
+    artist:
+      - Nujabes
+      - "Fat Jon"
+    genre: "Lo-fi Hip Hop"
+    coverImage: "/images/albums/departure-samurai-champloo.jpg"
+    spineImage: "/images/albums/spines/departure-spine.png"
+
+  - title: "Masta"
+    releaseDate: 2004-06-23
+    madeTheShelf: false
+    shelfStatus: not-owned
+    # score
+    mediaType: music
+    subtype: cd
+    artist:
+      - Tsutchie
+      - "Force of Nature"
+
+  - title: "Impression"
+    releaseDate: 2004-09-22
+    madeTheShelf: false
+    shelfStatus: owned
+    score: 6
+    mediaType: music
+    subtype: cd
+    artist:
+      - "Force of Nature"
+      - Nujabes
+      - Fat Jon
+
+  - title: "Playlist"
+    releaseDate: 2004-09-22
+    madeTheShelf: false
+    shelfStatus: not-owned
+    # score
+    mediaType: music
+    subtype: cd
+    artist: Tsutchie
 ---
 
 ## The Legacy of Lo-fi
