@@ -2,6 +2,8 @@
 // src/components/SpineDisplay.astro
 import { getMediaSpec, mmToPx } from '../lib/mediaSpecs';
 import { getMediaTypeBadge } from '../lib/badges';
+import fs from 'fs';
+import path from 'path';
 
 interface Props {
   title: string;
@@ -26,12 +28,21 @@ const leftBufferPx = spec.leftBuffer ? mmToPx(spec.leftBuffer) : 0;
 const rightBufferPx = spec.rightBuffer ? mmToPx(spec.rightBuffer) : 0;
 
 // Format creator for display
-const creatorText = creator 
-  ? (Array.isArray(creator) ? creator.join(', ') : creator)
-  : '';
+const creatorText = (() => {
+  if (!creator) return '';
+  if (Array.isArray(creator)) {
+    if (creator.length === 1) return creator[0];
+    if (creator.length === 2) return creator.join(', ');
+    return `${creator[0]} et al.`;
+  }
+  return creator;
+})();
 
 // Get color for generated spine
 const colorClass = spec.color || 'bg-purple-400';
+
+const spinePath = spineImage ? path.join(Astro.site ? '.' : '.', 'public', spineImage) : null;
+const imageExists = spinePath ? fs.existsSync(spinePath) : false;
 ---
 
 <a 
@@ -51,7 +62,7 @@ const colorClass = spec.color || 'bg-purple-400';
     <!-- Top Buffer (clear plastic, etc.) -->
     {spec.topBuffer > 0 && (
       <div 
-        class={`${colorClass} ${spec.topRounding}`}
+        class={` ${colorClass} ${spec.topRounding}`}
         style={`height: calc(${topBufferPx}px * var(--shelf-scale)); min-height: calc(${topBufferPx}px * var(--shelf-scale));`}
       />
     )}
@@ -78,26 +89,28 @@ const colorClass = spec.color || 'bg-purple-400';
 
       <!-- Middle Content -->
       <div class="relative overflow-hidden w-full h-full">
-        {spineImage ? (
-          <img 
+        <!-- Text spine is always rendered -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-1 bg-white dark:bg-gray-900 text-black dark:text-white">
+          <div class="spine-text transform rotate-90 text-center flex gap-1 items-baseline">
+            <span class="font-bold text-s leading-tight mb-1 line-clamp-3 whitespace-nowrap" style="font-size: calc(0.85rem * var(--shelf-scale));">
+              {title}
+            </span>
+            {creatorText && (
+              <span class="text-gray-600 dark:text-gray-400 text-[0.6rem] line-clamp-2 whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
+                by {creatorText}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <!-- Only render image if it exists -->
+        {imageExists && (
+          <img
             src={spineImage}
             alt={`${title} spine`}
             class="absolute inset-0 w-full h-full object-fill"
             loading="lazy"
           />
-        ) : (
-          <div class="absolute inset-0 flex flex-col items-center justify-center p-1 bg-white dark:bg-gray-900 text-black dark:text-white">
-            <div class="spine-text transform rotate-90 text-center flex gap-1 items-baseline">
-              <span class="font-bold text-s leading-tight mb-1 line-clamp-3 whitespace-nowrap" style="font-size: calc(0.85rem * var(--shelf-scale));">
-                {title}
-              </span>
-              {creatorText && (
-                <span class="text-gray-600 dark:text-gray-400 text-[0.6rem] line-clamp-2 whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
-                  by {creatorText}
-                </span>
-              )}
-            </div>
-          </div>
         )}
       </div>
 
@@ -130,11 +143,11 @@ const colorClass = spec.color || 'bg-purple-400';
             by {creatorText}
         </span>
         )}
-        {spec && (
+        <!-- {spec && (
         <span class="text-gray-300 text-[0.6rem] whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
             ({spec.label})
         </span>
-        )}
+        )} -->
     </div>
   </div>
   

@@ -6,21 +6,35 @@ import { getCollection } from 'astro:content';
 
 // Get all items on the shelf
 const allReviews = await getCollection('reviews');
-const shelfItems = allReviews.filter(r => r.data.onShelf);
+const allMedia = allReviews.flatMap(review =>
+  (review.data.media || []).map(m => ({
+    ...m,
+    articleSlug: review.slug,
+  }))
+)
 
-// Group by media type
-const byMediaType = {
-  music: shelfItems.filter(r => r.data.mediaType === 'music'),
-  game: shelfItems.filter(r => r.data.mediaType === 'game'),
-  film: shelfItems.filter(r => r.data.mediaType === 'film'),
-  book: shelfItems.filter(r => r.data.mediaType === 'book'),
+
+const shelfItems = allMedia.filter(m => m.madeTheShelf && m.shelfStatus === 'owned');
+const wishlistItems = allMedia.filter(m => m.madeTheShelf && m.shelfStatus === 'not-owned');
+
+
+function groupByMediaType(mediaList){
+  return {
+    music: mediaList.filter(m => m.mediaType === 'music'),
+    game: mediaList.filter(m => m.mediaType === 'game'),
+    film: mediaList.filter(m => m.mediaType === 'film'),
+    book: mediaList.filter(m => m.mediaType === 'book')
+  }
 };
+
+const shelfByMedia = groupByMediaType(shelfItems);
+const wishListByMedia = groupByMediaType(wishlistItems);
 
 // Calculate stats
 const totalOnShelf = shelfItems.length;
 const totalReviews = allReviews.length;
 const approvalRate = totalReviews > 0 
-  ? Math.round((totalOnShelf / totalReviews) * 100) 
+  ? Math.round((totalOnShelf / allMedia.length) * 100) 
   : 0;
 ---
 
@@ -34,11 +48,11 @@ const approvalRate = totalReviews > 0
         The Shelf
       </h1>
       <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">
-        {totalOnShelf} items earned a spot • {approvalRate}% of reviewed items shelved
+        {totalOnShelf} items made the shelf • {approvalRate}% of reviewed items shelved
       </p>
       <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
-        Physical space is limited. Every item here scored 7/10 or higher and earned permanent shelf space. 
-        Hover over spines to see titles, click to read the full review.
+        Physical space is limited. Every item here scored high enough to earn its spot.<br> 
+        Hover over spines to see titles, click to read the corresponding piece.
       </p>
     </header>
 
@@ -69,6 +83,7 @@ const approvalRate = totalReviews > 0
     </div>
 
     <!-- Grouped View -->
+<!-- 
     <div id="grouped-view" class="space-y-12 hidden">
       {byMediaType.music.length > 0 && (
         <section>
@@ -185,7 +200,7 @@ const approvalRate = totalReviews > 0
           </div>
         </section>
       )}
-    </div>
+    </div> -->
 
     <!-- Mixed View (default) -->
     <div id="mixed-view" >
@@ -203,17 +218,17 @@ const approvalRate = totalReviews > 0
             class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
           >
             {shelfItems
-              .sort((a, b) => a.data.title.localeCompare(b.data.title))
+              .sort((a, b) => a.title.localeCompare(b.title))
               .map(item => {
-                const creator = item.data.artist || item.data.developer || item.data.director || item.data.author;
+                const creator = item.developer || item.director || item.artist || item.author;
                 return (
                   <SpineDisplay
-                    title={item.data.title}
+                    title={item.title}
                     creator={creator}
-                    mediaType={item.data.mediaType}
-                    subtype={item.data.subtype}
-                    spineImage={item.data.spineImage}
-                    reviewSlug={item.slug}
+                    mediaType={item.mediaType}
+                    subtype={item.subtype}
+                    spineImage={item.spineImage}
+                    reviewSlug={item.articleSlug}
                   />
                 );
               })}
@@ -229,6 +244,42 @@ const approvalRate = totalReviews > 0
         </p>
       </div>
     )}
+
+    <!-- Wishlist Section -->
+    <section class="mt-8">
+      <div class="max-w-4xl mx-auto px-4 mb-4">
+        <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+          The Wishlist
+          <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
+            ({wishlistItems.length} items)
+          </span>
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
+          Items that earned a spot, but I don't own yet.
+        </p>
+      </div>
+      <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
+        <div
+          class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
+        >
+          {wishlistItems
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .map(item => {
+              const creator = item.developer || item.director || item.artist || item.author;
+              return (
+                <SpineDisplay
+                  title={item.title}
+                  creator={creator}
+                  mediaType={item.mediaType}
+                  subtype={item.subtype}
+                  spineImage={item.spineImage}
+                  reviewSlug={item.articleSlug}
+                />
+              );
+            })}
+        </div>
+      </div>
+    </section>
   </div>
 </BaseLayout>
 

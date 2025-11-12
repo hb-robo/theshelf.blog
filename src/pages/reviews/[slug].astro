@@ -1,10 +1,10 @@
 ---
-// src/pages/reviews/[slug].astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getMediaTypeBadge, getScoreBadge, formatMediaType, getScoreLabel } from '../../lib/badges';
+import MediaCard from '../../components/MediaCard.astro'; // 👈 new import
 
-// Get all reviews for static path generation
+// Static path generation
 export async function getStaticPaths() {
   const reviews = await getCollection('reviews');
   return reviews.map((review) => ({
@@ -16,16 +16,17 @@ export async function getStaticPaths() {
 const { review } = Astro.props;
 const { Content } = await review.render();
 
-// Handle creator field (string or array)
-const creatorField = review.data.artist || review.data.developer || review.data.director || review.data.author;
+const creatorField =
+  review.data.media.artist || review.data.media.developer || review.data.media.director || review.data.media.author;
 const creator = Array.isArray(creatorField) ? creatorField.join(', ') : creatorField;
 
-// Format date
 const formattedDate = review.data.date.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+
+const hasMultipleMedia = Array.isArray(review.data.media) && review.data.media.length > 0;
 ---
 
 <BaseLayout title={`${review.data.title} - Made the Shelf`}>
@@ -41,33 +42,6 @@ const formattedDate = review.data.date.toLocaleDateString('en-US', {
         <span>{review.data.title}</span>
       </nav>
 
-      <!-- Media Type & Shelf Status Badges -->
-      <div class="flex items-center gap-3 mb-4 flex-wrap">
-        <span class={`px-3 py-1 rounded text-sm font-medium ${getMediaTypeBadge(review.data.mediaType)}`}>
-          {formatMediaType(review.data.mediaType)}
-        </span>
-        {review.data.onShelf && (
-          <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded text-sm font-medium">
-            ✓ Made the Shelf
-          </span>
-        )}
-        {!review.data.onShelf && (
-          <span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 rounded text-sm font-medium">
-            ✗ Didn't Make the Shelf
-          </span>
-        )}
-        {review.data.genre && (
-          <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded text-sm">
-            {review.data.genre}
-          </span>
-        )}
-        {review.data.platform && (
-          <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded text-sm">
-            {review.data.platform}
-          </span>
-        )}
-      </div>
-
       <!-- Title & Creator -->
       <h1 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight">
         {review.data.title}
@@ -80,37 +54,47 @@ const formattedDate = review.data.date.toLocaleDateString('en-US', {
 
       <!-- Score & Date -->
       <div class="flex flex-wrap items-center gap-6 text-sm text-gray-600 dark:text-gray-400">
-        <div class="flex items-center gap-3">
-          <div class={`flex items-center justify-center w-16 h-16 rounded-lg font-bold text-2xl ${getScoreBadge(review.data.score)}`}>
-            {review.data.score}
-          </div>
-          <div>
-            <div class="font-semibold text-gray-900 dark:text-gray-100">
-              {review.data.score}/10
+        {typeof review.data.score === 'number' && (
+          <div class="flex items-center gap-3">
+            <div class={`flex items-center justify-center w-16 h-16 rounded-lg font-bold text-2xl ${getScoreBadge(review.data.score)}`}>
+              {review.data.score}
             </div>
-            <div class="text-sm">
-              {getScoreLabel(review.data.score)}
+            <div>
+              <div class="font-semibold text-gray-900 dark:text-gray-100">
+                {review.data.score}/10
+              </div>
+              <div class="text-sm">
+                {getScoreLabel(review.data.score)}
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <time datetime={review.data.date.toISOString()}>
           {formattedDate}
         </time>
       </div>
     </header>
 
-    <!-- Cover Image (if exists) -->
-    {review.data.coverImage && (
-      <div class="mb-12 flex justify-center">
-        <div class="max-w-md w-full">
-          <img 
-            src={review.data.coverImage} 
-            alt={`Cover art for ${review.data.title}`}
-            class="w-full rounded-lg shadow-lg"
-          />
-        </div>
+    <!-- Multi-Media Section -->
+    {hasMultipleMedia && (
+      <section class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
+        {review.data.media.map((m) => (
+          <MediaCard {...m} articleSlug={review.slug} />
+        ))}
+      </section>
+    )}
+
+    <!-- Hero Image (if exists) -->
+    {review.data.heroImage && (
+      <div class="mb-12">
+        <img 
+          src={review.data.heroImage} 
+          alt={`Hero image for ${review.data.title}`}
+          class="w-full max-h-96 object-cover rounded-lg shadow-lg"
+        />
       </div>
     )}
+
 
     <!-- Review Content -->
     <article class="prose prose-lg dark:prose-invert max-w-none">

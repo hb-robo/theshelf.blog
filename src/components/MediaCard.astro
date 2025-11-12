@@ -1,0 +1,137 @@
+---
+// src/components/MediaCard.astro
+import { format } from 'date-fns';
+import { getMediaTypeBadge, getScoreBadge, formatMediaType } from '../lib/badges';
+
+interface Props {
+  title: string;
+  releaseDate?: Date;
+  madeTheShelf: boolean;
+  shelfStatus: 'owned' | 'not-owned' | 'digital-only';
+  score?: number | string;
+  mediaType: 'music' | 'game' | 'film' | 'book';
+  subtype?: string;
+  developer?: string | string[];
+  director?: string | string[];
+  artist?: string | string[];
+  author?: string | string[];
+  genre?: string;
+  coverImage?: string;
+  spineImage?: string;
+  articleSlug?: string; // optional link to the article where this media is discussed
+}
+
+const {
+  title,
+  releaseDate,
+  madeTheShelf,
+  shelfStatus,
+  score,
+  mediaType,
+  subtype,
+  developer,
+  director,
+  artist,
+  author,
+  genre,
+  coverImage,
+  spineImage,
+  articleSlug,
+} = Astro.props;
+---
+
+<article class="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden hover:shadow-lg dark:hover:shadow-gray-900/30 transition-shadow">
+  <div class="flex flex-col md:flex-row">
+    {coverImage && (
+      <div class="w-full md:w-48 md:min-w-48 flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
+        <img
+          src={coverImage}
+          alt={`Cover art for ${title}`}
+          class="max-w-full max-h-48 object-contain"
+        />
+      </div>
+    )}
+
+    <div class="p-6 flex-1">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-2 flex-wrap">
+            <span
+              class={`px-2 py-1 rounded text-xs font-medium ${getMediaTypeBadge(mediaType)}`}
+            >
+              {formatMediaType(mediaType)}
+            </span>
+            {shelfStatus && (
+              <span
+                class={`px-2 py-1 rounded text-xs font-medium ${
+                  shelfStatus === 'owned'
+                    ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                {shelfStatus}
+              </span>
+            )}
+          </div>
+
+          <h3 class="text-lg font-bold mb-1">
+            {articleSlug ? (
+              <a
+                href={`/reviews/${articleSlug}`}
+                class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              >
+                {title}
+              </a>
+            ) : (
+              title
+            )}
+          </h3>
+
+          <div class="mb-2">
+            {developer && (
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                dev. {Array.isArray(developer) ? developer.join(', ') : developer}
+                </p>
+            )}
+            {director && (
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                dir. {Array.isArray(director) ? director.join(', ') : director}
+                </p>
+            )}
+            {artist && (
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                {Array.isArray(artist) ? artist.join(', ') : artist}
+                </p>
+            )}
+            {author && (
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                by {Array.isArray(author) ? author.join(', ') : author}
+                </p>
+            )}
+          </div>
+ 
+          {genre && (
+            <p class="text-gray-500 dark:text-gray-500 text-xs">{genre}</p>
+          )}
+        </div>
+
+        {score && score !== '-' && (
+          <div
+            class={`flex items-center justify-center w-10 h-10 rounded-lg font-bold text-sm ${getScoreBadge(
+              Number(score)
+            )}`}
+            title={`Score: ${score}/10`}
+          >
+            {score}
+          </div>
+        )}
+      </div>
+
+      {releaseDate && (
+        <p class="text-gray-500 dark:text-gray-500 text-xs">
+          Released {format(releaseDate, "yyyy/MM/dd")}
+        </p>
+      )}
+    </div>
+  </div>
+</article>

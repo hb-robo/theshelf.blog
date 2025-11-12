@@ -13,8 +13,8 @@ const reviews = allReviews.sort((a, b) =>
 );
 
 // Get unique media types and count
-const mediaTypes = [...new Set(reviews.map(r => r.data.mediaType))];
-const shelfCount = reviews.filter(r => r.data.onShelf).length;
+// const mediaTypes = [...new Set(reviews.map(r => r.data.mediaType))];
+// const shelfCount = reviews.filter(r => r.data.onShelf).length;
 ---
 
 <BaseLayout title="All Reviews - Made the Shelf">
@@ -24,9 +24,9 @@ const shelfCount = reviews.filter(r => r.data.onShelf).length;
       <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
         All Reviews
       </h1>
-      <p class="text-lg text-gray-600 dark:text-gray-400">
+      <!-- <p class="text-lg text-gray-600 dark:text-gray-400">
         {reviews.length} total reviews • {shelfCount} made the shelf
-      </p>
+      </p> -->
     </header>
 
     <!-- Filters & Search -->
@@ -66,9 +66,9 @@ const shelfCount = reviews.filter(r => r.data.onShelf).length;
                    focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Types</option>
-            {mediaTypes.map(type => (
+            <!-- {mediaTypes.map(type => (
               <option value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
-            ))}
+            ))} -->
           </select>
         </div>
 

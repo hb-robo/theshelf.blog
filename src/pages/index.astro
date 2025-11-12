@@ -11,14 +11,27 @@ const recentReviews = allReviews
   .slice(0, 5);
 
 
-// Get all items on the shelf
-const shelfItems = allReviews.filter(r => r.data.onShelf);
-
 // Live stats
-const totalOnShelf = shelfItems.length;
-const totalReviews = allReviews.length;
+const totalReviews: number = allReviews.length;
+var totalMedia: number = 0;
+var totalOnShelf: number = 0;
+var mediaTypes: string[] = [];
+for (const review of allReviews) {
+  const media = review.data.media || [];
+  totalMedia += media.length;
+  totalOnShelf += media.filter(m => m.madeTheShelf).length;
+  if (media.length > 0) {
+    for(const m of media){
+      if(!mediaTypes.includes(m.mediaType)){
+        mediaTypes.push(m.mediaType);
+      }
+    }
+  }
+}
+console.log(mediaTypes);
+const totalMediaTypes = mediaTypes.length;
 const approvalRate = totalReviews > 0 
-  ? Math.round((totalOnShelf / totalReviews) * 100) 
+  ? Math.round((totalOnShelf / totalMedia) * 100) 
   : 0;
 ---
 
@@ -30,12 +43,12 @@ const approvalRate = totalReviews > 0
         <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
           Made the Shelf
         </h1>
-        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-6">
-          Media criticism with a physical constraint: if it scores 7/10 or higher, it earns a place on the shelf.
-        </p>
-        <p class="text-gray-600 dark:text-gray-400 mb-8">
-          Albums, games, films, and books—reviewed, scored, and curated. Only the best make it. Space is limited.
-        </p>
+        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8">
+          Writing about creative works with a physical constraint -<br>if it speaks to me, it earns a place on the shelf.
+        </p>        
+        <!-- <p class="text-xl md:text-lg text-gray-600 dark:text-gray-400 mb-8">
+          A personal archive constrained by real shelves and limited space. Albums, games, films, and books that proved worth keeping. 
+        </p> -->
         <div class="flex flex-wrap gap-4">
           <a 
             href="/shelf" 
@@ -57,21 +70,25 @@ const approvalRate = totalReviews > 0
   <!-- Stats Overview (Optional - shows off the data) -->
   <section class="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-4xl mx-auto px-4 py-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="text-center">
-          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{totalOnShelf}</div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Items on Shelf</div>
-        </div>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
         <div class="text-center">
           <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{totalReviews}</div>
           <div class="text-sm text-gray-600 dark:text-gray-400">Total Reviews</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{totalMedia}</div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">Works Covered</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{totalOnShelf}</div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">Items on Shelf</div>
         </div>
         <div class="text-center">
           <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{approvalRate}%</div>
           <div class="text-sm text-gray-600 dark:text-gray-400">Made the Cut</div>
         </div>
         <div class="text-center">
-          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">4</div>
+          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{totalMediaTypes}</div>
           <div class="text-sm text-gray-600 dark:text-gray-400">Media Types</div>
         </div>
       </div>
@@ -92,19 +109,13 @@ const approvalRate = totalReviews > 0
 
     <div class="space-y-6">
       {recentReviews.map((review) => (
-        <ReviewCard
+        <ReviewCard 
           title={review.data.title}
           slug={review.slug}
-          mediaType={review.data.mediaType}
-          score={review.data.score}
-          onShelf={review.data.onShelf}
+          published={review.data.published}
           date={review.data.date}
-          artist={review.data.artist}
-          developer={review.data.developer}
-          director={review.data.director}
-          author={review.data.author}
           excerpt={review.data.excerpt}
-          coverImage={review.data.coverImage}
+          heroImage={review.data.heroImage}
         />
       ))}
     </div>
