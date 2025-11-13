@@ -9,6 +9,7 @@ const allMedia = reviews.flatMap(review =>
     ...m,
     articleSlug: review.slug,
     reviewDate: review.data.date,
+    published: review.data.published,
   }))
 );
 ---
