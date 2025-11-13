@@ -17,7 +17,7 @@ const allMedia = reviews.flatMap(review =>
 <BaseLayout title="Media Library">
   <section class="max-w-6xl mx-auto px-4 py-12">
     <h1 class="text-3xl font-bold mb-8">All Media</h1>
-    <div class="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
+    <div class="grid gap-6 md:grid-cols-1 lg:grid-cols-2 items-start">
       {allMedia.map((m) => <MediaCard {...m} />)}
     </div>
   </section>
