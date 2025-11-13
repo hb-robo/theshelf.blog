@@ -1,5 +1,5 @@
 ---
-title: "Demystifying the Legendary Samurai Champloo Soundtrack"
+title: "Sounds of the West from the East"
 date: 2025-11-15
 published: true
 excerpt: "The Samurai Champloo soundtrack that defined a generation of study playlists and launched lo-fi hip hop into the mainstream consciousness."
@@ -28,6 +28,9 @@ media:
     artist:
       - Tsutchie
       - "Force of Nature"
+    genre: "Lo-fi Hip Hop"
+    coverImage: "/images/albums/masta-samurai-champloo.png"
+    # spineImage: "/images/albums/spines/departure-spine.png"
 
   - title: "Impression"
     releaseDate: 2004-09-22
@@ -40,6 +43,10 @@ media:
       - "Force of Nature"
       - Nujabes
       - Fat Jon
+    genre: "Lo-fi Hip Hop"
+    coverImage: "/images/albums/impression-samurai-champloo.png"
+    # spineImage: "/images/albums/spines/departure-spine.png"
+
 
   - title: "Playlist"
     releaseDate: 2004-09-22
@@ -49,6 +56,10 @@ media:
     mediaType: music
     subtype: cd
     artist: Tsutchie
+    genre: "Lo-fi Hip Hop"
+    coverImage: "/images/albums/playlist-samurai-champloo.jpg"
+    # spineImage: "/images/albums/spines/departure-spine.png"
+
 ---
 
 ## The Legacy of Lo-fi

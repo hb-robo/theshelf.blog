@@ -14,7 +14,7 @@ media:
     subtype: "switch"
     developer: "Game Freak"
     director: "Kazumasa Iwao"
-    genre: "Action-Adventure"
+    genre: "Turn-Based RPG"
     coverImage: "/images/games/pokemon-legends-arceus.png"
     spineImage: "/images/games/spines/pokemon-legends-arceus-spine.jpg"
 ---

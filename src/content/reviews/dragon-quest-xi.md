@@ -14,7 +14,7 @@ media:
     subtype: "3ds"
     developer: "Square Enix"
     director: "Takeshi Uchikawa"
-    genre: "JRPG"
+    genre: "Turn-Based RPG"
     coverImage: "/images/games/dragon-quest-xi-3ds.png"
     spineImage: "/images/games/spines/dragon-quest-xi-3ds-spine.png"
 ---
