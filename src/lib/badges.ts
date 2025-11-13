@@ -54,3 +54,36 @@ export function getScoreLabel(score: number): string {
 export function formatMediaType(type: string): string {
   return type.charAt(0).toUpperCase() + type.slice(1);
 }
+
+/**
+ * Generates a default excerpt in the event an article doesn't have one
+ */
+export function generateExcerpt(madeCount: number, missedCount: number) {
+  // Generate default excerpt if none provided
+  var defaultExcerpt = "Read the full review to see why ";
+  if (madeCount == 1 && missedCount == 0) {
+    defaultExcerpt = defaultExcerpt.concat("this work earned its place on the shelf.");
+  }
+  else if (madeCount > 1 && missedCount == 0) {
+    defaultExcerpt = defaultExcerpt.concat("these works earned their place on the shelf.");
+  }
+  else if (madeCount == 0 && missedCount == 1) {
+    defaultExcerpt = defaultExcerpt.concat("this work didn\'t make the cut.");
+  }
+  else if (madeCount == 0 && missedCount > 1) {
+    defaultExcerpt = defaultExcerpt.concat("these works didn\'t make the cut.");
+  }
+  else if (madeCount == 1 && missedCount == 1) {
+    defaultExcerpt = defaultExcerpt.concat("one made the shelf and not the other.");
+  }
+  else if (madeCount > 1 && missedCount == 1) {
+    defaultExcerpt = defaultExcerpt.concat("they all made the shelf except one.");
+  }
+  else if (madeCount == 1 && missedCount > 1) {
+    defaultExcerpt = defaultExcerpt.concat("only one made the shelf.");
+  }
+  else if (madeCount > 1 && missedCount > 1) {
+    defaultExcerpt = defaultExcerpt.concat("some made the shelf and others didn't.");
+  }
+  return defaultExcerpt;
+}
