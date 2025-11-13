@@ -8,6 +8,7 @@ const allMedia = reviews.flatMap(review =>
   (review.data.media || []).map(m => ({
     ...m,
     articleSlug: review.slug,
+    reviewDate: review.data.date,
   }))
 );
 ---

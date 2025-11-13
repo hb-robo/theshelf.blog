@@ -79,7 +79,7 @@ const hasMultipleMedia = Array.isArray(review.data.media) && review.data.media.l
     {hasMultipleMedia && (
       <section class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
         {review.data.media.map((m) => (
-          <MediaCard {...m} articleSlug={review.slug} />
+          <MediaCard {...m} articleSlug={review.slug} reviewDate={review.data.date}/>
         ))}
       </section>
     )}

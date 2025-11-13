@@ -19,6 +19,7 @@ interface Props {
   coverImage?: string;
   spineImage?: string;
   articleSlug?: string; // optional link to the article where this media is discussed
+  reviewDate?: Date;
 }
 
 const {
@@ -37,6 +38,7 @@ const {
   coverImage,
   spineImage,
   articleSlug,
+  reviewDate
 } = Astro.props;
 ---
 
@@ -52,27 +54,9 @@ const {
       </div>
     )}
 
-    <div class="p-6 flex-1">
+    <div class="p-6 flex w-full flex-col justify-between">
       <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
         <div class="flex-1">
-          <div class="flex items-center gap-3 mb-2 flex-wrap">
-            <span
-              class={`px-2 py-1 rounded text-xs font-medium ${getMediaTypeBadge(mediaType)}`}
-            >
-              {formatMediaType(mediaType)}
-            </span>
-            {shelfStatus && (
-              <span
-                class={`px-2 py-1 rounded text-xs font-medium ${
-                  shelfStatus === 'owned'
-                    ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                }`}
-              >
-                {shelfStatus}
-              </span>
-            )}
-          </div>
 
           <h3 class="text-lg font-bold mb-1">
             {articleSlug ? (
@@ -110,28 +94,46 @@ const {
             )}
           </div>
  
-          {genre && (
-            <p class="text-gray-500 dark:text-gray-500 text-xs">{genre}</p>
-          )}
+          <p class="text-gray-500 dark:text-gray-500 text-xs">
+            {releaseDate && (
+              <span>
+                {format(releaseDate, "yyyy/MM/dd")}
+              </span>
+            )}
+            
+            {genre && (
+                <span>• {genre}</span>
+            )}
+
+          </p>
         </div>
 
-        {score && score !== '-' && (
-          <div
-            class={`flex items-center justify-center w-10 h-10 rounded-lg font-bold text-sm ${getScoreBadge(
-              Number(score)
-            )}`}
-            title={`Score: ${score}/10`}
-          >
-            {score}
-          </div>
-        )}
       </div>
 
-      {releaseDate && (
-        <p class="text-gray-500 dark:text-gray-500 text-xs">
-          Released {format(releaseDate, "yyyy/MM/dd")}
-        </p>
-      )}
+      <!-- MediaCard footer - release date, badges -->
+      <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800 mt-4 pt-2">
+        {madeTheShelf ? (
+          <span class="w-5 h-5 text-green-600 dark:text-green-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-full h-full">
+              <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z"/>
+            </svg>
+          </span>
+        ) : (
+          <span class="w-5 h-5 text-red-500 dark:text-red-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-full h-full">
+              <g fill="currentColor">
+                <path d="M8.478 8.478a1 1 0 0 1 1.414 0l2.154 2.153l2.153-2.153a1 1 0 1 1 1.414 1.414l-2.153 2.154l2.153 2.153a1 1 0 0 1-1.414 1.414l-2.153-2.153l-2.154 2.153A1 1 0 0 1 8.478 14.2l2.153-2.153l-2.153-2.154a1 1 0 0 1 0-1.414"/>
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2M4 12a8 8 0 1 1 16 0a8 8 0 0 1-16 0" clip-rule="evenodd"/>
+              </g>
+            </svg>
+          </span>
+        )}
+        {reviewDate && (
+          <p class="text-gray-500 dark:text-gray-500 text-xs">
+            <a href={`/${articleSlug}`}>Reviewed {format(reviewDate, "yyyy/MM/dd")} →</a>
+          </p>
+        )}
+      </div>
     </div>
   </div>
 </article>
