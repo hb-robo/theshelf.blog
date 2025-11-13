@@ -30,6 +30,16 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     label: 'CD Jewel Case',
     color: 'bg-blue-50',
   },
+  'cd-slip-cover': {
+    height: 125,
+    depth: 10,
+    topBuffer: 0,
+    bottomBuffer: 0,
+    leftBuffer: 0,
+    rightBuffer: 0,
+    label: 'CD w/ Slipcover',
+    color: 'bg-none',
+  },
   'ps1': {
     height: 142,
     depth: 10,
