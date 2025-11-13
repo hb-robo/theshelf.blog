@@ -18,7 +18,7 @@ const reviews = allReviews.sort((a, b) =>
 ---
 
 <BaseLayout title="All Reviews - Made the Shelf">
-  <div class="max-w-6xl mx-auto px-4 py-12">
+  <div class="max-w-4xl mx-auto px-4 py-12">
     <!-- Page Header -->
     <header class="mb-12">
       <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
@@ -141,16 +141,11 @@ const reviews = allReviews.sort((a, b) =>
           <ReviewCard
             title={review.data.title}
             slug={review.slug}
-            mediaType={review.data.mediaType}
-            score={review.data.score}
-            onShelf={review.data.onShelf}
+            published={review.data.published}
             date={review.data.date}
-            artist={review.data.artist}
-            developer={review.data.developer}
-            director={review.data.director}
-            author={review.data.author}
             excerpt={review.data.excerpt}
-            coverImage={review.data.coverImage}
+            heroImage={review.data.heroImage}
+            media={review.data.media}
           />
         </div>
       ))}
