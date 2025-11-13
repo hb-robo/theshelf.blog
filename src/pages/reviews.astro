@@ -6,9 +6,10 @@ import { getCollection } from 'astro:content';
 
 // Get all reviews
 const allReviews = await getCollection('reviews');
+const publishedReviews = allReviews.filter(r => r.data.published);
 
 // Sort by date (newest first) by default
-const reviews = allReviews.sort((a, b) => 
+const reviews = publishedReviews.sort((a, b) => 
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 

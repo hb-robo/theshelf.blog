@@ -6,17 +6,18 @@ import { getCollection } from 'astro:content';
 
 // Get the 5 most recent reviews
 const allReviews = await getCollection('reviews');
-const recentReviews = allReviews
+const publishedReviews = allReviews.filter(r => r.data.published);
+const recentReviews = publishedReviews
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 5);
 
 
 // Live stats
-const totalReviews: number = allReviews.length;
+const totalReviews: number = publishedReviews.length;
 var totalMedia: number = 0;
 var totalOnShelf: number = 0;
 var mediaTypes: string[] = [];
-for (const review of allReviews) {
+for (const review of publishedReviews) {
   const media = review.data.media || [];
   totalMedia += media.length;
   totalOnShelf += media.filter(m => m.madeTheShelf).length;
