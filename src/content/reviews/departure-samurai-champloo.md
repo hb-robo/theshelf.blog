@@ -4,7 +4,7 @@ date: 2025-11-15
 published: true
 excerpt: "The Samurai Champloo soundtrack that defined a generation of study playlists and launched lo-fi hip hop into the mainstream consciousness."
 media:
-  - title: "Departure"
+  - title: "Samurai Champloo Music Record: Departure"
     releaseDate: 2004-06-23
     madeTheShelf: true
     shelfStatus: owned
@@ -14,49 +14,57 @@ media:
     artist:
       - Nujabes
       - "Fat Jon"
-    genre: "Lo-fi Hip Hop"
+    genre: 
+      - "Instrumental Hip Hop"
+      - "Lo-fi"
     coverImage: "/images/albums/departure-samurai-champloo.jpg"
     spineImage: "/images/albums/spines/departure-spine.png"
 
-  - title: "Masta"
+  - title: "Samurai Champloo Music Record: Masta"
     releaseDate: 2004-06-23
     madeTheShelf: false
     shelfStatus: not-owned
-    # score
+    score: 5.5
     mediaType: music
     subtype: cd
     artist:
       - Tsutchie
       - "Force of Nature"
-    genre: "Lo-fi Hip Hop"
+    genre: 
+      - "Instrumental Hip Hop"
+      - "Lo-fi"
     coverImage: "/images/albums/masta-samurai-champloo.png"
     # spineImage: "/images/albums/spines/departure-spine.png"
 
-  - title: "Impression"
+  - title: "Samurai Champloo Music Record: Impression"
     releaseDate: 2004-09-22
     madeTheShelf: false
     shelfStatus: owned
-    score: 6
+    score: 5.5
     mediaType: music
     subtype: cd
     artist:
       - "Force of Nature"
       - Nujabes
       - Fat Jon
-    genre: "Lo-fi Hip Hop"
+    genre: 
+      - "Instrumental Hip Hop"
+      - "Lo-fi"
     coverImage: "/images/albums/impression-samurai-champloo.png"
     # spineImage: "/images/albums/spines/departure-spine.png"
 
 
-  - title: "Playlist"
+  - title: "Samurai Champloo Music Record: Playlist"
     releaseDate: 2004-09-22
     madeTheShelf: false
     shelfStatus: not-owned
-    # score
+    score: 4.5
     mediaType: music
     subtype: cd
     artist: Tsutchie
-    genre: "Lo-fi Hip Hop"
+    genre: 
+      - "Instrumental Hip Hop"
+      - "Lo-fi"
     coverImage: "/images/albums/playlist-samurai-champloo.jpg"
     # spineImage: "/images/albums/spines/departure-spine.png"
 
@@ -95,3 +103,30 @@ The other volumes have highlights, but they don't sustain the mood. *Departure* 
 This isn't just a good soundtrack. It's a document of a specific moment in music history—when Eastern and Western production styles, hip hop's past and future, and anime's global reach all converged into something genuinely new.
 
 **Score: 8/10** - Excellent. Historically important, consistently engaging, and responsible for launching a thousand YouTube channels.
+
+
+
+Masta notes:
+
+- Force of Nature has some really bombastic tracks here that appeal to my DJ Shadow affinities, with heavy, blasting drum loops.
+- 
+- Tsutchie's cuts here are minimal and humanistic to a fatal degree, they embody a Dilla-acolyte obsession with imperfection, anti-melodies, unsequenced drums, and so on, but the overall lack of craft leaves some otherwise texturally interesting tracks feeling completely unfinished or dull.
+- Seventythree (I Ask) is surprisingly forward-thinking, with the same buzziness OFWGKTA would start to explore in the late 00s.
+- Some layers on these tracks sound like one-takes. I appreciate whatever level of artistic authenticity this is trying to bring, but choosing not to develop your own ideas is not as compelling a statement as you might think.
+- Sincerely is very good - reminiscent of Kanye and B!nk's work from around that time - a little Dipset-y
+
+
+Impression notes:
+
+- HIIZURU STYLE is like a DMX/MOP style aggro posse cut that is exceptionally hard to take seriously
+- Testament to Force of Nature that I think they're the only one of the four to be able to pull off a track as gritty as Death Wish, or to understand percussion enough for Million Way of Drum
+- Nujabes cuts are more variable in quality - maintains textural mastery but the underlying ideas are less interesting on average, or just too short to make any impression
+  - World without Words is the clear standout - it goes places, and invites introspection
+- Fat Jon is probably too sleek for his own good, because it his stuff does relax me to the point of sleepiness.
+  - Still, the minimalism is attractive, and some tracks are growers
+  - "Not Quite Seleah" is shockingly amateur
+
+Playlist notes:
+- What the hell happened in tracks 6-9
+- Let me Know What U Think is 100% my shit
+- 

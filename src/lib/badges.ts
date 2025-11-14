@@ -18,14 +18,14 @@ export function getMediaTypeBadge(type: string): string {
  * Returns Tailwind classes for score badges based on numeric value
  */
 export function getScoreBadge(score: number): string {
-  if (score == 10) return 'bg-purple-900 text-white';
-  if (score >= 9) return 'bg-purple-600 text-white';
-  if (score >= 8) return 'bg-blue-500 text-white';
-  if (score >= 7) return 'bg-green-400 text-white';
-  if (score >= 6) return 'bg-lime-400 text-white';
+  if (score == 10) return 'bg-blue-500 text-white';
+  if (score >= 9) return 'bg-sky-500 text-white';
+  if (score >= 8) return 'bg-teal-500 text-white';
+  if (score >= 7) return 'bg-green-500 text-white';
+  if (score >= 6) return 'bg-lime-500 text-white';
   if (score >= 5) return 'bg-yellow-500 text-white';
-  if (score >= 4) return 'bg-orange-600 text-white';
-  if (score >= 3) return 'bg-red-400 text-white';
+  if (score >= 4) return 'bg-orange-400 text-white';
+  if (score >= 3) return 'bg-red-500 text-white';
   if (score >= 2) return 'bg-red-600 text-white';
   if (score >= 1) return 'bg-red-800 text-white';
   return 'bg-black text-white';

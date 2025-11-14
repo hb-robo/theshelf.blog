@@ -22,7 +22,7 @@ const reviews = defineCollection({
         director: z.union([z.string(), z.array(z.string())]).optional(),
         artist: z.union([z.string(), z.array(z.string())]).optional(),
         author: z.union([z.string(), z.array(z.string())]).optional(),
-        genre: z.string().optional(),
+        genre: z.union([z.string(), z.array(z.string())]).optional(),
         coverImage: z.string().optional(),
         spineImage: z.string().optional(),
       })

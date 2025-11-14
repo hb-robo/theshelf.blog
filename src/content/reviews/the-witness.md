@@ -8,7 +8,7 @@ media:
     releaseDate: 2016-01-26
     madeTheShelf: true
     shelfStatus: digital-only
-    score: 10
+    score: 9.5
     mediaType: game
     developer: Thekla
     director: "Jonathan Blow"
