@@ -1,6 +1,5 @@
 ---
 // src/components/MediaCard.astro
-import { format } from 'date-fns';
 import { getMediaTypeBadge, getScoreBadge, formatMediaType } from '../lib/badges';
 
 interface Props {
@@ -42,12 +41,34 @@ const {
   reviewDate,
   published
 } = Astro.props;
+
+
+const badges: Record<string, string> = {
+  music: 'bg-blue-50 dark:bg-blue-900',
+  game: 'bg-red-50 dark:bg-red-900',
+  film: 'bg-yellow-50 dark:bg-yellow-900',
+  book: 'bg-green-50 dark:bg-green-900',
+};
+
+function getMediaTypeIcon(type: string) {
+  switch (type) {
+    case "music": 
+      return 'border-blue-200 dark:blue-red-400'; 
+    case "game": 
+      return 'border-red-200 dark:border-red-400';
+    case "film": 
+      return 'border-yellow-200 dark:border-yellow-400';
+    case "book": 
+      return 'border-green-200 dark:border-green-400';
+  }
+  return ""
+}
 ---
 
-<article class="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden hover:shadow-lg dark:hover:shadow-gray-900/30 transition-shadow">
+ <article class={`media-item border ${getMediaTypeIcon(mediaType)} rounded-lg overflow-hidden hover:shadow-lg dark:hover:shadow-gray-200/30 transition-shadow`}>
   <div class="flex flex-col md:flex-row">
     {coverImage && (
-      <div class="w-full md:w-48 md:min-w-48 flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
+      <div class={`w-full md:w-48 md:min-w-48 flex items-center justify-center p-3 ${badges[mediaType]}`}>
         <img
           src={coverImage}
           alt={`Cover art for ${title}`}
@@ -56,7 +77,7 @@ const {
       </div>
     )}
 
-    <div class="p-6 flex w-full flex-col justify-between">
+    <div class="p-5 flex w-full flex-col justify-between">
       <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
         <div class="flex-1">
 
@@ -79,7 +100,7 @@ const {
                 dev. {Array.isArray(developer) ? developer.join(', ') : developer}
                 </p>
             )}
-            {director && (
+            {director && mediaType !== 'game' && (
                 <p class="text-gray-600 dark:text-gray-400 text-sm">
                 dir. {Array.isArray(director) ? director.join(', ') : director}
                 </p>
