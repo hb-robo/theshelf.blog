@@ -13,7 +13,8 @@ const reviews = defineCollection({
       z.object({
         title: z.string(),
         releaseDate: z.date().optional(),
-        madeTheShelf: z.boolean(),
+        madeTheShelf: z.boolean().optional(),
+        result: z.enum(['made-the-shelf', 'maybe-later', 'no']).optional(),
         shelfStatus: z.enum(['owned', 'not-owned', 'digital-only']),
         score: z.number().optional(),
         mediaType: z.enum(['music', 'game', 'film', 'book']),

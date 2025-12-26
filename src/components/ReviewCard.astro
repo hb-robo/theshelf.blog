@@ -5,7 +5,8 @@ import { generateExcerpt } from '../lib/badges';
 interface MediaItem {
   title: string;
   releaseDate?: Date;
-  madeTheShelf: boolean;
+  madeTheShelf?: boolean;
+  result?: 'made-the-shelf' | 'maybe-later' | 'no';
   shelfStatus: 'owned' | 'not-owned' | 'digital-only';
   score?: number;
   mediaType: 'music' | 'game' | 'film' | 'book';
@@ -31,9 +32,10 @@ interface Props {
 
 const { title, slug, date, published, heroImage, excerpt, media = [] } = Astro.props;
 
-const madeCount = media.filter(m => m.madeTheShelf).length;
+const madeCount = media.filter(m => m.result == "made-the-shelf").length;
+const snoozeCount = media.filter(m => m.result == "maybe-later").length;
 const totalCount = media.length;
-const missedCount = totalCount - madeCount;
+const missedCount = totalCount - madeCount - snoozeCount;
 
 const displayExcerpt = excerpt || generateExcerpt(madeCount, missedCount);
 ---
@@ -109,6 +111,17 @@ const displayExcerpt = excerpt || generateExcerpt(madeCount, missedCount);
                 <span class="w-5 h-5 text-green-600 dark:text-green-300">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-full h-full">
                     <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z"/>
+                  </svg>
+                </span>
+              ))}
+            </div>
+          )}
+          {snoozeCount > 0 && (
+            <div class="flex flex-wrap gap-1">
+              {Array(snoozeCount).fill(0).map(() => (
+                <span class="w-5 h-5 text-yellow-500 dark:text-yellow-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32" class="w-full h-full">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"/>
                   </svg>
                 </span>
               ))}
