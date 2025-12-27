@@ -4,69 +4,21 @@ date: 2025-11-15
 published: true
 excerpt: "The Samurai Champloo soundtrack that defined a generation of study playlists and launched lo-fi hip hop into the mainstream consciousness."
 media:
-  - title: "Samurai Champloo Music Record: Departure"
-    releaseDate: 2004-06-23
+  - id: "samurai-champloo-departure"
     madeTheShelf: true
-    shelfStatus: owned
     score: 7.5
-    mediaType: music
-    subtype: cd
-    artist:
-      - Nujabes
-      - "Fat Jon"
-    genre: 
-      - "Instrumental Hip Hop"
-      - "Lo-fi"
-    coverImage: "/images/albums/departure-samurai-champloo.jpg"
-    spineImage: "/images/albums/spines/departure-spine.png"
 
-  - title: "Samurai Champloo Music Record: Masta"
-    releaseDate: 2004-06-23
+  - id: "samurai-champloo-masta"
     madeTheShelf: false
-    shelfStatus: not-owned
     score: 5.5
-    mediaType: music
-    subtype: cd
-    artist:
-      - Tsutchie
-      - "Force of Nature"
-    genre: 
-      - "Instrumental Hip Hop"
-      - "Lo-fi"
-    coverImage: "/images/albums/masta-samurai-champloo.png"
-    # spineImage: "/images/albums/spines/departure-spine.png"
 
-  - title: "Samurai Champloo Music Record: Impression"
-    releaseDate: 2004-09-22
+  - id: "samurai-champloo-impression"
     madeTheShelf: false
-    shelfStatus: owned
     score: 5.5
-    mediaType: music
-    subtype: cd
-    artist:
-      - "Force of Nature"
-      - Nujabes
-      - Fat Jon
-    genre: 
-      - "Instrumental Hip Hop"
-      - "Lo-fi"
-    coverImage: "/images/albums/impression-samurai-champloo.png"
-    # spineImage: "/images/albums/spines/departure-spine.png"
 
-
-  - title: "Samurai Champloo Music Record: Playlist"
-    releaseDate: 2004-09-22
+  - id: "samurai-champloo-playlist"
     madeTheShelf: false
-    shelfStatus: not-owned
     score: 4.5
-    mediaType: music
-    subtype: cd
-    artist: Tsutchie
-    genre: 
-      - "Instrumental Hip Hop"
-      - "Lo-fi"
-    coverImage: "/images/albums/playlist-samurai-champloo.jpg"
-    # spineImage: "/images/albums/spines/departure-spine.png"
 
 ---
 
