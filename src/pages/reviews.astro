@@ -4,18 +4,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ReviewCard from '../components/ReviewCard.astro';
 import { getCollection } from 'astro:content';
 
-// Get all reviews
 const allReviews = await getCollection('reviews');
 const publishedReviews = allReviews.filter(r => r.data.published);
 
-// Sort by date (newest first) by default
 const reviews = publishedReviews.sort((a, b) => 
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
-
-// Get unique media types and count
-// const mediaTypes = [...new Set(reviews.map(r => r.data.mediaType))];
-// const shelfCount = reviews.filter(r => r.data.onShelf).length;
 ---
 
 <BaseLayout title="All Reviews - Made the Shelf">
@@ -131,23 +125,8 @@ const reviews = publishedReviews.sort((a, b) =>
     <!-- Reviews Grid -->
     <div id="reviews-container" class="space-y-6">
       {reviews.map((review) => (
-        <div class="review-item" 
-             data-title={review.data.title.toLowerCase()}
-             data-creator={(Array.isArray(review.data.artist) ? review.data.artist.join(' ') : (review.data.artist || review.data.developer || review.data.director || review.data.author || '')).toLowerCase()}
-             data-media-type={review.data.mediaType}
-             data-score={review.data.score}
-             data-on-shelf={review.data.onShelf}
-             data-date={review.data.date.getTime()}
-        >
-          <ReviewCard
-            title={review.data.title}
-            slug={review.slug}
-            published={review.data.published}
-            date={review.data.date}
-            excerpt={review.data.excerpt}
-            heroImage={review.data.heroImage}
-            media={review.data.media}
-          />
+        <div class="review-item">
+          <ReviewCard itemData={review}/>
         </div>
       ))}
     </div>
