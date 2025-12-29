@@ -7,14 +7,14 @@ excerpt: "Smaller reviews of things I thought about this month."
 media:
   - id: "virgin-suicides-coppola"
     score: 8
-    madeTheShelf: true
+    result: "made-the-shelf"
  
   - id: "casts-of-a-dreamer"
     score: 7
-    madeTheShelf: true
+    result: "made-the-shelf"
  
   - id: "del-toro-frankenstein"
     score: 7
-    madeTheShelf: true
+    result: "made-the-shelf"
  
 --- 

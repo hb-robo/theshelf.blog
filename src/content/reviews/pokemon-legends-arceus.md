@@ -7,7 +7,7 @@ excerpt: ""
 media:
   - id: "pokemon-legends-arceus"
     score: 7.5
-    madeTheShelf: true
+    result: "made-the-shelf"
 ---
 
 

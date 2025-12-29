@@ -7,15 +7,15 @@ excerpt: ""
 media:
   - id: "gravity-rush"
     score: 7.5
-    madeTheShelf: true
+    result: "made-the-shelf"
 
   - id: "grvity-rush-remastered"
     # score: -
-    madeTheShelf: true
+    result: "made-the-shelf"
 
   - id: "gravity-rush-2"
     # score: -
-    madeTheShelf: true
+    result: "made-the-shelf"
 ---
 
 

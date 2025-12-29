@@ -5,19 +5,19 @@ published: true
 excerpt: "The Samurai Champloo soundtrack that defined a generation of study playlists and launched lo-fi hip hop into the mainstream consciousness."
 media:
   - id: "samurai-champloo-departure"
-    madeTheShelf: true
+    result: "made-the-shelf"
     score: 7.5
 
   - id: "samurai-champloo-masta"
-    madeTheShelf: false
+    result: "no"
     score: 5.5
 
   - id: "samurai-champloo-impression"
-    madeTheShelf: false
+    result: "no"
     score: 5.5
 
   - id: "samurai-champloo-playlist"
-    madeTheShelf: false
+    result: "no"
     score: 4.5
 
 ---

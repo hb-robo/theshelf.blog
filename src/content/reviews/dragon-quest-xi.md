@@ -7,7 +7,7 @@ excerpt: ""
 media:
   - id: "dqxi-s"
     score: 7
-    madeTheShelf: true
+    result: "made-the-shelf"
 ---
 
 

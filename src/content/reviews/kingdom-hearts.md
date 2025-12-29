@@ -7,11 +7,11 @@ excerpt: ""
 media:
   - id: "kh1"
     score: 7
-    madeTheShelf: true
+    result: "made-the-shelf"
  
   - id: "kh1fm"
     score: 6.5
-    madeTheShelf: false
+    result: "no"
 ---
 
 

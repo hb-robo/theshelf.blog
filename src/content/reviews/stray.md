@@ -5,6 +5,6 @@ published: true
 excerpt: "What's more human than a cat?"
 media:
   - id: "stray"
-    madeTheShelf: true
+    result: "made-the-shelf"
     score: 8.5
 ---

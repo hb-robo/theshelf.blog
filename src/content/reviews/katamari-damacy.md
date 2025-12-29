@@ -5,10 +5,10 @@ published: true
 excerpt: ""
 media:
   - id: "katamari-damacy"
-    madeTheShelf: true
+    result: "made-the-shelf"
     score: 10
 
   - id: "katamari-ost"
-    madeTheShelf: true
+    result: "made-the-shelf"
     score: 8
 ---

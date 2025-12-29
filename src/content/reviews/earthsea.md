@@ -7,7 +7,7 @@ excerpt: ""
 media:
   - id: "wizard-of-earthsea"
     # score: 
-    madeTheShelf: false
+    result: "no"
 ---
 
 

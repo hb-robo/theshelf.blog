@@ -7,27 +7,22 @@ excerpt: "I spent several hours digging through shelves at Tower Records Tokyo, 
 media:
   - id: "casiopea"
     score: 7
-    madeTheShelf: true
     result: "made-the-shelf"
 
   - id: "perfume-game"
     score: 6.5
-    madeTheShelf: false
     result: "maybe-later"
 
   - id: "one-room-survival"
     score: 7.5
-    madeTheShelf: true
     result: "made-the-shelf"
 
   - id: "for-you"
     # score: 8
-    madeTheShelf: true
     result: "made-the-shelf"
 
   - id: "fantasma"
     # score: 8
-    madeTheShelf: true
     result: "made-the-shelf"
 
 --- 

@@ -5,6 +5,6 @@ published: true
 excerpt: "An impressionist dreamscape where it's harder to figure out what isn't a puzzle than to solve the ones in front of your face."
 media:
   - id: "the-witness"
-    madeTheShelf: true
+    result: "made-the-shelf"
     score: 9.5
 ---

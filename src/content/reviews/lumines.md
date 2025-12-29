@@ -7,7 +7,7 @@ excerpt: ""
 media:
   - id: "lumines"
     score: 8
-    madeTheShelf: true
+    result: "made-the-shelf"
 ---
 
 

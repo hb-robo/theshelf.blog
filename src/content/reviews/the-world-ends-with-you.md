@@ -7,11 +7,11 @@ excerpt: ""
 media:
   - id: "twewy"
     score: 8
-    madeTheShelf: true
+    result: "made-the-shelf"
 
   - id: "neo-twewy"
     # score: 
-    madeTheShelf: false
+    result: "no"
 ---
 
 

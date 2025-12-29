@@ -1,4 +1,5 @@
-- title: Casiopea
+- id: casiopea
+  title: Casiopea
   releaseDate: 1979-05-25
   shelfStatus: owned
   mediaType: music
@@ -10,7 +11,8 @@
     - Jazz Fusion
   coverImage: /images/albums/casiopea.jpeg
 
-- title: GAME
+- id: perfume-game
+  title: GAME
   releaseDate: 2008-04-16
   shelfStatus: owned
   mediaType: music
@@ -23,7 +25,8 @@
   coverImage: /images/albums/game-perfume.jpeg
   # spineImage: /images/games/spines/the-world-ends-with-you-spine.jpg
 
-- title: One-Room Survival
+- id: one-room-survival
+  title: One-Room Survival
   releaseDate: 2002-11-21
   shelfStatus: owned
   mediaType: music
@@ -36,7 +39,8 @@
   coverImage: /images/albums/one-room-survival.jpg
   # spineImage: /images/games/spines/neo-twewy-spine.jpg
 
-- title: For You
+- id: for-you
+  title: For You
   releaseDate: 1982-01-21
   # score: 8
   shelfStatus: owned
@@ -50,7 +54,8 @@
   coverImage: /images/albums/for-you.jpg
   # spineImage: /images/games/spines/neo-twewy-spine.jpg
 
-- title: Fantasma
+- id: fantasma
+  title: Fantasma
   releaseDate: 2008-04-16
   # score: 8
   shelfStatus: owned
@@ -64,7 +69,8 @@
   coverImage: /images/albums/fantasma.jpg
   # spineImage: /images/games/spines/the-world-ends-with-you-spine.jpg
 
-- title: Demon's Souls
+- id: demons-souls
+  title: Demon's Souls
   releaseDate: 2009-02-05
   shelfStatus: owned
   mediaType: game
@@ -78,7 +84,8 @@
   coverImage: /images/games/demons-souls.png
   spineImage: /images/games/spines/demons-souls-spine.png
 
-- title: Demon's Souls
+- id: demons-souls-2020
+  title: Demon's Souls
   releaseDate: 2020-11-12
   # score: _
   shelfStatus: not-owned
@@ -93,7 +100,8 @@
   coverImage: /images/games/demons-souls-2020.jpg
   spineImage: /images/games/spines/demons-souls-2020-spine.jpg
 
-- title: "Samurai Champloo Music Record: Departure"
+- id: samurai-champloo-departure
+  title: "Samurai Champloo Music Record: Departure"
   releaseDate: 2004-06-23
   shelfStatus: owned
   mediaType: music
@@ -109,7 +117,8 @@
   coverImage: /images/albums/departure-samurai-champloo.jpg
   spineImage: /images/albums/spines/departure-spine.png
 
-- title: "Samurai Champloo Music Record: Masta"
+- id: samurai-champloo-masta
+  title: "Samurai Champloo Music Record: Masta"
   releaseDate: 2004-06-23
   shelfStatus: not-owned
   mediaType: music
@@ -125,7 +134,8 @@
   coverImage: /images/albums/masta-samurai-champloo.png
   # spineImage: /images/albums/spines/departure-spine.png
 
-- title: "Samurai Champloo Music Record: Impression"
+- id: samurai-champloo-impression
+  title: "Samurai Champloo Music Record: Impression"
   releaseDate: 2004-09-22
   shelfStatus: owned
   mediaType: music
@@ -144,7 +154,8 @@
   # spineImage: /images/albums/spines/departure-spine.png
 
 
-- title: "Samurai Champloo Music Record: Playlist"
+- id: samurai-champloo-playlist
+  title: "Samurai Champloo Music Record: Playlist"
   releaseDate: 2004-09-22
   shelfStatus: not-owned
   mediaType: music
@@ -158,7 +169,8 @@
   coverImage: /images/albums/playlist-samurai-champloo.jpg
   # spineImage: /images/albums/spines/departure-spine.png
 
-- title: Dragon Quest XI
+- id: dqxi-s
+  title: Dragon Quest XI
   releaseDate: 2017-07-29
   shelfStatus: owned
   mediaType: game
@@ -173,7 +185,8 @@
   coverImage: /images/games/dragon-quest-xi-3ds.png
   spineImage: /images/games/spines/dragon-quest-xi-3ds-spine.png
 
-- title: A Wizard of Earthsea
+- id: wizard-of-earthsea
+  title: A Wizard of Earthsea
   releaseDate: 1968-01-01
   # score: 
   shelfStatus: not-owned
@@ -188,7 +201,8 @@
   coverImage: /images/books/a-wizard-of-earthsea.jpg
   # spineImage: /images/games/spines/dragon-quest-xi-3ds-spine.png
 
-- title: Gravity Rush
+- id: gravity-rush
+  title: Gravity Rush
   releaseDate: 2012-02-09
   shelfStatus: not-owned
   mediaType: game
@@ -203,7 +217,8 @@
   coverImage: /images/games/gravity-rush.png
   spineImage: /images/games/spines/gravity-rush-spine.png
 
-- title: "Gravity Rush: Remastered"
+- id: gravity-rush-remastered
+  title: "Gravity Rush: Remastered"
   releaseDate: 2015-12-10
   # score: -
   shelfStatus: not-owned
@@ -219,7 +234,8 @@
   coverImage: /images/games/gravity-rush-remastered.jpg
   spineImage: /images/games/spines/gravity-rush-remastered-spine.jpg
 
-- title: Gravity Rush 2
+- id: gravity-rush-2
+  title: Gravity Rush 2
   releaseDate: 2017-01-18
   # score: -
   shelfStatus: not-owned
@@ -235,7 +251,8 @@
   coverImage: /images/games/gravity-rush-2.jpg
   spineImage: /images/games/spines/gravity-rush-2-spine.jpg
 
-- title: Katamari Damacy
+- id: katamari-damacy
+  title: Katamari Damacy
   releaseDate: 2004-03-18
   shelfStatus: not-owned
   mediaType: game
@@ -250,7 +267,8 @@
   coverImage: /images/games/katamari-damacy.png
   spineImage: /images/games/spines/katamari-damacy-spine.jpg
 
-- title: Katamari Fortissimo Damacy
+- id: katamari-ost
+  title: Katamari Fortissimo Damacy
   releaseDate: 2004-05-19
   shelfStatus: owned
   mediaType: music
@@ -273,7 +291,8 @@
   coverImage: /images/albums/katamari-fortissimo-damacy.jpg
   # spineImage: /images/albums/spines/katamari-damacy-spine.jpg
 
-- title: Kingdom Hearts
+- id: kh1
+  title: Kingdom Hearts
   releaseDate: 2002-03-28
   shelfStatus: not-owned
   mediaType: game
@@ -288,7 +307,8 @@
   coverImage: /images/games/kingdom-hearts.png
   spineImage: /images/games/spines/kingdom-hearts-spine.jpg
 
-- title: "Kingdom Hearts: Final Mix"
+- id: kh1fm
+  title: "Kingdom Hearts: Final Mix"
   releaseDate: 2002-12-26
   shelfStatus: not-owned
   mediaType: game
@@ -303,7 +323,8 @@
   coverImage: /images/games/kingdom-hearts-fm.png
   spineImage: /images/games/spines/kingdom-hearts-fm-spine.jpg
 
-- title: "Lumines: Puzzle Fusion"
+- id: lumines
+  title: "Lumines: Puzzle Fusion"
   releaseDate: 2004-12-12
   shelfStatus: not-owned
   mediaType: game
