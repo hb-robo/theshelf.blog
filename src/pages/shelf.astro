@@ -2,38 +2,24 @@
 // src/pages/shelf.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SpineDisplay from '../components/SpineDisplay.astro';
-import { getCollection } from 'astro:content';
+import type { ExpandedMediaItem } from '../lib/types.ts';
+import { getExpandedMediaList } from '../lib/expandMediaItems.ts';
 
-// Get all items on the shelf
-const allReviews = await getCollection('reviews');
-const allMedia = allReviews.flatMap(review =>
-  (review.data.media || []).map(m => ({
-    ...m,
-    articleSlug: review.slug,
-  }))
-)
+const allMedia: ExpandedMediaItem[] = await getExpandedMediaList();
 
+const shelfItems = allMedia.filter(
+  m => m.published
+  && m.result === 'made-the-shelf'
+  && m.shelfStatus === 'owned'
+);
+const wishlistItems = allMedia.filter(
+  m => m.published
+  && m.result === 'made-the-shelf'
+  && m.shelfStatus === 'not-owned'
+);
 
-const shelfItems = allMedia.filter(m => m.madeTheShelf && m.shelfStatus === 'owned');
-const wishlistItems = allMedia.filter(m => m.madeTheShelf && m.shelfStatus === 'not-owned');
-
-
-function groupByMediaType(mediaList){
-  return {
-    music: mediaList.filter(m => m.mediaType === 'music'),
-    game: mediaList.filter(m => m.mediaType === 'game'),
-    film: mediaList.filter(m => m.mediaType === 'film'),
-    book: mediaList.filter(m => m.mediaType === 'book')
-  }
-};
-
-const shelfByMedia = groupByMediaType(shelfItems);
-const wishListByMedia = groupByMediaType(wishlistItems);
-
-// Calculate stats
 const totalOnShelf = shelfItems.length;
-const totalReviews = allReviews.length;
-const approvalRate = totalReviews > 0 
+const approvalRate = allMedia.length > 0 
   ? Math.round((totalOnShelf / allMedia.length) * 100) 
   : 0;
 ---
@@ -220,16 +206,8 @@ const approvalRate = totalReviews > 0
             {shelfItems
               .sort((a, b) => a.title.localeCompare(b.title))
               .map(item => {
-                const creator = item.developer || item.director || item.artist || item.author;
                 return (
-                  <SpineDisplay
-                    title={item.title}
-                    creator={creator}
-                    mediaType={item.mediaType}
-                    subtype={item.subtype}
-                    spineImage={item.spineImage}
-                    reviewSlug={item.articleSlug}
-                  />
+                  <SpineDisplay itemData={item} />
                 );
               })}
           </div>
@@ -265,16 +243,8 @@ const approvalRate = totalReviews > 0
           {wishlistItems
             .sort((a, b) => a.title.localeCompare(b.title))
             .map(item => {
-              const creator = item.developer || item.director || item.artist || item.author;
               return (
-                <SpineDisplay
-                  title={item.title}
-                  creator={creator}
-                  mediaType={item.mediaType}
-                  subtype={item.subtype}
-                  spineImage={item.spineImage}
-                  reviewSlug={item.articleSlug}
-                />
+                <SpineDisplay itemData={item} />
               );
             })}
         </div>

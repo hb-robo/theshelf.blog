@@ -1,23 +1,24 @@
 ---
 // src/components/SpineDisplay.astro
 import { getMediaSpec, mmToPx } from '../lib/mediaSpecs';
-import { getMediaTypeBadge } from '../lib/badges';
 import fs from 'fs';
 import path from 'path';
+import type { ExpandedMediaItem } from '../lib/types';
+import { getPriorityCreatives } from '../lib/cardElements';
+import { formatCreativeLine } from '../lib/cardElements';
 
-interface Props {
-  title: string;
-  creator?: string | string[];
-  mediaType: string;
-  subtype?: string;
-  spineImage?: string;
-  reviewSlug: string;
+export interface Props {
+  itemData: ExpandedMediaItem;
 }
+const { itemData } = Astro.props;
 
-const { title, creator, mediaType, subtype, spineImage, reviewSlug } = Astro.props;
+const priorityCreatives = getPriorityCreatives(itemData);
+const creativesLine = formatCreativeLine(
+  priorityCreatives.role, priorityCreatives.names
+);
 
 // Get physical specifications
-const spec = getMediaSpec(subtype);
+const spec = getMediaSpec(itemData.subtype);
 
 // Calculate dimensions (these will be scaled by CSS variable)
 const heightPx = mmToPx(spec.height);
@@ -27,33 +28,24 @@ const bottomBufferPx = mmToPx(spec.bottomBuffer);
 const leftBufferPx = spec.leftBuffer ? mmToPx(spec.leftBuffer) : 0;
 const rightBufferPx = spec.rightBuffer ? mmToPx(spec.rightBuffer) : 0;
 
-// Format creator for display
-const creatorText = (() => {
-  if (!creator) return '';
-  if (Array.isArray(creator)) {
-    if (creator.length === 1) return creator[0];
-    if (creator.length === 2) return creator.join(', ');
-    return `${creator[0]} et al.`;
-  }
-  return creator;
-})();
-
-// Get color for generated spine
+// bright purple default to notice broken logic easily
 const colorClass = spec.color || 'bg-purple-400';
 
-const spinePath = spineImage ? path.join(Astro.site ? '.' : '.', 'public', spineImage) : null;
+const spinePath = itemData.spineImage 
+  ? path.join(Astro.site ? '.' : '.', 'public', itemData.spineImage) 
+  : null;
 const imageExists = spinePath ? fs.existsSync(spinePath) : false;
 ---
 
 <a 
-  href={`/reviews/${reviewSlug}`}
+  href={`/reviews/${itemData.articleSlug}`}
   class="spine-item group block relative"
   style={`
     height: calc(${heightPx}px * var(--shelf-scale));
     width: calc(${depthPx}px * var(--shelf-scale));
     min-width: calc(${depthPx}px * var(--shelf-scale));
   `}
-  title={`${title}${creatorText ? ` by ${creatorText}` : ''}`}
+  title={`${itemData.title}${creativesLine ? ` ${creativesLine}` : ''}`}
 >
   <!-- Case Structure -->
   <div class="spine-case h-full w-full relative flex flex-col bg-inherit ${spec.topRounding} ${spec.bottomRounding} overflow-hidden`}">
@@ -92,11 +84,11 @@ const imageExists = spinePath ? fs.existsSync(spinePath) : false;
         <div class="absolute inset-0 flex flex-col items-center justify-center p-1 bg-white dark:bg-gray-900 text-black dark:text-white">
           <div class="spine-text transform rotate-90 text-center flex gap-1 items-baseline">
             <span class="font-bold text-s leading-tight mb-1 line-clamp-3 whitespace-nowrap" style="font-size: calc(0.85rem * var(--shelf-scale));">
-              {title}
+              {itemData.title}
             </span>
-            {creatorText && (
+            {creativesLine && (
               <span class="text-gray-600 dark:text-gray-400 text-[0.6rem] line-clamp-2 whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
-                by {creatorText}
+                {creativesLine}
               </span>
             )}
           </div>
@@ -105,8 +97,8 @@ const imageExists = spinePath ? fs.existsSync(spinePath) : false;
         <!-- Only render image if it exists -->
         {imageExists && (
           <img
-            src={spineImage}
-            alt={`${title} spine`}
+            src={itemData.spineImage}
+            alt={`${itemData.title} spine`}
             class="absolute inset-0 w-full h-full object-fill"
             loading="lazy"
           />
@@ -135,11 +127,11 @@ const imageExists = spinePath ? fs.existsSync(spinePath) : false;
               flex items-center justify-center p-2 pointer-events-none ${spec.topRounding} ${spec.bottomRounding}`}>
     <div class="text-white text-center rotate-90 flex gap-1 items-baseline">
         <span class="font-bold text-xs leading-tight mb-1 whitespace-nowrap" style="font-size: calc(0.85rem * var(--shelf-scale));">
-        {title}
+        {itemData.title}
         </span>
-        {creatorText && (
+        {creativesLine && (
         <span class="text-gray-300 text-[0.6rem] whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
-            by {creatorText}
+            {creativesLine}
         </span>
         )}
         <!-- {spec && (
