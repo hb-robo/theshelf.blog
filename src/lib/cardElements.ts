@@ -1,4 +1,5 @@
 // src/lib/cardElements.ts
+import { db, Media, eq } from 'astro:db';
 import type { ExpandedMediaItem } from './types.ts';
 
 export const mediaColors: Record<string, string> = {
@@ -145,4 +146,20 @@ export function formatCreativeLine(role: string, names: string[]): string {
 
 
 
-// export function 
+export async function getMediaCoverImage(mediaId: string): Promise<string | null> {
+  const mediaItem = await db.select({ coverImage: Media.coverImage })
+    .from(Media)
+    .where(eq(Media.id, mediaId))
+    .get();
+
+  return mediaItem?.coverImage ?? null;
+}
+
+export async function getMediaTitle(mediaId: string): Promise<string | null> {
+  const mediaItem = await db.select({ title: Media.title })
+    .from(Media)
+    .where(eq(Media.id, mediaId))
+    .get();
+
+  return mediaItem?.title ?? null;
+}
