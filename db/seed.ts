@@ -3,14 +3,11 @@ import { db, Media } from 'astro:db';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
+import type { Creative } from '../src/lib/types.ts';
 
 // Defining types for the enum fields
 type ShelfStatus = 'owned' | 'not-owned' | 'digital-only';
 type MediaType = 'book' | 'album' | 'game' | 'film';
-type Creative = {
-	name: string;
-	role: string;
-}
 
 interface MediaItemFromYaml {
     id: string; 
