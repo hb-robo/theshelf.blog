@@ -1,39 +1,24 @@
 ---
 // src/pages/index.astro
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ReviewCard from '../components/ReviewCard.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+import { getCollection } from "astro:content";
 
 // Get the 5 most recent reviews
-const allReviews = await getCollection('reviews');
-const publishedReviews = allReviews.filter(r => r.data.published);
+const allReviews = await getCollection("reviews");
+const publishedReviews = allReviews.filter((r) => r.data.published);
 const recentReviews = publishedReviews
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  )
   .slice(0, 5);
-
 
 // Live stats
 const totalReviews: number = publishedReviews.length;
 var totalMedia: number = 0;
 var totalOnShelf: number = 0;
-var mediaTypes: string[] = [];
-for (const review of publishedReviews) {
-  const media = review.data.media || [];
-  totalMedia += media.length;
-  totalOnShelf += media.filter(m => m.madeTheShelf).length;
-  if (media.length > 0) {
-    for(const m of media){
-      if(!mediaTypes.includes(m.mediaType)){
-        mediaTypes.push(m.mediaType);
-      }
-    }
-  }
-}
-console.log(mediaTypes);
-const totalMediaTypes = mediaTypes.length;
-const approvalRate = totalReviews > 0 
-  ? Math.round((totalOnShelf / totalMedia) * 100) 
-  : 0;
+const approvalRate =
+  totalReviews > 0 ? Math.round((totalOnShelf / totalMedia) * 100) : 0;
 ---
 
 <BaseLayout title="Made the Shelf - Media Criticism with a Physical Constraint">
@@ -105,17 +90,7 @@ const approvalRate = totalReviews > 0
     </div>
 
     <div class="space-y-6">
-      {recentReviews.map((review) => (
-        <ReviewCard 
-          title={review.data.title}
-          slug={review.slug}
-          published={review.data.published}
-          date={review.data.date}
-          excerpt={review.data.excerpt}
-          heroImage={review.data.heroImage}
-          media={review.data.media}
-        />
-      ))}
+      {recentReviews.map((review) => <ReviewCard itemData={review} />)}
     </div>
   </section>
 
