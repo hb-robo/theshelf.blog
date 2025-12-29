@@ -1,8 +1,28 @@
-// src/lib/badges.ts
+// src/lib/cardElements.ts
+import type { ExpandedMediaItem } from './types.ts';
 
-/**
- * Returns Tailwind classes for media type badges
- */
+export const mediaColors: Record<string, string> = {
+  music: 'bg-blue-50 dark:bg-blue-900',
+  game: 'bg-red-50 dark:bg-red-900',
+  film: 'bg-slate-100 dark:bg-yellow-900',
+  book: 'bg-green-50 dark:bg-green-900',
+};
+
+export function getMediaTypeBorder(type: string): string {
+  switch (type) {
+    case "music": 
+      return 'border-blue-300 dark:blue-red-400'; 
+    case "game": 
+      return 'border-red-300 dark:border-red-400';
+    case "film": 
+      return 'border-slate-400 dark:border-yellow-400';
+    case "book": 
+      return 'border-green-200 dark:border-green-400';
+  }
+  return ""
+}
+
+
 export function getMediaTypeBadge(type: string): string {
   const badges: Record<string, string> = {
     music: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
@@ -15,9 +35,9 @@ export function getMediaTypeBadge(type: string): string {
 }
 
 /**
- * Returns Tailwind classes for score badges based on numeric value
- */
-export function getScoreBadge(score: number): string {
+ * Returns associated color for score badges
+ */ 
+export function getScoreColor(score: number): string {
   if (score == 10) return 'bg-blue-500 text-white';
   if (score >= 9) return 'bg-sky-500 text-white';
   if (score >= 8) return 'bg-teal-500 text-white';
@@ -87,3 +107,42 @@ export function generateExcerpt(madeCount: number, missedCount: number) {
   }
   return defaultExcerpt;
 }
+
+interface OrganizedCreatives {
+  [role: string]: string[];
+}
+
+export function organizeCreatives(item: ExpandedMediaItem): OrganizedCreatives {
+  const organized: OrganizedCreatives = {};
+
+  if (!item.creatives || item.creatives.length === 0) {
+    return organized;
+  }
+
+  // Iterate through the creatives to accumulate names under each unique role
+  for (const creative of item.creatives) {
+    const role = creative.role;
+    const name = creative.name;
+
+    if (!organized[role]) {
+      // Initialize the array for a each new role
+      organized[role] = [];
+    }
+    organized[role].push(name);
+  }
+
+  return organized;
+}
+
+export function formatCreativeLine(role: string, names: string[]): string {
+    let prefix = 'by';
+    if (role == 'director' || role == 'developer') {
+      prefix = role.substring(0,3) + '.';
+    }
+    const namesList = names.join(', ');
+    return `${prefix} ${namesList}`;
+}
+
+
+
+// export function 
