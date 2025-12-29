@@ -9,13 +9,16 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/db": "^0.18.3",
     "@astrojs/rss": "^4.0.13",
     "astro": "^5.15.4",
-    "date-fns": "^4.1.0"
+    "date-fns": "^4.1.0",
+    "js-yaml": "^4.1.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.17",
+    "@types/js-yaml": "^4.0.9",
     "patch-package": "^8.0.1",
     "tailwindcss": "^4.1.17"
   }
