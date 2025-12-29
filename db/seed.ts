@@ -29,7 +29,7 @@ export default async function seed() {
 
   const mediaItemsForDb = yamlData.map(item => ({
     ...item,
-    releaseDate: new Date(item.releaseDate).toISOString(),
+    releaseDate: new Date(item.releaseDate).toLocaleDateString('fr-CA'),
     creatives: item.creatives ?? [], 
     genre: item.genre ?? [],
   }));
