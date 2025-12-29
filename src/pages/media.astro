@@ -1,24 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MediaCard from '../components/MediaCard.astro';
-import { getCollection } from 'astro:content';
+import { getExpandedMediaList } from '../lib/expandMediaItems.ts';
+import type { ExpandedMediaItem } from '../lib/types.ts';
 
-const reviews = await getCollection('reviews');
-const allMedia = reviews.flatMap(review =>
-  (review.data.media || []).map(m => ({
-    ...m,
-    articleSlug: review.slug,
-    reviewDate: review.data.date,
-    published: review.data.published,
-  }))
-);
+const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
+
+const totalMedia = expandedMediaList.length;
+const onShelf = expandedMediaList.filter(m => m.result === "made-the-shelf").length;
+const reviewed = expandedMediaList.filter(m => m.published).length;
 ---
 
 <BaseLayout title="Media Library">
   <section class="max-w-6xl mx-auto px-4 py-12">
     <h1 class="text-3xl font-bold mb-8">All Media</h1>
     <div class="grid gap-6 md:grid-cols-1 lg:grid-cols-2 items-start">
-      {allMedia.map((m) => <MediaCard {...m} />)}
+      {expandedMediaList.map((m) => <MediaCard itemData={m} />)}
     </div>
   </section>
 </BaseLayout>
