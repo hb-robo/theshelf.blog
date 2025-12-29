@@ -54,10 +54,12 @@ export async function getExpandedMediaList(): Promise<ExpandedMediaItem[]> {
     const reviewDetails = await getMostRecentReviewForMedia(mediaItem.id);
 
     // Combine the database item with the review details
-    return {
+    const combinedItem = {
       ...mediaItem,
       ...reviewDetails
     };
+
+    return combinedItem as ExpandedMediaItem;
   });
 
   const expandedList = await Promise.all(expandedListPromises);
