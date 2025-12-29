@@ -12,10 +12,7 @@ const Media = defineTable({
       enum: ['book', 'album', 'game', 'film']
     }),
     subtype: column.text({ optional: true }),
-    developer: column.json({ optional: true }),
-    director: column.json({ optional: true }),
-    author: column.json({ optional: true }),
-    artist: column.json({ optional: true }),
+    creatives: column.json(),
     genre: column.json({ optional: true }),
     coverImage: column.text({ optional: true }),
     spineImage: column.text({ optional: true })

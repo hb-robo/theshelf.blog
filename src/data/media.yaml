@@ -1,120 +1,147 @@
-- title: "Casiopea"
+- title: Casiopea
   releaseDate: 1979-05-25
-  shelfStatus: "owned"
-  mediaType: "music"
-  subtype: "cd"
-  artist: Casiopea
-  genre: "Jazz Fusion"
-  coverImage: "/images/albums/casiopea.jpeg"
-  # spineImage: "/images/games/spines/the-world-ends-with-you-spine.jpg"
+  shelfStatus: owned
+  mediaType: music
+  subtype: cd
+  creatives:
+    - name: Casiopea
+      role: artist
+  genre: 
+    - Jazz Fusion
+  coverImage: /images/albums/casiopea.jpeg
 
-- title: "GAME"
+- title: GAME
   releaseDate: 2008-04-16
-  shelfStatus: "owned"
-  mediaType: "music"
-  subtype: "cd"
-  artist: Perfume
-  genre: "Electropop"
-  coverImage: "/images/albums/game-perfume.jpeg"
-  # spineImage: "/images/games/spines/the-world-ends-with-you-spine.jpg"
+  shelfStatus: owned
+  mediaType: music
+  subtype: cd
+  creatives:
+    - name: Perfume
+      role: artist
+  genre: 
+    - Electropop
+  coverImage: /images/albums/game-perfume.jpeg
+  # spineImage: /images/games/spines/the-world-ends-with-you-spine.jpg
 
-- title: "One-Room Survival"
+- title: One-Room Survival
   releaseDate: 2002-11-21
-  shelfStatus: "owned"
-  mediaType: "music"
-  subtype: "cd"
-  artist: "Serani Poji"
-  genre: "Akishibu-kei"
-  coverImage: "/images/albums/one-room-survival.jpg"
-  # spineImage: "/images/games/spines/neo-twewy-spine.jpg"
+  shelfStatus: owned
+  mediaType: music
+  subtype: cd
+  creatives: 
+    - name: Serani Poji
+      role: artist
+  genre:
+    - Akishibu-kei
+  coverImage: /images/albums/one-room-survival.jpg
+  # spineImage: /images/games/spines/neo-twewy-spine.jpg
 
-- title: "For You"
+- title: For You
   releaseDate: 1982-01-21
   # score: 8
-  shelfStatus: "owned"
-  mediaType: "music"
-  subtype: "cd"
-  artist: "Tatsuro Yamashita"
-  genre: "City Pop"
-  coverImage: "/images/albums/for-you.jpg"
-  # spineImage: "/images/games/spines/neo-twewy-spine.jpg"
+  shelfStatus: owned
+  mediaType: music
+  subtype: cd
+  creatives:
+    - name: Tatsuro Yamashita
+      role: artist
+  genre:
+    - City Pop
+  coverImage: /images/albums/for-you.jpg
+  # spineImage: /images/games/spines/neo-twewy-spine.jpg
 
-- title: "Fantasma"
+- title: Fantasma
   releaseDate: 2008-04-16
   # score: 8
-  shelfStatus: "owned"
-  mediaType: "music"
-  subtype: "cd"
-  artist: Cornelius
-  genre: "Shibuya-kei"
-  coverImage: "/images/albums/fantasma.jpg"
-  # spineImage: "/images/games/spines/the-world-ends-with-you-spine.jpg"
+  shelfStatus: owned
+  mediaType: music
+  subtype: cd
+  creatives:
+    - name: Cornelius
+      role: artist
+  genre: 
+    - Shibuya-kei
+  coverImage: /images/albums/fantasma.jpg
+  # spineImage: /images/games/spines/the-world-ends-with-you-spine.jpg
 
-- title: "Demon's Souls"
+- title: Demon's Souls
   releaseDate: 2009-02-05
-  shelfStatus: "owned"
-  mediaType: "game"
-  subtype: "ps3"
-  developer: "FromSoftware"
-  director: "Hidetaka Miyazaki"
-  genre: "Action RPG"
-  coverImage: "/images/games/demons-souls.png"
-  spineImage: "/images/games/spines/demons-souls-spine.png"
+  shelfStatus: owned
+  mediaType: game
+  subtype: ps3
+  creatives:
+    - name: FromSoftware
+      role: developer
+    - name: Hidetaka Miyazaki
+      role: director
+  genre: Action RPG
+  coverImage: /images/games/demons-souls.png
+  spineImage: /images/games/spines/demons-souls-spine.png
 
-- title: "Demon's Souls"
+- title: Demon's Souls
   releaseDate: 2020-11-12
   # score: _
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "ps5"
-  developer: "Bluepoint Games"
-  director: "Gavin Moore"
-  genre: "Action RPG"
-  coverImage: "/images/games/demons-souls-2020.jpg"
-  spineImage: "/images/games/spines/demons-souls-2020-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: ps5
+  creatives:
+    - name: Bluepoint Games
+      role: developer
+    - name: Gavin Moore
+      role: director
+  genre: Action RPG
+  coverImage: /images/games/demons-souls-2020.jpg
+  spineImage: /images/games/spines/demons-souls-2020-spine.jpg
 
 - title: "Samurai Champloo Music Record: Departure"
   releaseDate: 2004-06-23
   shelfStatus: owned
   mediaType: music
   subtype: cd
-  artist:
-    - Nujabes
-    - "Fat Jon"
+  creatives:
+    - name: Nujabes
+      role: artist
+    - name: Fat Jon
+      role: artist
   genre: 
-    - "Instrumental Hip Hop"
-    - "Lo-fi"
-  coverImage: "/images/albums/departure-samurai-champloo.jpg"
-  spineImage: "/images/albums/spines/departure-spine.png"
+    - Instrumental Hip Hop
+    - Lo-fi
+  coverImage: /images/albums/departure-samurai-champloo.jpg
+  spineImage: /images/albums/spines/departure-spine.png
 
 - title: "Samurai Champloo Music Record: Masta"
   releaseDate: 2004-06-23
   shelfStatus: not-owned
   mediaType: music
   subtype: cd
-  artist:
-    - Tsutchie
-    - "Force of Nature"
+  creatives:
+    - name: Tsutchie
+      role: artist
+    - name: Force of Nature
+      role: artist
   genre: 
-    - "Instrumental Hip Hop"
-    - "Lo-fi"
-  coverImage: "/images/albums/masta-samurai-champloo.png"
-  # spineImage: "/images/albums/spines/departure-spine.png"
+    - Instrumental Hip Hop
+    - Lo-fi
+  coverImage: /images/albums/masta-samurai-champloo.png
+  # spineImage: /images/albums/spines/departure-spine.png
 
 - title: "Samurai Champloo Music Record: Impression"
   releaseDate: 2004-09-22
   shelfStatus: owned
   mediaType: music
   subtype: cd
-  artist:
-    - "Force of Nature"
-    - Nujabes
-    - Fat Jon
+  creatives:
+    - name: Force of Nature
+      role: artist
+    - name: Nujabes
+      role: artist
+    - name: Fat Jon
+      role: artist
   genre: 
-    - "Instrumental Hip Hop"
-    - "Lo-fi"
-  coverImage: "/images/albums/impression-samurai-champloo.png"
-  # spineImage: "/images/albums/spines/departure-spine.png"
+    - Instrumental Hip Hop
+    - Lo-fi
+  coverImage: /images/albums/impression-samurai-champloo.png
+  # spineImage: /images/albums/spines/departure-spine.png
 
 
 - title: "Samurai Champloo Music Record: Playlist"
@@ -122,234 +149,305 @@
   shelfStatus: not-owned
   mediaType: music
   subtype: cd
-  artist: Tsutchie
+  creatives:
+    - name: Tsutchie
+      role: artist
   genre: 
-    - "Instrumental Hip Hop"
-    - "Lo-fi"
-  coverImage: "/images/albums/playlist-samurai-champloo.jpg"
-  # spineImage: "/images/albums/spines/departure-spine.png"
+    - Instrumental Hip Hop
+    - Lo-fi
+  coverImage: /images/albums/playlist-samurai-champloo.jpg
+  # spineImage: /images/albums/spines/departure-spine.png
 
-- title: "Dragon Quest XI"
+- title: Dragon Quest XI
   releaseDate: 2017-07-29
-  shelfStatus: "owned"
-  mediaType: "game"
-  subtype: "3ds"
-  developer: "Square Enix"
-  director: "Takeshi Uchikawa"
-  genre: "Turn-Based RPG"
-  coverImage: "/images/games/dragon-quest-xi-3ds.png"
-  spineImage: "/images/games/spines/dragon-quest-xi-3ds-spine.png"
+  shelfStatus: owned
+  mediaType: game
+  subtype: 3ds
+  creatives:
+    - name: Square Enix
+      role: developer
+    - name: Takeshi Uchikawa
+      role: director
+  genre:
+    - Turn-Based RPG
+  coverImage: /images/games/dragon-quest-xi-3ds.png
+  spineImage: /images/games/spines/dragon-quest-xi-3ds-spine.png
 
-- title: "A Wizard of Earthsea"
+- title: A Wizard of Earthsea
   releaseDate: 1968-01-01
   # score: 
-  shelfStatus: "not-owned"
-  mediaType: "book"
-  # subtype: ""
-  author: "Ursula K. Le Guin"
+  shelfStatus: not-owned
+  mediaType: book
+  # subtype: 
+  creatives:
+    - name: Ursula K. Le Guin
+      role: author
   genre:
-    - "Fantasy"
-    - "Bildungsroman"
-  coverImage: "/images/books/a-wizard-of-earthsea.jpg"
-  # spineImage: "/images/games/spines/dragon-quest-xi-3ds-spine.png"
+    - Fantasy
+    - Bildungsroman
+  coverImage: /images/books/a-wizard-of-earthsea.jpg
+  # spineImage: /images/games/spines/dragon-quest-xi-3ds-spine.png
 
-- title: "Gravity Rush"
+- title: Gravity Rush
   releaseDate: 2012-02-09
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "vita"
-  developer: "Japan Studio"
-  director: "	Keiichiro Toyama"
-  genre: "Action-Adventure"
-  coverImage: "/images/games/gravity-rush.png"
-  spineImage: "/images/games/spines/gravity-rush-spine.png"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: vita
+  creatives:
+    - name: Japan Studio
+      role: developer
+    - name: Keiichiro Toyama
+      role: director
+  genre:
+    - Action-Adventure
+  coverImage: /images/games/gravity-rush.png
+  spineImage: /images/games/spines/gravity-rush-spine.png
 
 - title: "Gravity Rush: Remastered"
   releaseDate: 2015-12-10
   # score: -
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "ps4"
-  developer: "Bluepoint Games"
-  director: "Keiichiro Toyama"
-  genre: "Action-Adventure"
-  coverImage: "/images/games/gravity-rush-remastered.jpg"
-  spineImage: "/images/games/spines/gravity-rush-remastered-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: ps4
+  creatives:
+    - name: Bluepoint Games
+      role: developer
+    - name: Keiichiro Toyama
+      role: director
+  genre:
+    - Action-Adventure
+  coverImage: /images/games/gravity-rush-remastered.jpg
+  spineImage: /images/games/spines/gravity-rush-remastered-spine.jpg
 
-- title: "Gravity Rush 2"
+- title: Gravity Rush 2
   releaseDate: 2017-01-18
   # score: -
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "ps4"
-  developer: "Japan Studio"
-  director: "Keiichiro Toyama"
-  genre: "Action-Adventure"
-  coverImage: "/images/games/gravity-rush-2.jpg"
-  spineImage: "/images/games/spines/gravity-rush-2-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: ps4
+  creatives:
+    - name: Japan Studio
+      role: developer
+    - name: Keiichiro Toyama
+      role: director
+  genre:
+    - Action-Adventure
+  coverImage: /images/games/gravity-rush-2.jpg
+  spineImage: /images/games/spines/gravity-rush-2-spine.jpg
 
-- title: "Katamari Damacy"
+- title: Katamari Damacy
   releaseDate: 2004-03-18
   shelfStatus: not-owned
   mediaType: game
   subtype: ps2
-  developer: Namco
-  director: "Keita Takahashi"
-  genre: "Chaotic Action"
-  coverImage: "/images/games/katamari-damacy.png"
-  spineImage: "/images/games/spines/katamari-damacy-spine.jpg"
+  creatives:
+    - name: Namco
+      role: developer
+    - name: Keita Takahashi
+      role: director
+  genre:
+    - Chaotic Action
+  coverImage: /images/games/katamari-damacy.png
+  spineImage: /images/games/spines/katamari-damacy-spine.jpg
 
-- title: "Katamari Fortissimo Damacy"
+- title: Katamari Fortissimo Damacy
   releaseDate: 2004-05-19
   shelfStatus: owned
   mediaType: music
   subtype: cd
-  artist: 
-    - "Yuu Miyake"
-    - "Asuka Sakai"
-    - "Akitaka Tohyama"
-    - "Yuri Misumi"
-    - "Yoshihito Yano"
-    - "Hideki Tobeta"
-  genre: "Shibuya-kei"
-  coverImage: "/images/albums/katamari-fortissimo-damacy.jpg"
-  # spineImage: "/images/albums/spines/katamari-damacy-spine.jpg"
+  creatives:
+  - name: Yuu Miyake
+    role: artist
+  - name: Asuka Sakai
+    role: artist
+  - name: Akitaka Tohyama
+    role: artist
+  - name: Yuri Misumi
+    role: artist
+  - name: Yoshihito Yano
+    role: artist
+  - name: Hideki Tobeta
+    role: artist
+  genre:
+    - Shibuya-kei
+  coverImage: /images/albums/katamari-fortissimo-damacy.jpg
+  # spineImage: /images/albums/spines/katamari-damacy-spine.jpg
 
-- title: "Kingdom Hearts"
+- title: Kingdom Hearts
   releaseDate: 2002-03-28
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "ps2"
-  developer: "Square Enix"
-  director: "Tetsuya Nomura"
-  genre: "Action RPG"
-  coverImage: "/images/games/kingdom-hearts.png"
-  spineImage: "/images/games/spines/kingdom-hearts-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: ps2
+  creatives:
+    - name: Square Enix
+      role: developer
+    - name: Tetsuya Nomura
+      role: director
+  genre:
+    - Action RPG
+  coverImage: /images/games/kingdom-hearts.png
+  spineImage: /images/games/spines/kingdom-hearts-spine.jpg
 
 - title: "Kingdom Hearts: Final Mix"
   releaseDate: 2002-12-26
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "ps2"
-  developer: "Square Enix"
-  director: "Tetsuya Nomura"
-  genre: "Action RPG"
-  coverImage: "/images/games/kingdom-hearts-fm.png"
-  spineImage: "/images/games/spines/kingdom-hearts-fm-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: ps2
+  creatives:
+    - name: Square Enix
+      role: developer
+    - name: Tetsuya Nomura
+      role: director
+  genre:
+    - Action RPG
+  coverImage: /images/games/kingdom-hearts-fm.png
+  spineImage: /images/games/spines/kingdom-hearts-fm-spine.jpg
 
 - title: "Lumines: Puzzle Fusion"
   releaseDate: 2004-12-12
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "psp"
-  developer: "Q Entertainment"
-  director: "Tetsuya Mizuguchi"
-  genre: "Falling Block Puzzle"
-  coverImage: "/images/games/lumines.jpg"
-  spineImage: "/images/games/spines/lumines-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: psp
+  creatives:
+    - name: Q Entertainment
+      role: developer
+    - name: Tetsuya Mizuguchi
+      role: director
+  genre:
+    - Falling Block Puzzle
+  coverImage: /images/games/lumines.jpg
+  spineImage: /images/games/spines/lumines-spine.jpg
 
-- id: "pokemon-legends-arceus"
+- id: pokemon-legends-arceus
   title: "Pokemon Legends: Arceus"
   releaseDate: 2022-01-28
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "switch"
-  developer: "Game Freak"
-  director: "Kazumasa Iwao"
-  genre: "Turn-Based RPG"
-  coverImage: "/images/games/pokemon-legends-arceus.png"
-  spineImage: "/images/games/spines/pokemon-legends-arceus-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: switch
+  creatives:
+    - name: Game Freak
+      role: developer
+    - name: Kazumasa Iwao
+      role: director
+  genre:
+    - Turn-Based RPG
+  coverImage: /images/games/pokemon-legends-arceus.png
+  spineImage: /images/games/spines/pokemon-legends-arceus-spine.jpg
 
-- id: "stray"
-  title: "Stray"
+- id: stray
+  title: Stray
   releaseDate: 2022-07-19
   shelfStatus: owned
   mediaType: game
   subtype: ps5
-  developer: BlueTwelve Studio
-  director:
-      - "Colas Koola"
-      - "Vivien Mermet-Guyenet"
-  genre: "Cinematic Platformer"
-  coverImage: "/images/games/stray.png"
-  spineImage: "/images/games/spines/stray-spine.jpg"
+  creatives:
+    - name: BlueTwelve Studio
+      role: developer
+    - name: Colas Koola
+      role: director
+    - name: Vivien Mermet-Guyenet
+      role: director
+  genre:
+    - Cinematic Platformer
+  coverImage: /images/games/stray.png
+  spineImage: /images/games/spines/stray-spine.jpg
 
-- id: "virgin-suicides-coppola"
-  title: "The Virgin Suicides"
+- id: virgin-suicides-coppola
+  title: The Virgin Suicides
   releaseDate: 2000-04-21
-  shelfStatus: "owned"
-  mediaType: "film"
-  # subtype: ""
-  director: "Sofia Coppola"
+  shelfStatus: owned
+  mediaType: film
+  # subtype: 
+  creatives:
+    - name: Sofia Coppola
+      role: director
   genre:
-    - "Psychological Drama"
-  coverImage: "/images/films/the-virgin-suicides.jpg"
-  # spineImage: "/images/games/spines/dragon-quest-xi-3ds-spine.png"
+    - Psychological Drama
+  coverImage: /images/films/the-virgin-suicides.jpg
+  # spineImage: /images/games/spines/dragon-quest-xi-3ds-spine.png
 
-- id: "casts-of-a-dreamer"
-  title: "Casts of a Dreamer"
+- id: casts-of-a-dreamer
+  title: Casts of a Dreamer
   releaseDate: 1979-05-25
-  shelfStatus: "not-owned"
-  mediaType: "music"
-  # subtype: "cd"
-  artist: "454"
-  genre: "Plugg"
-  coverImage: "/images/albums/casts-of-a-dreamer.png"
-  # spineImage: "/images/games/spines/the-world-ends-with-you-spine.jpg"
-
-- id: "del-toro-frankenstein"
-  title: "Frankenstein"
-  releaseDate: 2025-08-30
-  shelfStatus: "not-owned"
-  mediaType: "film"
-  # subtype: ""
-  director: "Guillermo del Toro"
+  shelfStatus: not-owned
+  mediaType: music
+  # subtype: cd
+  creatives:
+    - name: "454"
+      role: artist
   genre:
-    - "Science Fiction"
-    - "Drama"
-  # coverImage: "/images/films/the-virgin-suicides.jpg"
-  # spineImage: "/images/games/spines/dragon-quest-xi-3ds-spine.png"
+    - Plugg
+  coverImage: /images/albums/casts-of-a-dreamer.png
+  # spineImage: /images/games/spines/the-world-ends-with-you-spine.jpg
 
-- id: "the-witness"
-  title: "The Witness"
+- id: del-toro-frankenstein
+  title: Frankenstein
+  releaseDate: 2025-08-30
+  shelfStatus: not-owned
+  mediaType: film
+  # subtype: 
+  creatives:
+    - name: Guillermo del Toro
+      role: director
+  genre:
+    - Science Fiction
+    - Drama
+  # coverImage: /images/films/the-virgin-suicides.jpg
+  # spineImage: /images/games/spines/dragon-quest-xi-3ds-spine.png
+
+- id: the-witness
+  title: The Witness
   releaseDate: 2016-01-26
   shelfStatus: digital-only
   mediaType: game
-  developer: Thekla
-  director: "Jonathan Blow"
-  genre: "Puzzle Adventure"
-  coverImage: "/images/games/the-witness.avif"
+  creatives:
+    - name: Thekla
+      role: developer
+    - name: Jonathan Blow
+      role: director
+  genre:
+    - Puzzle Adventure
+  coverImage: /images/games/the-witness.avif
 
-- id: "twewy"
-  title: "The World Ends With You"
+- id: twewy
+  title: The World Ends With You
   releaseDate: 2008-04-22
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "ds"
-  developer:
-    - "Square Enix"
-    - "Jupiter"
-  director:
-    - "Tatsuya Kando"
-    - "Tomohiro Hasegawa"
-    - "Tetsuro Hosokawa"
-  genre: "Action-RPG"
-  coverImage: "/images/games/the-world-ends-with-you.png"
-  spineImage: "/images/games/spines/the-world-ends-with-you-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: ds
+  creatives:
+    - name: Square Enix
+      role: developer
+    - name: Jupiter
+      role: developer
+    - name: Tatsuya Kando
+      role: director
+    - name: Tomohiro Hasegawa
+      role: director
+    - name: Tetsuro Hosokawa
+      role: director
+  genre:
+    - Action-RPG
+  coverImage: /images/games/the-world-ends-with-you.png
+  spineImage: /images/games/spines/the-world-ends-with-you-spine.jpg
 
-- id: "neo-twewy"
+- id: neo-twewy
   title: "NEO: The World Ends With You"
   releaseDate: 2021-07-27
   # score: 
-  shelfStatus: "not-owned"
-  mediaType: "game"
-  subtype: "ps4"
-  developer:
-    - "Square Enix"
-    - "h.a.n.d."
-  director:
-    - "Hiroyuki Itou"
-    - "Tatsuya Kando"
-  genre: "Action-RPG"
-  coverImage: "/images/games/neo-twewy.png"
-  # spineImage: "/images/games/spines/neo-twewy-spine.jpg"
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: ps4
+  creatives:
+    - name: Square Enix
+      role: developer
+    - name: h.a.n.d.
+      role: developer
+    - name: Hiroyuki Itou
+      role: director
+    - name: Tatsuya Kando
+      role: director
+  genre:
+    - Action-RPG
+  coverImage: /images/games/neo-twewy.png
+  # spineImage: /images/games/spines/neo-twewy-spine.jpg

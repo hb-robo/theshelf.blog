@@ -7,6 +7,10 @@ import path from 'path';
 // Defining types for the enum fields
 type ShelfStatus = 'owned' | 'not-owned' | 'digital-only';
 type MediaType = 'book' | 'album' | 'game' | 'film';
+type Creative = {
+	name: string;
+	role: string;
+}
 
 interface MediaItemFromYaml {
     id: string; 
@@ -15,11 +19,8 @@ interface MediaItemFromYaml {
     shelfStatus: ShelfStatus;
     mediaType: MediaType;
 	subtype?: string;
-	developer?: string | string[];
-	director?: string | string[];
-	author?: string | string[];
-    artist?: string | string[];
-    genre?: string | string[];
+	creatives: Creative[];
+    genre?: string[];
 	coverImage?: string,
     spineImage?: string,
 }
@@ -27,20 +28,13 @@ interface MediaItemFromYaml {
 export default async function seed() {
   const filePath = path.join(process.cwd(), 'src/data/media.yaml'); 
   const fileContents = fs.readFileSync(filePath, 'utf8');
-  
   const yamlData = yaml.load(fileContents) as MediaItemFromYaml[];
 
   const mediaItemsForDb = yamlData.map(item => ({
     ...item,
-	releaseDate: new Date(item.releaseDate).toLocaleDateString('en-CA'),
-    subtype: item.subtype ?? null,
-	developer: (item.developer && JSON.stringify(item.developer)) ?? null,
-	director: (item.director && JSON.stringify(item.director)) ?? null,
-	author: (item.author && JSON.stringify(item.author)) ?? null,
-    artist: (item.artist && JSON.stringify(item.artist)) ?? null,
-    genre: (item.genre && JSON.stringify(item.genre)) ?? null,
-    coverImage: item.coverImage ?? null,
-    spineImage: item.spineImage ?? null,
+    releaseDate: new Date(item.releaseDate).toISOString(),
+    creatives: item.creatives ?? [], 
+    genre: item.genre ?? [],
   }));
   
   await db.insert(Media).values(mediaItemsForDb);
