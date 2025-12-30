@@ -7,6 +7,11 @@ export type Creative = {
 	role: string;
 }
 
+export type PriorityCreatives = {
+  role: string;
+  names: string[];
+}
+
 type MediaJsonFields = {
     creatives: Creative[] | null;
     genre: string[] | null;

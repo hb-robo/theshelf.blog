@@ -1,6 +1,6 @@
 // src/lib/cardElements.ts
 import { db, Media, eq } from 'astro:db';
-import type { ExpandedMediaItem } from './types.ts';
+import type { ExpandedMediaItem, PriorityCreatives } from './types.ts';
 
 export const mediaColors: Record<string, string> = {
   music: 'bg-blue-50 dark:bg-blue-900',
@@ -135,12 +135,41 @@ export function organizeCreatives(item: ExpandedMediaItem): OrganizedCreatives {
   return organized;
 }
 
+export function getPriorityCreatives(item: ExpandedMediaItem) : PriorityCreatives | null{
+
+
+  if (!item.creatives || item.creatives.length === 0) {
+    return null;
+  }
+
+  let priorityRole = item.creatives[0].role;
+  let priorityCreatives: string[] = [];
+
+  for (const creative of item.creatives) {
+    if (creative.role === priorityRole) {
+      priorityCreatives.push(creative.name);
+    }
+  }
+
+  const ret : PriorityCreatives = {
+    role: priorityRole,
+    names: priorityCreatives
+  };
+
+  return ret;
+}
+
 export function formatCreativeLine(role: string, names: string[]): string {
-    let prefix = 'by';
+  if (role === "") return "";
+  
+  let prefix = 'by';
     if (role == 'director' || role == 'developer') {
       prefix = role.substring(0,3) + '.';
     }
-    const namesList = names.join(', ');
+    const namesList = names.length < 3
+      ? names.join(', ')
+      : `${names[0]} et al.`;
+
     return `${prefix} ${namesList}`;
 }
 

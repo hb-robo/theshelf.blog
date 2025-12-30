@@ -223,7 +223,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
 /**
  * Get specs for a media subtype, with fallback to generic defaults
  */
-export function getMediaSpec(subtype?: string): MediaSpec {
+export function getMediaSpec(subtype?: string | null): MediaSpec {
   if (!subtype) {
     return {
       height: 171,

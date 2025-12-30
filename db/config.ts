@@ -9,7 +9,7 @@ const Media = defineTable({
       enum: ['owned', 'not-owned', 'digital-only'] 
     }),
     mediaType: column.text({
-      enum: ['book', 'album', 'game', 'film']
+      enum: ['book', 'music', 'game', 'film']
     }),
     subtype: column.text({ optional: true }),
     creatives: column.json(),
