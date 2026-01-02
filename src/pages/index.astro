@@ -3,6 +3,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ReviewCard from "../components/ReviewCard.astro";
 import { getCollection } from "astro:content";
+import type { ExpandedMediaItem } from "../lib/types";
+import { getExpandedMediaList } from "../lib/expandMediaItems";
 
 // Get the 5 most recent reviews
 const allReviews = await getCollection("reviews");
@@ -13,40 +15,46 @@ const recentReviews = publishedReviews
   )
   .slice(0, 5);
 
+const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
+
 // Live stats
 const totalReviews: number = publishedReviews.length;
-var totalMedia: number = 0;
-var totalOnShelf: number = 0;
+var totalMedia: number = expandedMediaList.length;
+var totalOnShelf: number = expandedMediaList.filter(
+  (m) => (m.published && m.result === 'made-the-shelf')
+).length;
 const approvalRate =
   totalReviews > 0 ? Math.round((totalOnShelf / totalMedia) * 100) : 0;
 ---
 
-<BaseLayout title="Made the Shelf - Media Criticism with a Physical Constraint">
+<BaseLayout title="Made the Shelf - Media Criticism with a Physical Constraint", bigNav="true">
   <!-- Hero Section -->
-  <section class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-    <div class="max-w-4xl mx-auto px-4 py-16 md:py-24">
+  <section class="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-4xl mx-auto px-4 py-16 md:py-10">
       <div class="max-w-2xl">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-          Made the Shelf
-        </h1>
-        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8">
-          Writing about creative works with a physical constraint -<br>if it speaks to me, it earns a place on the shelf.
-        </p>        
-        <!-- <p class="text-xl md:text-lg text-gray-600 dark:text-gray-400 mb-8">
-          A personal archive constrained by real shelves and limited space. Albums, games, films, and books that proved worth keeping. 
-        </p> -->
+
+        <p class="text-xl md:text-2xl  mb-8">
+          Writing about creative works with a physical constraint -<br />if it
+          speaks to me, it earns a place on the shelf.
+        </p>
         <div class="flex flex-wrap gap-4">
-          <a 
-            href="/shelf" 
+          <a
+            href="/shelf"
             class="px-6 py-3 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
-            View the Shelf
+            View the shelf
           </a>
-          <a 
-            href="/reviews" 
+          <a
+            href="/about"
+            class="inline-block px-6 py-3 border border-gray-300dark:text-gray-100 dark:text-gray-100 dark:border-gray-700 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            About the concept
+          </a>
+          <a
+            href="/reviews"
             class="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
-            Browse Reviews
+            All writing
           </a>
         </div>
       </div>
@@ -54,35 +62,83 @@ const approvalRate =
   </section>
 
   <!-- Stats Overview (Optional - shows off the data) -->
-  <section class="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+  <section
+    class=" "
+  >
     <div class="max-w-4xl mx-auto px-4 py-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div
+        class="flex items-center justify-between border-b-2 border-stone-900 pb-4 mb-8"
+      >
+        <h2
+          class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100"
+        >
+          some numbers
+        </h2>
+        <a
+          href="/stats"
+          class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+        >
+          More data →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 font-mono">
         <div class="text-center">
-          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{totalReviews}</div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Total Reviews</div>
+          <div
+            class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100"
+          >
+            {totalReviews}
+          </div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">
+            total reviews
+          </div>
         </div>
         <div class="text-center">
-          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{totalMedia}</div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Works Covered</div>
+          <div
+            class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100"
+          >
+            {totalMedia}
+          </div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">
+            works covered
+          </div>
         </div>
         <div class="text-center">
-          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{totalOnShelf}</div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Items on Shelf</div>
+          <div
+            class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100"
+          >
+            {totalOnShelf}
+          </div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">
+            items made the shelf
+          </div>
         </div>
         <div class="text-center">
-          <div class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">{approvalRate}%</div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">Made the Cut</div>
+          <div
+            class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100"
+          >
+            {approvalRate}%
+          </div>
+          <div class="text-sm text-gray-600 dark:text-gray-400">
+            made the cut
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Recent Reviews -->
-  <section class="max-w-4xl mx-auto px-4 py-16 bg-white dark:bg-gray-950">
-    <div class="flex items-center justify-between mb-8">
-      <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Recent Reviews</h2>
-      <a 
-        href="/reviews" 
+  <section class="max-w-4xl mx-auto px-4 py-16">
+    <div
+      class="flex items-center justify-between border-b-2 border-stone-900 pb-4 mb-8"
+    >
+      <h2
+        class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100"
+      >
+        recent thoughts
+      </h2>
+      <a
+        href="/reviews"
         class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
       >
         View all →
@@ -94,23 +150,4 @@ const approvalRate =
     </div>
   </section>
 
-  <!-- Call to Action / About Preview -->
-  <section class="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-    <div class="max-w-4xl mx-auto px-4 py-16">
-      <div class="max-w-2xl mx-auto text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-          Why the Shelf?
-        </h2>
-        <p class="text-gray-600 dark:text-gray-400 mb-6">
-          Physical space is limited. Every item that makes the shelf has earned its place through quality and staying power. This constraint forces honest criticism: would I really want this taking up space in my home?
-        </p>
-        <a 
-          href="/about" 
-          class="inline-block px-6 py-3 border border-gray-300dark:text-gray-100 dark:text-gray-100 dark:border-gray-700 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-        >
-          Learn more about the concept
-        </a>
-      </div>
-    </div>
-  </section>
 </BaseLayout>
