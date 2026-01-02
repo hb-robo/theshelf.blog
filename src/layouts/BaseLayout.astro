@@ -1,33 +1,41 @@
 ---
-import '../styles/global.css';
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/Footer.astro';
+import "../styles/global.css";
+import BigNav from "../components/BigNav.astro";
+import Navigation from "../components/Navigation.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title: string;
+  bigNav: boolean;
 }
 
-const { title } = Astro.props;
+const { title, bigNav } = Astro.props;
+if (!bigNav) {
+	let bigNav = false;
+}
 ---
+
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<link
-			rel="alternate"
-			type="application/rss+xml"
-			title="Made the Shelf"
-			href={new URL("rss.xml", Astro.site)}
-		/>
-	</head>
-	<body class="flex flex-col min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-		<Navigation />
-		<div class="grow">
-            <slot/>
-		</div>
-		<Footer />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Made the Shelf"
+      href={new URL("rss.xml", Astro.site)}
+    />
+  </head>
+  <body
+    class="flex flex-col min-h-screen bg-amber-50 dark:bg-stone-950 text-gray-900 dark:text-amber-50"
+  >
+    {bigNav ? <BigNav /> : <Navigation />}
+    <div class="grow">
+      <slot />
+    </div>
+    <Footer />
+  </body>
 </html>
