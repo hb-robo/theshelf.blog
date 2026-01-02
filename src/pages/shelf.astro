@@ -17,6 +17,10 @@ const wishlistItems = allMedia.filter(
   && m.result === 'made-the-shelf'
   && m.shelfStatus === 'not-owned'
 );
+const backlogItems = allMedia.filter(
+  m => !m.published
+  && m.shelfStatus === 'owned'
+)
 
 const totalOnShelf = shelfItems.length;
 const approvalRate = allMedia.length > 0 
@@ -24,26 +28,19 @@ const approvalRate = allMedia.length > 0
   : 0;
 ---
 
-<BaseLayout title="The Shelf - Made the Shelf">
+<BaseLayout title="The Shelf - Made the Shelf" >
   <div
-    class="shelf-container min-h-screen pb-16 bg-linear-to-b  bg-white dark:bg-black"
+    class="shelf-container min-h-screen bg-linear-to-b  bg-white dark:bg-black"
   >
     <!-- Header -->
     <header class="max-w-4xl mx-auto px-4 py-12">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900 dark:text-gray-100">
-        The Shelf
+      <h1 class="text-4xl md:text-5xl font-bold mb-2 tracking-tight text-gray-900 dark:text-gray-100">
+        digital shelf visualizer
       </h1>
-      <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">
-        {totalOnShelf} items made the shelf • {approvalRate}% of reviewed items shelved
-      </p>
-      <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
-        Physical space is limited. Every item here scored high enough to earn its spot.<br> 
-        Hover over spines to see titles, click to read the corresponding piece.
-      </p>
     </header>
 
     <!-- View Toggle -->
-    <div class="max-w-4xl mx-auto px-4 mb-8">
+    <!-- <div class="max-w-4xl mx-auto px-4 mb-8">
       <div class="flex items-center gap-4">
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
           View:
@@ -66,7 +63,7 @@ const approvalRate = allMedia.length > 0
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Grouped View -->
 <!-- 
@@ -192,12 +189,15 @@ const approvalRate = allMedia.length > 0
     <div id="mixed-view" >
       <section>
         <div class="max-w-4xl mx-auto px-4 mb-4">
-          <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+          <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
             The Shelf
             <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
               ({totalOnShelf} items)
             </span>
           </h2>
+          <p>
+            Works that were reviewed and earned their space.
+          </p>
         </div>
         <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
           <div
@@ -226,14 +226,14 @@ const approvalRate = allMedia.length > 0
     <!-- Wishlist Section -->
     <section class="mt-8">
       <div class="max-w-4xl mx-auto px-4 mb-4">
-        <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
           The Wishlist
           <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
             ({wishlistItems.length} items)
           </span>
         </h2>
-        <p class="text-gray-600 dark:text-gray-400 max-w-2xl">
-          Items that earned a spot, but I don't own yet.
+        <p>
+          Works that earned a spot, but I don't own yet. Physical media prices may keep some items here for long period of time.
         </p>
       </div>
       <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
@@ -250,6 +250,36 @@ const approvalRate = allMedia.length > 0
         </div>
       </div>
     </section>
+
+    <!-- Backlog Section -->
+    <section class="mt-8">
+      <div class="max-w-4xl mx-auto px-4 mb-4">
+        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+          The Backlog
+          <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
+            ({backlogItems.length} items)
+          </span>
+        </h2>
+        <p>
+          Works that I own, but have not written about. Some I have never experienced at all!
+        </p>
+      </div>
+      <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
+        <div
+          class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
+        >
+          {backlogItems
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .map(item => {
+              return (
+                <SpineDisplay itemData={item} />
+              );
+            })}
+        </div>
+      </div>
+    </section>
+
+
   </div>
 </BaseLayout>
 
