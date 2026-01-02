@@ -5,20 +5,20 @@ import type { ExpandedMediaItem, PriorityCreatives } from './types.ts';
 export const mediaColors: Record<string, string> = {
   music: 'bg-blue-50 dark:bg-blue-900',
   game: 'bg-red-50 dark:bg-red-900',
-  film: 'bg-slate-100 dark:bg-yellow-900',
-  book: 'bg-green-50 dark:bg-green-900',
+  film: 'bg-slate-200 dark:bg-slate-900',
+  book: 'bg-emerald-50 dark:bg-emerald-900',
 };
 
 export function getMediaTypeBorder(type: string): string {
   switch (type) {
     case "music": 
-      return 'border-blue-300 dark:blue-red-400'; 
+      return 'border-blue-400 dark:border-blue-400'; 
     case "game": 
-      return 'border-red-300 dark:border-red-400';
+      return 'border-red-400 dark:border-red-400';
     case "film": 
-      return 'border-slate-400 dark:border-yellow-400';
+      return 'border-slate-400 dark:border-slate-400';
     case "book": 
-      return 'border-green-200 dark:border-green-400';
+      return 'border-emerald-400 dark:border-emerald-400';
   }
   return ""
 }
@@ -28,7 +28,7 @@ export function getMediaTypeBadge(type: string): string {
   const badges: Record<string, string> = {
     music: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
     game: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
-    film: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
+    film: 'bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-100',
     book: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
   };
   
@@ -42,7 +42,7 @@ export function getScoreColor(score: number): string {
   if (score == 10) return 'bg-blue-500 text-white';
   if (score >= 9) return 'bg-sky-500 text-white';
   if (score >= 8) return 'bg-teal-500 text-white';
-  if (score >= 7) return 'bg-green-500 text-white';
+  if (score >= 7) return 'bg-emerald-500 text-white';
   if (score >= 6) return 'bg-lime-500 text-white';
   if (score >= 5) return 'bg-yellow-500 text-white';
   if (score >= 4) return 'bg-orange-400 text-white';
