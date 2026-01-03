@@ -195,7 +195,7 @@ const approvalRate = allMedia.length > 0
 <script>
   function setupShelfSwitcher() {
     // Function to handle showing the correct shelf and updating button styles
-    function showShelf(shelfId) {
+    function showShelf(shelfId: string) {
       // 1. Hide all shelves
       document.querySelectorAll('[data-shelf-id]').forEach(el => {
         el.classList.add('hidden');

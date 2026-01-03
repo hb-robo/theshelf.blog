@@ -388,10 +388,10 @@ const mostHarshType = typeStats.reduce((prev, curr) =>
                   <div class="font-semibold text-gray-900 dark:text-gray-100 truncate">
                     {item.title}
                   </div>
-                  <div class="text-sm text-gray-600 dark:text-gray-400 capitalize">
+                  <div>
                     {formatCreativeLine(
-                        getPriorityCreatives(item).role, 
-                        getPriorityCreatives(item).names
+                        getPriorityCreatives(item)?.role, 
+                        getPriorityCreatives(item)?.names
                     )}
                   </div>
                 </div>

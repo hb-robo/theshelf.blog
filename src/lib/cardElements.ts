@@ -159,8 +159,8 @@ export function getPriorityCreatives(item: ExpandedMediaItem) : PriorityCreative
   return ret;
 }
 
-export function formatCreativeLine(role: string, names: string[]): string {
-  if (role === "") return "";
+export function formatCreativeLine(role: string | undefined, names: string[] | undefined): string {
+  if (role === "" || role === undefined || names === undefined) return "";
   
   let prefix = 'by';
     if (role == 'director' || role == 'developer') {
