@@ -30,7 +30,7 @@ const approvalRate = allMedia.length > 0
 
 <BaseLayout title="The Shelf - Made the Shelf" >
   <div
-    class="shelf-container min-h-screen bg-linear-to-b  bg-white dark:bg-black"
+    class="shelf-container min-h-screen bg-linear-to-b  bg-amber-50 dark:bg-black"
   >
     <!-- Header -->
     <header class="max-w-4xl mx-auto px-4 py-12">
@@ -39,181 +39,33 @@ const approvalRate = allMedia.length > 0
       </h1>
     </header>
 
-    <!-- View Toggle -->
-    <!-- <div class="max-w-4xl mx-auto px-4 mb-8">
-      <div class="flex items-center gap-4">
-        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
-          View:
-        </label>
-        <div class="flex gap-2">
-          <button 
-            id="view-mixed"
-            class="px-4 py-2 rounded-lg text-sm font-medium transition-colors
-                   bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
-          >
-            Mixed shelf
-          </button>
-          <button 
-            id="view-grouped"
-            class="px-4 py-2 rounded-lg text-sm font-medium transition-colors
-                   border border-gray-300 dark:border-gray-700 
-                   hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            By Media Type
-          </button>
+    <!-- Main Shelf -->
+    <section class="mt-8">
+      <div class="max-w-4xl mx-auto px-4 mb-4">
+        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+          The Shelf
+          <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
+            ({totalOnShelf} items)
+          </span>
+        </h2>
+        <p>
+          Works that were reviewed and earned their space.
+        </p>
+      </div>
+      <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
+        <div
+          class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
+        >
+          {shelfItems
+            .sort((a, b) => a.title.localeCompare(b.title))
+            .map(item => {
+              return (
+                <SpineDisplay itemData={item} />
+              );
+            })}
         </div>
       </div>
-    </div> -->
-
-    <!-- Grouped View -->
-<!-- 
-    <div id="grouped-view" class="space-y-12 hidden">
-      {byMediaType.music.length > 0 && (
-        <section>
-          <div class="max-w-4xl mx-auto px-4 mb-4">
-            <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-              Music
-              <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
-                ({byMediaType.music.length} {byMediaType.music.length === 1 ? 'album' : 'albums'})
-              </span>
-            </h2>
-          </div>
-          <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
-            <div
-              class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
-            >
-              {byMediaType.music.map(item => (
-                <SpineDisplay
-                  title={item.data.title}
-                  creator={item.data.artist}
-                  mediaType={item.data.mediaType}
-                  subtype={item.data.subtype}
-                  spineImage={item.data.spineImage}
-                  reviewSlug={item.slug}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {byMediaType.game.length > 0 && (
-        <section>
-          <div class="max-w-4xl mx-auto px-4 mb-4">
-            <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-              Games
-              <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
-                ({byMediaType.game.length} {byMediaType.game.length === 1 ? 'game' : 'games'})
-              </span>
-            </h2>
-          </div>
-          <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
-            <div
-              class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
-            >
-              {byMediaType.game.map(item => (
-                <SpineDisplay
-                  title={item.data.title}
-                  creator={item.data.developer}
-                  mediaType={item.data.mediaType}
-                  subtype={item.data.subtype}
-                  spineImage={item.data.spineImage}
-                  reviewSlug={item.slug}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {byMediaType.film.length > 0 && (
-        <section>
-          <div class="max-w-4xl mx-auto px-4 mb-4">
-            <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-              Films
-              <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
-                ({byMediaType.film.length} {byMediaType.film.length === 1 ? 'film' : 'films'})
-              </span>
-            </h2>
-          </div>
-          <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
-            <div
-              class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
-            >
-              {byMediaType.film.map(item => (
-                <SpineDisplay
-                  title={item.data.title}
-                  creator={item.data.director}
-                  mediaType={item.data.mediaType}
-                  subtype={item.data.subtype}
-                  spineImage={item.data.spineImage}
-                  reviewSlug={item.slug}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {byMediaType.book.length > 0 && (
-        <section>
-          <div class="max-w-4xl mx-auto px-4 mb-4">
-            <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-              Books
-              <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
-                ({byMediaType.book.length} {byMediaType.book.length === 1 ? 'book' : 'books'})
-              </span>
-            </h2>
-          </div>
-          <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
-            <div
-              class="shelf-scroll flex items-end gap-[2px] p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
-            >
-              {byMediaType.book.map(item => (
-                <SpineDisplay
-                  title={item.data.title}
-                  creator={item.data.author}
-                  mediaType={item.data.mediaType}
-                  subtype={item.data.subtype}
-                  spineImage={item.data.spineImage}
-                  reviewSlug={item.slug}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-    </div> -->
-
-    <!-- Mixed View (default) -->
-    <div id="mixed-view" >
-      <section>
-        <div class="max-w-4xl mx-auto px-4 mb-4">
-          <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-            The Shelf
-            <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
-              ({totalOnShelf} items)
-            </span>
-          </h2>
-          <p>
-            Works that were reviewed and earned their space.
-          </p>
-        </div>
-        <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
-          <div
-            class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
-          >
-            {shelfItems
-              .sort((a, b) => a.title.localeCompare(b.title))
-              .map(item => {
-                return (
-                  <SpineDisplay itemData={item} />
-                );
-              })}
-          </div>
-        </div>
-      </section>
-    </div>
+    </section>
 
     {totalOnShelf === 0 && (
       <div class="max-w-4xl mx-auto px-4 text-center py-16">
@@ -313,31 +165,3 @@ const approvalRate = allMedia.length > 0
     background: rgb(75 85 99);
   }
 </style>
-
-<script>
-  const groupedView = document.getElementById('grouped-view');
-  const mixedView = document.getElementById('mixed-view');
-  const groupedBtn = document.getElementById('view-grouped');
-  const mixedBtn = document.getElementById('view-mixed');
-
-  function showGrouped() {
-    groupedView?.classList.remove('hidden');
-    mixedView?.classList.add('hidden');
-    groupedBtn?.classList.add('bg-gray-900', 'dark:bg-gray-100', 'text-white', 'dark:text-gray-900');
-    groupedBtn?.classList.remove('border', 'border-gray-300', 'dark:border-gray-700', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
-    mixedBtn?.classList.remove('bg-gray-900', 'dark:bg-gray-100', 'text-white', 'dark:text-gray-900');
-    mixedBtn?.classList.add('border', 'border-gray-300', 'dark:border-gray-700', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
-  }
-
-  function showMixed() {
-    groupedView?.classList.add('hidden');
-    mixedView?.classList.remove('hidden');
-    mixedBtn?.classList.add('bg-gray-900', 'dark:bg-gray-100', 'text-white', 'dark:text-gray-900');
-    mixedBtn?.classList.remove('border', 'border-gray-300', 'dark:border-gray-700', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
-    groupedBtn?.classList.remove('bg-gray-900', 'dark:bg-gray-100', 'text-white', 'dark:text-gray-900');
-    groupedBtn?.classList.add('border', 'border-gray-300', 'dark:border-gray-700', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
-  }
-
-  groupedBtn?.addEventListener('click', showGrouped);
-  mixedBtn?.addEventListener('click', showMixed);
-</script>
