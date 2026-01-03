@@ -35,79 +35,139 @@ const enrichedMediaList = await Promise.all(mediaDetailsPromises);
 ---
 
 <article
-  class="relative border-2 border-gray-900 dark:border-gray-800
-                overflow-hidden hover:shadow-lg
-                dark:hover:shadow-gray-900/30 transition-shadow"
+  class="bg-slate-50 dark:bg-slate-800 border-2 border-yellow-800 dark:border-gray-800 rounded-lg overflow-hidden hover:shadow-lg dark:hover:shadow-gray-900/30 transition-shadow"
 >
   <div class="flex flex-col md:flex-row">
-    <!-- Left side: hero or collage -->
+    <!-- Image section: hero or collage -->
     {
       heroImage ? (
-        <div class="w-full md:w-48 md:min-w-48 flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
+        <div class="w-full md:w-80 md:min-w-80 flex items-center justify-center bg-amber-100 dark:bg-gray-900 p-2 border-b-2 md:border-b-0 md:border-r-2 border-yellow-800 dark:border-gray-800">
           <img
             src={heroImage}
             alt={`Cover art for ${title}`}
-            class="max-w-full max-h-48 object-contain"
+            class="max-w-full object-cover"
           />
         </div>
       ) : enrichedMediaList.length > 0 ? (
-        <div class="w-full md:w-48 md:min-w-48 p-2 bg-gray-50 dark:bg-gray-900 grid gap-1">
-          {/* First row (always up to 2 items) */}
-          <div class="grid grid-cols-2 gap-1 place-items-center">
-            {enrichedMediaList
-              .slice(0, 2)
-              .map(
-                (m) =>
-                  m.coverImage && (
+        <div class="w-full md:w-80 md:min-w-80 p-3 bg-amber-100 dark:bg-gray-900 border-b-2 md:border-b-0 md:border-r-2 border-yellow-800 dark:border-gray-800">
+          {/* Single item - centered */}
+          {enrichedMediaList.length === 1 && (
+            <div class="flex items-center justify-center h-full">
+              <img
+                src={enrichedMediaList[0].coverImage}
+                alt={enrichedMediaList[0].title}
+                class="max-h-48 w-auto object-contain"
+              />
+            </div>
+          )}
+
+          {/* Two items - side by side */}
+          {(enrichedMediaList.length === 2) && (
+            <div class="grid grid-cols-2 gap-2 h-full">
+              {enrichedMediaList.map((m) => (
+                <div class="flex items-center justify-center">
+                  <img
+                    src={m.coverImage}
+                    alt={m.title}
+                    class="max-h-44 w-auto object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Two items - side by side */}
+          {(enrichedMediaList.length === 4) && (
+            <div class="grid grid-cols-2 gap-2 h-full">
+              {enrichedMediaList.map((m) => (
+                <div class="flex items-center justify-center">
+                  <img
+                    src={m.coverImage}
+                    alt={m.title}
+                    class="max-h-22 w-auto object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+
+          {/* 4-6 items - 2x2 or 2x3 grid */}
+          {(enrichedMediaList.length === 3 || (enrichedMediaList.length >= 5 && enrichedMediaList.length <= 6)) && (
+            <div class="grid grid-cols-3 gap-2 h-full">
+              {enrichedMediaList.slice(0, 6).map((m) => (
+                <div class="flex items-center justify-center">
+                  <img
+                    src={m.coverImage}
+                    alt={m.title}
+                    class=" w-auto object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 7-9 items - 3x3 grid */}
+          {enrichedMediaList.length >= 7 && enrichedMediaList.length <= 9 && (
+            <div class="grid grid-cols-3 gap-1 h-full">
+              {enrichedMediaList.slice(0, 9).map((m) => (
+                <div class="flex items-center justify-center">
+                  <img
+                    src={m.coverImage}
+                    alt={m.title}
+                    class="max-h-16 w-auto object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 10+ items - 3x4 grid (max 12 shown) with overflow indicator */}
+          {enrichedMediaList.length >= 10 && (
+            <div class="relative h-full">
+              <div class="grid grid-cols-4 gap-1 h-full">
+                {enrichedMediaList.slice(0, 12).map((m, idx) => (
+                  <div class="flex items-center justify-center relative">
                     <img
                       src={m.coverImage}
                       alt={m.title}
-                      class={`max-h-48 w-auto object-contain mx-auto ${media.length === 1 ? "col-span-2" : ""}`}
+                      class="max-h-14 w-auto object-contain"
                     />
-                  )
-              )}
-          </div>
-
-          {/* Second row (if there are 3 or 4 items) */}
-          {media.length > 2 && (
-            <div
-              class={`grid grid-cols-${media.length === 3 ? "1" : "2"} gap-1 place-items-center`}
-            >
-              {enrichedMediaList
-                .slice(2, 4)
-                .map(
-                  (m) =>
-                    m.coverImage && (
-                      <img
-                        src={m.coverImage}
-                        alt={m.title}
-                        class="max-h-24 w-auto object-contain mx-auto"
-                      />
-                    )
-                )}
+                    {idx === 11 && enrichedMediaList.length > 12 && (
+                      <div class="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-bold text-lg">
+                        +{enrichedMediaList.length - 12}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
       ) : null
     }
 
-    <!-- Right side: everything that isn't the image -->
-    <div class="p-6 flex-1 flex flex-col">
-      <div class="flex flex-col md:flex-row gap-4 flex-1">
-        <!-- Title and excerpt -->
-        <div class="flex-1 flex flex-col gap-2">
-          <h3 class="text-xl font-bold font-serif">
+    <!-- Right side: content -->
+    <div class="p-5 flex flex-col justify-between w-full">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-1">
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-1">
             <a
               href={`/reviews/${itemData.slug}`}
-              class="hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+              class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
             >
               {title}
             </a>
           </h3>
 
+          <p class="text-gray-500 dark:text-gray-500 text-sm mb-2">
+            <time datetime={formattedDate}>{formattedDate}</time>
+            {media.length > 0 && ` • ${media.length} item${media.length !== 1 ? 's' : ''}`}
+          </p>
+
           {
             displayExcerpt && (
-              <p class="text-gray-600 dark:text-gray-400 line-clamp-2 text-sm">
+              <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
                 {displayExcerpt}
               </p>
             )
@@ -115,92 +175,74 @@ const enrichedMediaList = await Promise.all(mediaDetailsPromises);
         </div>
       </div>
 
-      <!-- Badges to indicate total number of reviewed items and their shelf status -->
-      {
-        media.length > 0 && (
-          <div class="flex flex-wrap gap-1 mt-4">
-            {madeCount > 0 && (
-              <div class="flex flex-wrap gap-1">
-                {Array(madeCount)
-                  .fill(0)
-                  .map(() => (
-                    <span class="w-5 h-5 text-green-600 dark:text-green-400">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        class="w-full h-full"
-                      >
-                        <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z" />
-                      </svg>
-                    </span>
-                  ))}
-              </div>
-            )}
-            {snoozeCount > 0 && (
-              <div class="flex flex-wrap gap-1">
-                {Array(snoozeCount)
-                  .fill(0)
-                  .map(() => (
-                    <span class="w-5 h-5 text-yellow-500 dark:text-yellow-400">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 32 32"
-                        class="w-full h-full"
-                      >
-                        <path
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"
-                        />
-                      </svg>
-                    </span>
-                  ))}
-              </div>
-            )}
-            {missedCount > 0 && (
-              <div class="flex flex-wrap gap-1">
-                {Array(missedCount)
-                  .fill(0)
-                  .map(() => (
-                    <span class="w-5 h-5 text-red-500 dark:text-red-400">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        class="w-full h-full"
-                      >
-                        <g fill="currentColor">
-                          <path d="M8.478 8.478a1 1 0 0 1 1.414 0l2.154 2.153l2.153-2.153a1 1 0 1 1 1.414 1.414l-2.153 2.154l2.153 2.153a1 1 0 0 1-1.414 1.414l-2.153-2.153l-2.154 2.153A1 1 0 0 1 8.478 14.2l2.153-2.153l-2.153-2.154a1 1 0 0 1 0-1.414" />
-                          <path
-                            fill-rule="evenodd"
-                            d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2M4 12a8 8 0 1 1 16 0a8 8 0 0 1-16 0"
-                            clip-rule="evenodd"
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  ))}
-              </div>
-            )}
-          </div>
-        )
-      }
-
-      <!-- Footer: pubDate and Read More link -->
+      <!-- Footer: status icons and read more -->
       <div
-        class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800 mt-4 pt-2"
+        class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-500 mt-4 pt-2"
       >
-        {formattedDate}
+        {
+          media.length > 0 && (
+            <div class="flex gap-2">
+              {madeCount > 0 && (
+                <span class="text-emerald-600 dark:text-emerald-300 inline-flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    class="w-5 h-5"
+                  >
+                    <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z" />
+                  </svg>
+                  {madeCount}
+                </span>
+              )}
+              {snoozeCount > 0 && (
+                <span class="text-yellow-500 dark:text-yellow-400 inline-flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 32 32"
+                    class="w-5 h-5"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"
+                    />
+                  </svg>
+                  {snoozeCount}
+                </span>
+              )}
+              {missedCount > 0 && (
+                <span class="text-red-500 dark:text-red-400 inline-flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    class="w-5 h-5"
+                  >
+                    <g fill="currentColor">
+                      <path d="M8.478 8.478a1 1 0 0 1 1.414 0l2.154 2.153l2.153-2.153a1 1 0 1 1 1.414 1.414l-2.153 2.154l2.153 2.153a1 1 0 0 1-1.414 1.414l-2.153-2.153l-2.154 2.153A1 1 0 0 1 8.478 14.2l2.153-2.153l-2.153-2.154a1 1 0 0 1 0-1.414" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2M4 12a8 8 0 1 1 16 0a8 8 0 0 1-16 0"
+                        clip-rule="evenodd"
+                      />
+                    </g>
+                  </svg>
+                  {missedCount}
+                </span>
+              )}
+            </div>
+          )
+        }
         <a
           href={`/reviews/${itemData.slug}`}
-          class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors font-medium"
+          class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors text-sm"
         >
-          Read more →
+          Read review →
         </a>
       </div>
     </div>

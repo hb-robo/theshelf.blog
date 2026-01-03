@@ -27,9 +27,9 @@ if (itemData.score) {
 ---
 
 <article
-  class={`bg-slate-50 media-item border-2 ${mediaBorder} rounded-lg overflow-hidden hover:shadow-lg dark:hover:shadow-gray-200/30 transition-shadow`}
+  class={`bg-slate-50 dark:bg-slate-800 media-item border-2 ${mediaBorder} rounded-lg overflow-hidden hover:shadow-lg dark:hover:shadow-gray-200/30 transition-shadow`}
 >
-  <div class="flex flex-col md:flex-row">
+  <div class="flex flex-row">
     {
       itemData.coverImage && (
         <div
@@ -44,12 +44,12 @@ if (itemData.score) {
       )
     }
 
-    <div class="p-5 flex w-full flex-col justify-between">
+    <div class="pt-3 pb-3 pl-4 pr-4 flex w-full flex-col justify-between">
       <div
         class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4"
       >
         <div class="flex-1">
-          <h3 class="text-lg font-bold mb-1">
+          <h3 class="text-xl font-bold mb-1">
             {
               itemData.articleSlug ? (
                 <a
@@ -64,7 +64,7 @@ if (itemData.score) {
             }
           </h3>
 
-          <div class="creatives-output mb-2">
+          <div class="creatives-output mb-2 text-lg">
             {rolesInOrder.length > 0 ? (
               <ul>
                 {rolesInOrder.map(role => (
@@ -78,7 +78,7 @@ if (itemData.score) {
             )}
           </div>
 
-          <p class="text-gray-500 dark:text-gray-500 text-xs">
+          <p class="text-gray-500 dark:text-gray-500 text-sm">
             {
               itemData.releaseDate && (
                 <span>
@@ -105,9 +105,9 @@ if (itemData.score) {
 
       <!-- MediaCard footer - release date, badges -->
       <div
-        class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800 mt-4 pt-2"
+        class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-500 pt-3"
       >
-        <div class="flex gap-2">
+        <div class="flex gap-2 h-8">
           {
             itemData.published && itemData.score && (
               <div
@@ -122,7 +122,7 @@ if (itemData.score) {
             itemData.published && itemData.result ? (
               <>
                 {itemData.result === "made-the-shelf" && (
-                  <span class="text-green-600 dark:text-green-300 inline-flex items-center gap-1">
+                  <span class="text-emerald-600 dark:text-emerald-300 inline-flex items-center gap-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -137,7 +137,7 @@ if (itemData.score) {
 
                 {itemData.result === "maybe-later" && (
                   <span class="text-yellow-500 dark:text-yellow-400 inline-flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32" class="w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32" class="w-5 h-5">
                       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"/>
                     </svg>
                     Deferred
@@ -173,7 +173,7 @@ if (itemData.score) {
         </div>
         {
           itemData.published && itemData.reviewDate && (
-            <p class="text-gray-500 dark:text-gray-500 text-xs">
+            <p class="text-gray-500 dark:text-gray-400 text-sm">
               <a href={`/reviews/${itemData.articleSlug}`}>Read review →</a>
             </p>
           )
