@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getScoreColor, getScoreLabel, getPriorityCreatives, formatCreativeLine } from '../../lib/cardElements';
+import MediaCard from '../../components/MediaCard.astro';
+
+// Static path generation
+export async function getStaticPaths() {
+  const reviews = await getCollection('reviews');
+  return reviews.map((review) => ({
+    params: { slug: review.slug },
+    props: { review },
+  }));
+}
+
+const { review } = Astro.props;
+const { Content } = await review.render();
+
+const priorityCreatives = getPriorityCreatives(itemData);
+const creator = formatCreativeLine(
+  priorityCreatives?.role, priorityCreatives?.names
+);
+
+const formattedDate = review.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const hasMultipleMedia = Array.isArray(review.data.media) && review.data.media.length > 0;
+---
+
+<BaseLayout title={`${review.data.title} - Made the Shelf`}>
+  <article class="max-w-3xl mx-auto px-4 py-12">
+    <!-- Header Section -->
+    <header class="mb-12">
+      <!-- Breadcrumb -->
+      <nav class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+        <a href="/" class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/reviews" class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">Reviews</a>
+        <span class="mx-2">/</span>
+        <span>{review.data.title}</span>
+      </nav>
+
+      <!-- Title & Creator -->
+      <h1 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight">
+        {review.data.title}
+      </h1>
+      {creator && (
+        <p class="text-xl text-gray-600 dark:text-gray-400 mb-4">
+          by {creator}
+        </p>
+      )}
+
+      <!-- Score & Date -->
+      <div class="flex flex-wrap items-center gap-6 text-sm text-gray-600 dark:text-gray-400">
+        {typeof review.data.score === 'number' && (
+          <div class="flex items-center gap-3">
+            <div class={`flex items-center justify-center w-16 h-16 rounded-lg font-bold text-2xl ${getScoreColor(review.data.score)}`}>
+              {review.data.score}
+            </div>
+            <div>
+              <div class="font-semibold text-gray-900 dark:text-gray-100">
+                {review.data.score}/10
+              </div>
+              <div class="text-sm">
+                {getScoreLabel(review.data.score)}
+              </div>
+            </div>
+          </div>
+        )}
+        <time datetime={review.data.date.toISOString()}>
+          {formattedDate}
+        </time>
+      </div>
+    </header>
+
+    <!-- Multi-Media Section -->
+    {hasMultipleMedia && (
+      <section class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
+        {review.data.media.map((m) => (
+          <MediaCard {...m} articleSlug={review.slug} reviewDate={review.data.date} published={review.data.published}/>
+        ))}
+      </section>
+    )}
+
+    <!-- Hero Image (if exists) -->
+    {review.data.heroImage && (
+      <div class="mb-12">
+        <img 
+          src={review.data.heroImage} 
+          alt={`Hero image for ${review.data.title}`}
+          class="w-full max-h-96 object-cover rounded-lg shadow-lg"
+        />
+      </div>
+    )}
+
+
+    <!-- Review Content -->
+    <article class="prose prose-lg dark:prose-invert max-w-none">
+      <Content />
+    </article>
+
+    <!-- Footer Actions -->
+    <footer class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+      <div class="flex flex-wrap gap-4 justify-between items-center">
+        <a 
+          href="/reviews"
+          class="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+          ← Back to Reviews
+        </a>
+        {review.data.onShelf && (
+          <a 
+            href="/shelf"
+            class="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+          >
+            View on Shelf →
+          </a>
+        )}
+      </div>
+    </footer>
+  </article>
+</BaseLayout>

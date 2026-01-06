@@ -1,0 +1,72 @@
+---
+// src/components/MediaResult.astro
+import {
+  mediaColors,
+  getScoreColor,
+  getMediaTypeBorder
+} from "../lib/cardElements.ts";
+import type { ExpandedMediaItem } from "../lib/types.ts";
+
+export interface Props {
+  itemData: ExpandedMediaItem;
+}
+
+const { itemData } = Astro.props;
+
+const mediaBorder = getMediaTypeBorder(itemData.mediaType);
+const mediaColor = mediaColors[itemData.mediaType];
+const scoreColor =
+  itemData.score ? getScoreColor(Number(itemData.score)) : null;
+---
+
+<aside
+  class={`my-8 bg-slate-100 dark:bg-slate-900 border-2 ${mediaBorder} rounded-lg p-4`}
+>
+  <div class="flex items-center gap-4">
+    {itemData.coverImage && (
+      <div
+        class={`w-20 h-20 flex items-center justify-center ${mediaColor} rounded-md`}
+      >
+        <img
+          src={itemData.coverImage}
+          alt=""
+          class="max-h-16 object-contain"
+        />
+      </div>
+    )}
+
+    <div class="flex-1">
+      <h3 class="font-semibold text-lg leading-tight">
+        {itemData.title}
+      </h3>
+
+      <div class="flex items-center gap-3 mt-2 text-sm">
+        {itemData.score && (
+          <span
+            class={`px-2 py-1 rounded-md font-bold ${scoreColor}`}
+          >
+            {itemData.score}/10
+          </span>
+        )}
+
+        {itemData.result === "made-the-shelf" && (
+          <span class="text-emerald-600 dark:text-emerald-300">
+            Made the shelf
+          </span>
+        )}
+
+        {itemData.result === "maybe-later" && (
+          <span class="text-yellow-500 dark:text-yellow-400">
+            Deferred
+          </span>
+        )}
+
+        {itemData.result === "no" && (
+          <span class="text-gray-500 dark:text-gray-400">
+            Passed on
+          </span>
+        )}
+      </div>
+    </div>
+  </div>
+</aside>

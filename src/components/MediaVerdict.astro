@@ -1,0 +1,28 @@
+---
+// src/components/MediaVerdict.astro
+export interface Props {
+  result: "made-the-shelf" | "maybe-later" | "no";
+  score?: number;        // optional, can show inline
+  compact?: boolean;     // optional styling flag
+}
+
+const { result, score, compact = false } = Astro.props;
+
+// Semantic colors
+const resultColors = {
+  "made-the-shelf": "text-emerald-600 dark:text-emerald-300",
+  "maybe-later": "text-yellow-500 dark:text-yellow-400",
+  "no": "text-gray-500 dark:text-gray-400"
+};
+
+const labels = {
+  "made-the-shelf": "Made the shelf",
+  "maybe-later": "Deferred",
+  "no": "Passed on"
+};
+---
+
+<span class={`inline-flex items-center gap-1 font-semibold ${resultColors[result]} ${compact ? "text-sm" : "text-base"}`}>
+  {labels[result]}
+  {score && <span class="ml-1">· {score}/10</span>}
+</span>

@@ -1,0 +1,62 @@
+---
+// src/components/MediaResultSummary.astro
+import { getScoreColor, getMediaById } from "../lib/cardElements.ts";
+
+export interface Props {
+  reviewMedia: Array<{
+    id: string;
+    score?: number;
+    result?: "made-the-shelf" | "maybe-later" | "no";
+  }>;
+}
+
+const { reviewMedia } = Astro.props;
+
+const mediaPromises = reviewMedia.map(async (item) => {
+    let mediaDetails = await getMediaById(item.id);
+    let combinedItem = {
+        ...mediaDetails,
+        ...item
+    }
+    return combinedItem
+});
+const media = await Promise.all(mediaPromises);
+
+// Group items by result for quick visual organization
+const grouped = {
+  "made-the-shelf": [],
+  "maybe-later": [],
+  "no": []
+};
+
+for (const item of media) {
+  grouped[item.result].push(item);
+}
+---
+
+<article class="bg-slate-50 dark:bg-slate-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden p-4">
+  <h2 class="text-xl font-bold mb-3">Review Summary</h2>
+
+  {["made-the-shelf","maybe-later","no"].map(resultType => (
+    grouped[resultType].length > 0 && (
+      <section class="mb-4">
+        <h3 class="font-semibold mb-2 capitalize">{resultType.replace(/-/g," ")}</h3>
+        <ul class="flex flex-wrap gap-3">
+          {grouped[resultType].map(item => (
+            <li class="flex flex-col items-center w-36 bg-white dark:bg-gray-800 p-2 rounded shadow-sm">
+              {item.coverImage && (
+                <img src={item.coverImage} alt={`Cover for ${item.title}`} class="w-24 h-24 object-contain mb-1" />
+              )}
+              <span class="font-medium text-center">{item.title}</span>
+              {item.score && (
+                <span class={`mt-1 px-2 py-0.5 rounded text-white text-sm ${getScoreColor(Number(item.score))}`}>
+                  {item.score}/10
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  ))}
+</article>
