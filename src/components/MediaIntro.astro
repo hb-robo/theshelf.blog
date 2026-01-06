@@ -1,0 +1,113 @@
+---
+// src/components/MediaCard.astro
+import {
+  mediaColors,
+  getScoreColor,
+  getMediaTypeBorder,
+  organizeCreatives,
+  formatCreativeLine
+} from "../lib/cardElements.ts";
+import type { ExpandedMediaItem } from "../lib/types.ts";
+
+export interface Props {
+  itemData: ExpandedMediaItem;
+}
+const { itemData } = Astro.props;
+
+const organized = organizeCreatives(itemData);
+const rolesInOrder = Object.keys(organized);
+
+const mediaBorder = getMediaTypeBorder(itemData.mediaType);
+const mediaColor = mediaColors[itemData.mediaType];
+let scoreColor;
+if (itemData.score) {
+  scoreColor = getScoreColor(itemData.score);
+}
+
+---
+
+<article
+  class={`not-prose bg-slate-50 dark:bg-slate-800 media-item border-2 ${mediaBorder} rounded-lg overflow-hidden mx-auto max-w-lg`}
+>
+  <div class="flex flex-col md:flex-row">
+    {
+      itemData.coverImage && (
+        <div
+          class={`flex md:w-3xs items-center justify-center p-4 md:p-3 ${mediaColor} border-b-2 md:border-b-0 md:border-r-2 ${mediaBorder}`}
+        >
+          <img
+            src={itemData.coverImage}
+            alt={`Cover art for ${itemData.title}`}
+            class="max-w-full object-contain"
+          />
+        </div>
+      )
+    }
+
+    <div class="pt-3 pb-3 pl-4 pr-4 flex flex-col justify-between">
+      <div
+        class="flex flex-col md:flex-row md:items-start md:justify-between gap-4"
+      >
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-1">
+            {
+              itemData.articleSlug ? (
+                <a
+                  href={`/reviews/${itemData.articleSlug}`}
+                  class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                >
+                  {itemData.title}
+                </a>
+              ) : (
+                itemData.title
+              )
+            }
+          </h3>
+
+          <div class="creatives-output mb-2 text-lg">
+            {rolesInOrder.length > 0 ? (
+              <ul>
+                {rolesInOrder.map(role => (
+                  <li class="text-gray-600 dark:text-gray-400 text-sm">
+                    {formatCreativeLine(role, organized[role])}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No creative information available.</p>
+            )}
+          </div>
+
+          
+          <p class="text-gray-500 dark:text-gray-500 text-sm flex md:flex-row">
+            {
+              itemData.releaseDate && (
+                <span>
+                  <time datetime={itemData.releaseDate}>
+                    {itemData.releaseDate}
+                  </time>
+                </span>
+              )
+            }
+            {
+              itemData.releaseDate && itemData.genre && (
+                <span class="mx-1 text-gray-500">
+                  •
+                </span>
+              )
+            }
+            {
+              itemData.genre && (
+                <span>
+                  {Array.isArray(itemData.genre)
+                    ? itemData.genre.join(", ")
+                    : itemData.genre}
+                </span>
+              )
+            }
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
