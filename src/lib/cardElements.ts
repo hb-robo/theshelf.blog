@@ -1,6 +1,7 @@
 // src/lib/cardElements.ts
 import { db, Media, eq } from 'astro:db';
 import type { ExpandedMediaItem, PriorityCreatives } from './types.ts';
+import { getMostRecentReviewForMedia } from './expandMediaItems.ts';
 
 export const mediaColors: Record<string, string> = {
   music: 'bg-blue-50 dark:bg-blue-900',
@@ -174,6 +175,35 @@ export function formatCreativeLine(role: string | undefined, names: string[] | u
 }
 
 
+export async function getMediaById(mediaId: string) {
+  const mediaItem = await db.select()
+    .from(Media)
+    .where(eq(Media.id, mediaId))
+    .get();
+
+  return mediaItem ?? null;
+ 
+}
+
+export async function getExpandedMediaById(mediaId: string): Promise<ExpandedMediaItem | null> {
+  const mediaItem = await db.select()
+    .from(Media)
+    .where(eq(Media.id, mediaId))
+    .get();
+
+  if(!mediaItem) return null;
+  
+  const reviewDetails = await getMostRecentReviewForMedia(mediaItem.id);
+
+  // Combine the database item with the review details
+  const combinedItem = {
+    ...mediaItem,
+    ...reviewDetails
+  };
+
+  return combinedItem as ExpandedMediaItem;
+ 
+}
 
 export async function getMediaCoverImage(mediaId: string): Promise<string | null> {
   const mediaItem = await db.select({ coverImage: Media.coverImage })
