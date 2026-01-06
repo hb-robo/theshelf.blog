@@ -12,7 +12,6 @@ const reviews = defineCollection({
     media: z.array(
       z.object({
         id: z.string(),
-        madeTheShelf: z.boolean().optional(),
         result: z.enum(['made-the-shelf', 'maybe-later', 'no']).optional(),
         score: z.number().optional(),
       })
