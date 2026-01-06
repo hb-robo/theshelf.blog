@@ -9,10 +9,8 @@ interface Props {
   bigNav?: boolean;
 }
 
-const { title, bigNav } = Astro.props;
-if (!bigNav) {
-	let bigNav = false;
-}
+const { title, bigNav = false } = Astro.props;
+
 ---
 
 <html lang="en">
