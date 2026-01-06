@@ -14,7 +14,7 @@ const { itemData } = Astro.props;
 
 const priorityCreatives = getPriorityCreatives(itemData);
 const creativesLine = formatCreativeLine(
-  priorityCreatives.role, priorityCreatives.names
+  priorityCreatives?.role, priorityCreatives?.names
 );
 
 // Get physical specifications
