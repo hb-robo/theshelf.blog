@@ -27,7 +27,7 @@ if (itemData.score) {
 ---
 
 <article
-  class={`not-prose bg-slate-50 dark:bg-slate-800 media-item border-2 ${mediaBorder} rounded-lg overflow-hidden mx-auto max-w-lg`}
+  class={`not-prose bg-slate-50 dark:bg-slate-800 media-item border-2 ${mediaBorder} rounded-lg overflow-hidden mx-auto max-w-xl`}
 >
   <div class="flex flex-col md:flex-row">
     {
@@ -38,13 +38,12 @@ if (itemData.score) {
           <img
             src={itemData.coverImage}
             alt={`Cover art for ${itemData.title}`}
-            class="max-w-full object-contain"
           />
         </div>
       )
     }
 
-    <div class="pt-3 pb-3 pl-4 pr-4 flex flex-col justify-between">
+    <div class="pt-3 pb-3 pl-4 pr-4 flex flex-col justify-center">
       <div
         class="flex flex-col md:flex-row md:items-start md:justify-between gap-4"
       >
