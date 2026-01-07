@@ -455,7 +455,6 @@
 - id: neo-twewy
   title: "NEO: The World Ends With You"
   releaseDate: 2021-07-27
-  # score: 
   shelfStatus: not-owned
   mediaType: game
   subtype: ps4
@@ -472,3 +471,62 @@
     - Action-RPG
   coverImage: /images/games/neo-twewy.png
   # spineImage: /images/games/spines/neo-twewy-spine.jpg
+
+- id: the-silent-patient
+  title: The Silent Patient
+  releaseDate: 2019-02-05
+  shelfStatus: not-owned
+  mediaType: book
+  subtype: novel
+  creatives:
+    - name: Alex Michaelides
+      role: author
+  genre:
+    - Psychological Thriller
+  coverImage: /images/books/the-silent-patient.jpg
+
+- id: verity
+  title: Verity
+  releaseDate: 2018-12-07
+  shelfStatus: not-owned
+  mediaType: book
+  subtype: novel
+  creatives:
+    - name: Colleen Hoover
+      role: author
+  genre:
+    - Psychological Thriller
+  coverImage: /images/books/verity.jpg
+
+- id: the-inmate
+  title: The Inmate
+  releaseDate: 2022-07-26
+  shelfStatus: not-owned
+  mediaType: book
+  subtype: novel
+  creatives:
+    - name: Frieda McFadden
+      role: author
+  genre:
+    - Psychological Thriller
+  coverImage: /images/books/the-inmate.jpg
+
+
+- id: chrono-trigger
+  title: Chrono Trigger
+  releaseDate: 1995-03-11
+  shelfStatus: not-owned
+  mediaType: game
+  subtype: snes
+  creatives:
+    - name: Squaresoft
+      role: developer
+    - name: Takashi Tokita
+      role: director
+    - name: Yoshinori Kitase
+      role: director
+    - name: Akihiko Matsui
+      role: director
+  genre:
+    - Turn-Based RPG
+  coverImage: /images/games/chrono-trigger.jpg
