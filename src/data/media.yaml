@@ -495,12 +495,12 @@
     - name: Colleen Hoover
       role: author
   genre:
-    - Psychological Thriller
+    - Romantic Thriller
   coverImage: /images/books/verity.jpg
 
-- id: the-inmate
-  title: The Inmate
-  releaseDate: 2022-07-26
+- id: the-teacher
+  title: The Teacher
+  releaseDate: 2024-02-06
   shelfStatus: not-owned
   mediaType: book
   subtype: novel
@@ -509,7 +509,7 @@
       role: author
   genre:
     - Psychological Thriller
-  coverImage: /images/books/the-inmate.jpg
+  coverImage: /images/books/the-teacher.jpg
 
 
 - id: chrono-trigger
