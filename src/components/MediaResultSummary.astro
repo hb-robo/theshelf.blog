@@ -26,7 +26,7 @@ const media = await Promise.all(mediaPromises);
 <article
   class="not-prose bg-slate-50 dark:bg-slate-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden p-4"
 >
-  <h2 class="text-xl font-bold mb-3">final thoughts</h2>
+  <h2 class="text-xl font-bold mb-3">shelf impact</h2>
 
   {
     media.length > 0 && (
@@ -38,7 +38,7 @@ const media = await Promise.all(mediaPromises);
                 <img
                   src={item.coverImage}
                   alt={`Cover for ${item.title}`}
-                  class="h-16 object-contain shrink-0 rounded bg-gray-100 dark:bg-gray-700"
+                  class="h-16 object-contain shrink-0  bg-gray-100 dark:bg-gray-700"
                 />
               ) : (
                 <div class="h-16 shrink-0 rounded bg-gray-200 dark:bg-gray-700" />
