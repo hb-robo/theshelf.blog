@@ -6,6 +6,7 @@ import {
   getMediaTitle,
   getMediaCoverImage,
 } from "../lib/cardElements.ts";
+import MediaPreviewGrid from "./MediaPreviewGrid.astro";
 
 export interface Props {
   itemData: CollectionEntry<"reviews">;
@@ -37,116 +38,14 @@ const enrichedMediaList = await Promise.all(mediaDetailsPromises);
 <article
   class="bg-slate-50 dark:bg-slate-800 border-2 border-yellow-800 dark:border-gray-800 rounded-lg overflow-hidden hover:shadow-lg dark:hover:shadow-gray-900/30 transition-shadow"
 >
-  <div class="flex flex-col md:flex-row">
+  <div class="flex flex-col md:flex-row max-h-48">
     <!-- Image section: hero or collage -->
-    {
-      heroImage ? (
-        <div class="w-full md:w-80 md:min-w-80 flex items-center justify-center bg-amber-100 dark:bg-gray-900 p-2 border-b-2 md:border-b-0 md:border-r-2 border-yellow-800 dark:border-gray-800">
-          <img
-            src={heroImage}
-            alt={`Cover art for ${title}`}
-            class="max-w-full object-cover"
-          />
-        </div>
-      ) : enrichedMediaList.length > 0 ? (
-        <div class="w-full md:w-80 md:min-w-80 p-3 bg-amber-100 dark:bg-gray-900 border-b-2 md:border-b-0 md:border-r-2 border-yellow-800 dark:border-gray-800">
-          {/* Single item - centered */}
-          {enrichedMediaList.length === 1 && (
-            <div class="flex items-center justify-center h-full">
-              <img
-                src={enrichedMediaList[0].coverImage}
-                alt={enrichedMediaList[0].title}
-                class="max-h-48 w-auto object-contain"
-              />
-            </div>
-          )}
-
-          {/* Two items - side by side */}
-          {(enrichedMediaList.length === 2) && (
-            <div class="grid grid-cols-2 gap-2 h-full">
-              {enrichedMediaList.map((m) => (
-                <div class="flex items-center justify-center">
-                  <img
-                    src={m.coverImage}
-                    alt={m.title}
-                    class="max-h-44 w-auto object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Two items - side by side */}
-          {(enrichedMediaList.length === 4) && (
-            <div class="grid grid-cols-2 gap-2 h-full">
-              {enrichedMediaList.map((m) => (
-                <div class="flex items-center justify-center">
-                  <img
-                    src={m.coverImage}
-                    alt={m.title}
-                    class="max-h-22 w-auto object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-
-          {/* 4-6 items - 2x2 or 2x3 grid */}
-          {(enrichedMediaList.length === 3 || (enrichedMediaList.length >= 5 && enrichedMediaList.length <= 6)) && (
-            <div class="grid grid-cols-3 gap-2 h-full">
-              {enrichedMediaList.slice(0, 6).map((m) => (
-                <div class="flex items-center justify-center">
-                  <img
-                    src={m.coverImage}
-                    alt={m.title}
-                    class=" w-auto object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* 7-9 items - 3x3 grid */}
-          {enrichedMediaList.length >= 7 && enrichedMediaList.length <= 9 && (
-            <div class="grid grid-cols-3 gap-1 h-full">
-              {enrichedMediaList.slice(0, 9).map((m) => (
-                <div class="flex items-center justify-center">
-                  <img
-                    src={m.coverImage}
-                    alt={m.title}
-                    class="max-h-16 w-auto object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* 10+ items - 3x4 grid (max 12 shown) with overflow indicator */}
-          {enrichedMediaList.length >= 10 && (
-            <div class="relative h-full">
-              <div class="grid grid-cols-4 gap-1 h-full">
-                {enrichedMediaList.slice(0, 12).map((m, idx) => (
-                  <div class="flex items-center justify-center relative">
-                    <img
-                      src={m.coverImage}
-                      alt={m.title}
-                      class="max-h-14 w-auto object-contain"
-                    />
-                    {idx === 11 && enrichedMediaList.length > 12 && (
-                      <div class="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-bold text-lg">
-                        +{enrichedMediaList.length - 12}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      ) : null
-    }
-
+    <MediaPreviewGrid
+      heroImage={heroImage}
+      heroAlt={`Cover art for ${title}`}
+      items={enrichedMediaList}
+      class="md:w-80 md:min-w-80 md:h-48 bg-amber-100 dark:bg-gray-900 p-2 border-b-2 md:border-b-0 md:border-r-2 border-yellow-800 dark:border-gray-800"
+    />
     <!-- Right side: content -->
     <div class="p-5 flex flex-col justify-between w-full">
       <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-1">

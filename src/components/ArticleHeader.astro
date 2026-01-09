@@ -1,0 +1,61 @@
+---
+// src/components/MediaCard.astro
+import type { CollectionEntry } from "astro:content";
+import MediaPreviewGrid from "../components/MediaPreviewGrid.astro"
+import { getMediaTitle, getMediaCoverImage } from "../lib/cardElements.ts";
+
+export interface Props {
+  review: CollectionEntry<"reviews">;
+}
+const { review } = Astro.props;
+const dateOptions = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+const formattedDate = review.data.date.toLocaleDateString("en-CA", dateOptions);
+
+const { title, date, published, media, heroImage, excerpt } = review.data;
+const mediaDetailsPromises = media.map(async (mediaItem) => {
+  const title = await getMediaTitle(mediaItem.id);
+  const coverImage = await getMediaCoverImage(mediaItem.id);
+
+  return {
+    ...mediaItem,
+    title: title || "Unknown Title",
+    coverImage: coverImage || "/placeholder.jpg",
+  };
+});
+const enrichedMediaList = await Promise.all(mediaDetailsPromises);
+---
+
+<section class={`not-prose overflow-hidden`}>
+  <!-- Back Navigation -->
+  <header
+    class="mb-8 border-b border-gray-200 dark:border-gray-800 flex justify-between font-mono"
+  >
+    <a
+      href="/"
+      class="my-3 font-medium transition-colors no-underline hover:underline text-sm"
+    >
+      ← back to home
+    </a>
+  </header>
+  <div
+    class="pb-8 border-b border-gray-200 dark:border-gray-800 flex flex-col gap-8 justify-between"
+  >
+
+    <h1 class="text-3xl font-bold">{review.data.title}</h1>
+    <div class="md:text-lg flex md:flex-row justify-between">
+      <p>by Hayden Brown</p>
+      <p>{formattedDate}</p>
+      <!-- TODO: reading time module -->
+    </div>
+    <MediaPreviewGrid
+      heroImage={heroImage}
+      heroAlt={`Cover art for ${title}`}
+      items={enrichedMediaList}
+      class="w-full p-3 border dark:border-gray-700 border-gray-300 bg-slate-50 dark:bg-slate-800"
+    />
+  </div>
+</section>

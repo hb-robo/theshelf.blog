@@ -1,0 +1,131 @@
+---
+export interface MediaPreviewItem {
+  coverImage: string;
+  title?: string;
+}
+
+export interface Props {
+  heroImage?: string;
+  heroAlt?: string;
+  items?: MediaPreviewItem[];
+  maxItems?: number;
+  class?: string;
+}
+
+const {
+  heroImage,
+  heroAlt = "",
+  items = [],
+  maxItems = 12,
+  class: className = "",
+} = Astro.props;
+
+const count = items.length;
+const visibleItems = items.slice(0, maxItems);
+const overflow = count - maxItems;
+---
+
+<div class={className}>
+  {heroImage ? (
+    <div class="flex items-center justify-center h-full">
+      <img
+        src={heroImage}
+        alt={heroAlt}
+        class="max-w-full max-h-full object-contain"
+      />
+    </div>
+  ) : count > 0 ? (
+    <>
+      {/* 1 item */}
+      {count === 1 && (
+        <div class="flex items-center justify-center h-full">
+          <img
+            src={items[0].coverImage}
+            alt={items[0].title}
+            class="max-h-full object-contain"
+          />
+        </div>
+      )}
+
+      {(count === 2) && (
+        <div class="grid grid-cols-2 gap-2 h-full">
+        {items.map((m) => (
+            <div class="flex items-center justify-center overflow-hidden">
+                <img
+                    src={m.coverImage}
+                    alt={m.title}
+                    class="max-w-full max-h-full object-contain"
+                />
+            </div>
+         ))}
+        </div>
+      )}
+
+      {(count === 4) && (
+        <div class="grid grid-cols-2 grid-rows-2 gap-2 h-full">
+        {items.map((m) => (
+            <div class="flex items-center justify-center">
+            <img
+                src={m.coverImage}
+                alt={m.title}
+                class="max-h-full max-w-full object-contain"
+            />
+            </div>
+        ))}
+        </div>
+      )}
+
+      {/* 3, 5–6 items */}
+      {(count === 3 || (count >= 5 && count <= 6)) && (
+        <div class="grid grid-cols-3 gap-2 h-full">
+          {items.slice(0, 6).map((m) => (
+            <div class="flex items-center justify-center">
+              <img
+                src={m.coverImage}
+                alt={m.title}
+                class="max-h-full object-contain"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 7–9 items */}
+      {count >= 7 && count <= 9 && (
+        <div class="grid grid-cols-3 gap-1 h-full">
+          {items.slice(0, 9).map((m) => (
+            <div class="flex items-center justify-center">
+              <img
+                src={m.coverImage}
+                alt={m.title}
+                class="max-h-full object-contain"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 10+ items */}
+      {count >= 10 && (
+        <div class="relative h-full">
+          <div class="grid grid-cols-4 gap-1 h-full">
+            {visibleItems.map((m, idx) => (
+              <div class="flex items-center justify-center relative">
+                <img
+                  src={m.coverImage}
+                  alt={m.title}
+                  class="max-h-full object-contain"
+                />
+                {idx === maxItems - 1 && overflow > 0 && (
+                  <div class="absolute inset-0 flex items-center justify-center font-bold text-lg">
+                    +{overflow}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  ) : null}
+</div>
