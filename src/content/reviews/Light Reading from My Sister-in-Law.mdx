@@ -8,10 +8,12 @@ heroImage: ""
 media:
     - id: "the-silent-patient"
       result: "no"
-
+      score: 5.5
     - id: "verity"
       result: "no"
+      score: 3
     - id: "the-teacher"
+      score: 2
       result: "no"
 ---
 
@@ -21,19 +23,17 @@ import MediaResult from "../../components/MediaResult.astro";
 import MediaVerdict from "../../components/MediaVerdict.astro"
 import { getExpandedMediaById } from "../../lib/cardElements.ts";
 
-# Light reading from my sister-in-law
-
 I'm 29 years old and I barely read. That's pretty much the reality.
 
 It wasn't always like this - actually, it couldn't be farther from how I grew up. I just sat through an embarrassing holiday dinner wherein my family gushed about how early I could read, how I read to other kids my age, how I couldn't be found without a book in my hands, etc., in an onslaught of verbal cheek-pinching. They remember it fondly and still envision reading as a core part of my identity.
 
 High school lit classes, video games, and the advent of smartphones, in some order, probably led to the end of that. STEM education in college didn't exactly nurture the habit, either - though I did get a little Chomsky in automata theory, which was a nice surprise.
 
-I missed reading as I fell out of love with it, but in a shallower sense: I didn't want to read as much as I wanted to be well-read. To be *seen* like that. It was an ugly feeling. It represented some out-of-reach intellectual prestige I saw across the internet in the late 00s and early 10s, like I was living in the bar scene from  *Good Will Hunting* or something.
+I missed reading as I fell out of love with it, but in a shallower sense: I didn't want to read as much as I wanted to be well-read. To be *seen* like that. It was an ugly feeling, representing some out-of-reach intellectual prestige I saw across the internet in the late '00s and early '10s. It was one of many ways my self-worth became externalized by social media, caring less about my interests in and of themselves, and more about receiving that suddenly-measurable public approval.
 
-In my defense, pre-TikTok social media was basically all text. Over my terminally online era (2013-2022), I was probably reading more words per day on socials than most people in human history got to parse through in their life. A lot of which was inane or unintelligible, sure, but like they say in sports scouting, getting reps is the most important thing. I guess I can claim to be well-read in some postmodern respect, but not a "reader." Strange times.
+There was one benefit to living through that paradigm shift, though: pre-TikTok social media was basically all text. Over my terminally online era (2008-2022), I was probably reading more words per day on socials than most people in human history got to parse through in their life. A lot of which was inane or unintelligible, sure, but like they say in sports scouting, getting reps is the most important thing. I guess I can claim to be well-read in some postmodern respect, but not a "reader." Strange times.
 
-Still, there's only so many times you can stomach scrolling through a debate about, say, *Das Kapital* before you have to just read the thing yourself. Without the work of doing so, it's easy to wonder how much you really know anything. Did you just internalize a constellation of other people's interpretations that you hope are true? Is living in a self-constructed ideological plane worth the anxiety of not knowing your own foundations? Your own values?
+Still, there's only so many times you can stomach scrolling through a debate about, say, *Das Kapital* before you have to just read the thing yourself. Without the work of doing so, it's easy to wonder how much you really know anything. Did you just internalize a constellation of other people's interpretations that you hope are true? Is living in a perfectly curated emotional plane worth the anxiety of not truly knowing the foundations of your belief systems? Maybe even your values?
 
 I can't live like that, so I'm back in the business of flipping pages.
 
@@ -41,21 +41,63 @@ I can't live like that, so I'm back in the business of flipping pages.
 
 To reform the habit, I decided that in 2026 I would read anything and everything until it felt normal again. I would also try for paper books, to cut down on screen time before bed (and to potentially slot on The Shelf). My fiancee keeps up with newer acclaimed releases, but always digitally lends them, so she couldn't offer any in hand.
 
-The day after Christmas, I was errantly declaring this plan aloud at her parents' place when my sister-in-law pulled out a huge wicker basket of finished books. She and their mother are voracious readers - they clean up dozens of books a year each, often swapping the finished ones to the other. The secret to their prolificity is that they know what they like - romance and true crime thrillers - and they don't care if it's good. 
+The day after Christmas, I was errantly declaring this plan aloud at her parents' place when my sister-in-law pulled out a huge wicker basket of finished books. She and their mother are voracious readers - they clean up dozens of books a year each, often swapping the finished ones to the other. The secret to their prolificity is that they know what they like - romance and true crime thrillers - and they don't care if it's good. It dawned on me that I shouldn't care either.
 
-I wasn't brave enough to go for any smutty stuff this time, but I asked my SIL to pick out a few of her favorite thrillers for me. After about 5 minutes of deliberating "hm"s and "well..."s, she landed on three books. If I was going to be serious about my plans, I had to go in with an open mind and see them through. 
+I'd gotten so picky with music, games, and films that I hadn't noticed my own preconceived aversion to mainstream adult lit, even though I have no experience with it. And more to the point, my foundation in lit is from my adolescence, so the overwhelming majority of the books I've read in my life are young adult fiction. *Maximum Ride*, *Percy Jackson*, *The Hunger Games*, *Eragon*, *Shadow Children*, *Animorphs*, *Hitchhiker's Guide*, *Tunnels*, *City of Embers*, *Narnia*, *Inkheart*, *Series of Unfortunate Events*, *Hugo Cabret*, *Hatchet*, *The Giver*, *Peter and the Starcatchers*... and yes, the wizard one. So who knows, maybe they inform my preferences more than I realize.
+
+I wasn't brave enough to go for any smutty stuff this time, but I asked my SIL to pick out a few of her favorite thrillers for me. After about 5 minutes of deliberating "hm"s and "well..."s, she landed on three books. If I was going to be serious about my plans, I had to go in with an open mind and see them through.
 
 ---
 
 <MediaIntro itemData={await getExpandedMediaById('the-silent-patient')}/>
 
+The first one I cracked open was the one that grabbed me most from the back cover. 
+
+*The Silent Patient* is quite bleak, following a troubled
+
+Being inside the head of Theo is not a pleasant experience. He views the entire world in a psychotherapy lens and is constantly diagnosing himself and others. 
+
+He also has a pretty deep inferiority complex about his own neurodivergence, including unexplained daddy issues and fear of abandonment. A metaphor about his cigarette habit persists throughout - it's professionally frowned upon as it gives ward patients an inkling of distrust to see addiction present in their caretaker. It represents the "stink" of having some sort of mental issues - while he hides the habit (and his "nature") from his coworkers and wife, people still pick up on the residual odors.
+
+This is a surprisingly simple, possibly dangerous view of mental health, one made even more surprising by the reveal that author Alex Michaelides was himself a psychotherapy student and resident at the time of the book's authorship. While people are entitled to portray all manners of beliefs through fiction - and, in my opinion, don't have to literally challenge the belief system within the work itself to distance themselves from it - the grounded, technical language informed by the real world experience and distinct lack of tonal elements hinting at uncertainty result in a matter-of-fact delivery to Theo's belief system. I'm not sure how to feel about building a sense of authority and realism within the work to posit those ideas.
+
+Still, there remains a defense to this: Theo's overconfidence in his abilities as a psychotherapist gives the reader a feeling of unease. He's cold, and in his head he is consistently brutal to strangers, calling them monsters and slathering diagnoses on them within minutes of introductions - both obviously unprofessional.
+
+
+
+
 ---
 
 <MediaIntro itemData={await getExpandedMediaById('verity')}/>
 
+Simple language has a purpose when it can deliver an interesting world or message for the reader to consider. Without either, it collapses the work onto itself.
+
+There are many classic novels that revolve around getting a little creeped out in a house, but they generally use more evocative, poetic language and explore the complex emotions of the inhabitants with more rigor than panting against a shut door over and over again.
+
+
+The fatal blow of *Verity* is its ending, which throws a last-minute wrench that appears to contradict the perceived experience of the entire novel, asking the reader to essentially pick which version of events they'd like to believe. This two-realities approach is weak on a craft level, since the writer can now comfortably choose not to resolve any of the myriad clues to the "true" ending; breadcrumbs supporting both theories can be placed throughout, and readers can join brigades of "Team Letter" and "Team Manuscript" online, boosting algorithm engagement and juicing sales numbers. It's like a call to action to post about the book.
+
+ Judging by the number of social media groups in the Thank You section of the novel, it's not too farfetched 
+
 ---
 
 <MediaIntro itemData={await getExpandedMediaById('the-teacher')}/>
+
+I admit, *The Teacher* had less of a chance than the other two books here. Due its placement as the last book read, it had more time sitting on the bookshelf to capture my attention. I ended up breaking one of my cardinal rules of art consumption and checked out the general online reception.
+
+In reality, I was searching for confirmation bias that I had chosen the best of the many Frieda McFadden thrillers (all named "The [Noun]") sitting in the SIL's wicker basket. What I learned ultimately affected my enjoyment of the novel for the worse, and opened my eyes to something horrific that I hadn't considered in this return to reading.
+
+McFadden is currently under water for a recent nosedive in the quality of her work, and an inhuman uptick in the pace of their release. As of writing, she's released 3 books in the last 6 months, an output she claims to owe to a large backlog of outlines. As someone who's enjoyed the work of James Patterson in the past, an author notable for having a transparent workflow of outlining stories for other authors to finish, this didn't set off any alarm bells at first. She was a best-selling author, so maybe they all do this - but she denies the existence of coauthors.
+
+Worse still, McFadden has *also* been accused of conceptual plagiarism, calling into question what "backlog" of outlines she is referring to. The one that really caught my eye was a novel called *The Wife Upstairs*, a story that sounds egregiously similar to the aforementioned *Verity*. Direct parallels of other McFadden novels were similarly drawn to best sellers, often her contemporaries, of whom she is likely to have some shared readership. She's also, curiously, a practicing physician on top of her writing career.
+
+Putting this all together, I couldn't put the image out of my head: an author who made a career off of theft and could possibly be generating newer work with AI.
+
+The last time I had made reading a serious hobby, large language models were but a twinkle in the eyes of machine learning PhDs. I was made very uncomfortable by the distinct possibility that written works released since 2023 may not actually be written at all. After much deliberation, I decided I was still going to go ahead and read *The Teacher.* It wouldn't be the first time I'd seen AI accusations against artists without ironclad evidence.
+
+---
+
+I read the first twenty-eight chapters of *The Teacher* over about 90 minutes in a local coffee shop.
 
 ---
 
