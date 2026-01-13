@@ -1,21 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
+import * as aboutContent from '../data/about.md';
+const { Content, frontmatter } = aboutContent;
 ---
-
-<BaseLayout title="Why the Shelf?">
-    <div class="flex items-center justify-center mx-auto h-full">
-		<h1 class="">about placeholder</h1>
-		<p>The complete scale with reflective symmetry:
-			1 - Actively repulsive or hostile. Regret experiencing it. The work fails on a fundamental ethical or experiential level.
-			2 - Incompetent to the point of frustration or tedium. Fails at basic execution. May be interesting as a curiosity, but the experience is net negative.
-			3 - Incompetent but has ideas or moments, OR was competent but retroactively soured. The failure/souring outweighs any positives.
-			4 - Incompetent execution with considerable merit in concept/ambition, OR competent but fundamentally uninteresting. Net slightly negative but not a waste.
-			5 - Competent and unremarkable. Positives and negatives balance out. Baseline—it exists and does its job.
-			6 - Competent with notable positives, but clear flaws hold it back. Net positive and engaging, but nothing special.
-			7 - Compelling. Holds attention consistently with clear creative vision, but has identifiable weaknesses or unrealized potential.
-			8 - Excellent with impact. Emotionally resonant, structurally sound, leaves a lasting impression. Minor flaws don't diminish the experience.
-			9 - Masterful. Everything serves the vision. Deeply affecting with execution that feels inevitable. May lack the final transcendent push.
-			10 - Transcendent. Shifts perspective or creates an experience that feels unrepeatable. Experiential factor exceeds structural perfection.
-		</p>
-	</div>
+<BaseLayout title={frontmatter.title}>
+	<Content />
 </BaseLayout>
