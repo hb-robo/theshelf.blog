@@ -530,3 +530,120 @@
   genre:
     - Turn-Based RPG
   coverImage: /images/games/chrono-trigger.jpg
+
+- id: its-a-wonderful-life
+  title: "It's a Wonderful Life"
+  releaseDate: 1946-12-20
+  shelfStatus: not-owned
+  mediaType: film
+  creatives:
+    - name: Frank Capra
+      role: director
+  genre:
+    - Christmas
+    - Drama
+  coverImage: 
+
+- id: shop-around-the-corner
+  title: The Shop Around the Corner
+  releaseDate: 1940-01-12
+  shelfStatus: not-owned
+  mediaType: film
+  creatives:
+    - name: Ernst Lubitsch
+      role: director
+  genre:
+    - Romantic Comedy
+    - Christmas
+  coverImage: 
+
+- id: pluribus-s1
+  title: Pluribus, Season 1
+  releaseDate: 2025-11-07
+  shelfStatus: not-owned
+  mediaType: film
+  subtype: series
+  creatives:
+    - name: Vince Gilligan
+      role: director
+  genre:
+    - Science Fiction
+    - Post-Apocalypse
+  coverImage: 
+
+- id: i-love-la-s1
+  title: I Love L.A., Season 1
+  releaseDate: 2025-11-02
+  shelfStatus: not-owned
+  mediaType: film
+  subtype: series
+  creatives:
+    - name: Rachel Sennott
+      role: director
+  genre:
+    - Comedy
+  coverImage: 
+
+- id: march-of-the-wooden-soldiers
+  title: March of the Wooden Soldiers
+  releaseDate: 1934-11-30
+  shelfStatus: not-owned
+  mediaType: film
+  creatives:
+    - name: Gus Meins
+      role: director
+    - name: Charles Rogers
+      role: director
+  genre:
+    - Musical
+    - Fantasy
+  coverImage: 
+
+- id: knives-out-3
+  title: "Wake Up Dead Man"
+  releaseDate: 2025-10-08
+  shelfStatus: not-owned
+  mediaType: film
+  creatives:
+    - name: Rian Johnson
+      role: director
+  genre:
+    - Whodunnit, Dark Comedy
+  coverImage: 
+
+- id: marty-supreme
+  title: Marty Supreme
+  releaseDate: 2025-12-25
+  shelfStatus: not-owned
+  mediaType: film
+  creatives:
+    - name: Josh Safdie
+      role: director
+  genre:
+    - Sports
+    - Drama
+  coverImage: 
+
+- id: resurrection-2025
+  title: Resurrection
+  releaseDate: 
+  shelfStatus: not-owned
+  mediaType: film
+  creatives:
+    - name: Bi Gan
+      role: director
+  genre:
+    - ?????
+  coverImage: 
+
+- id: die-hard-2
+  title: Die Hard 2
+  releaseDate: 1990-07-04
+  shelfStatus: not-owned
+  mediaType: film
+  creatives:
+    - name: Renny Harlin
+      role: director
+  genre:
+    - Action
+  coverImage: 
