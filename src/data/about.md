@@ -4,15 +4,33 @@
 
 # welcome to theshelf.blog!
 
-This is a media criticism project
+This is a media criticism project that centers around the idea of what books, films, games, and albums I allow to live on a real-life shelf in my apartment. The bar for entry is therefore relative to the amount of open space at a given time, and decisions will have to be made when space gets tight.
 
 ## project goals and philosophy
 
+Most of us have to be judicious with physical space in our homes today, and so many readers of this blog may have unwittingly engaged in a similar premise of deciding what deserves to stick around. I think it's a natural process that is sort of the basic "work" of consumers.
+
 ### the value of physical media
+
+The natural question that arises from such a predicament of physical space is "why own anything physically at all?" Most art forms can be totally consumed digitally, and the four media types covered on this site have had their entire industries reorient towards digital consumers.
+
+I felt similarly until "Capcomgate" in early 2024, wherein games I'd already purchased on Steam to play on my Deck were retrofitted with DRM that destroyed Proton compatibility, rendering them useless to me. It dawned on me then that I was sick of this shit.
+
+I disliked movies teleporting around a carousel of streaming platforms. I disliked being forced into unwanted, sometimes destructive remasters on Spotify. I disliked that Amazon could censor a novel you'd already purchased without your permission. In short, I just disliked the powerlessness that came with digital goods. The convenience it promised no longer felt valuable.
+
+My fiancee also sold me on the idea of owning things you love. Our office room is filled floor-to-ceiling with posters, figurines, albums, books, photocards, and memorabilia from our trips. It's a whirlwind of pink and black, and it's been a great joy to her to fill it over the years. She then reaps the benefits of this labor each day, farming small joy each day as she enters the space to clock in or start a personal project.
+
+We often talk about the idea of *shibuya-kei*, which we interpret as self-expression through curation. With intention and care, you can define yourself in little ways and physically live within a space that reflects that definition back upon you. It is a form of self-affirmation that arises from employing your agency.
+
+Digital media is one way in which this becomes harder, or even impossible.  Works that we love trigger strong reactions of wonder, or joy, or empathy, or maybe some more complicated emotions. Having a physical reminder of that experience builds emotional webbing from you to the work, establishing a fulcrum from which you can more confidently further explore the new and unknown. 
+
+And finally, it's a signal that can be silently shared to guests and onlookers, inviting connections to be made. It externalizes a value system of sorts, and in aggregate, can offer a negative-space portrait of a person. Digital consumption offers no outstretched hand to reality, it is solitary and ethereal.
 
 ### separate signal from noise
 
 ## about the author
+
+My name is 
 
 ### my writing process
 
