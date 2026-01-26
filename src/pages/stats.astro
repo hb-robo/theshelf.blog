@@ -52,11 +52,11 @@ const approvalRate = reviewed > 0 ? Math.round((onShelf / reviewed) * 100) : 0;
 
 // Media type breakdown
 const byType = {
-  music: allMedia.filter(m => m.mediaType === 'music'),
-  game: allMedia.filter(m => m.mediaType === 'game'),
   film: allMedia.filter(m => m.mediaType === 'film'),
+  music: allMedia.filter(m => m.mediaType === 'music'),
   book: allMedia.filter(m => m.mediaType === 'book'),
-};
+  game: allMedia.filter(m => m.mediaType === 'game'),
+ };
 
 const typeStats = Object.entries(byType).map(([type, items]) => {
   const reviewedItems = items.filter(m => m.published);
