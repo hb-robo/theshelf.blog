@@ -4,5 +4,7 @@ import * as aboutContent from '../data/about.md';
 const { Content, frontmatter } = aboutContent;
 ---
 <BaseLayout title={frontmatter.title}>
+  <article class="mx-auto max-w-2xl px-4 py-8 prose dark:prose-invert">
 	<Content />
+  </article>
 </BaseLayout>
