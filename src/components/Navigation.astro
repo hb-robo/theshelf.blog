@@ -3,6 +3,15 @@ export interface Props {
   big?: boolean;
 }
 const { big = false } = Astro.props;
+const path = Astro.url.pathname;
+function isActive(href: string) {
+  return href === '/' ? path === '/' : path.startsWith(href);
+}
+function linkClass(href: string) {
+  return isActive(href)
+    ? 'text-zinc-900 transition-colors'
+    : 'text-zinc-500 hover:text-zinc-900 transition-colors';
+}
 ---
 
 <nav class="font-mono">
@@ -14,14 +23,14 @@ const { big = false } = Astro.props;
       </a>
 
       <div class="hidden md:flex gap-6 text-sm font-mono">
-        <a href="/reviews" class="text-zinc-500 hover:text-zinc-900 transition-colors">reviews</a>
-        <a href="/shelf" class="text-zinc-500 hover:text-zinc-900 transition-colors">the shelf</a>
-        <a href="/media" class="text-zinc-500 hover:text-zinc-900 transition-colors">media</a>
-        <a href="/stats" class="text-zinc-500 hover:text-zinc-900 transition-colors">stats</a>
-        <a href="/about" class="text-zinc-500 hover:text-zinc-900 transition-colors">about</a>
+        <a href="/reviews" class={linkClass('/reviews')}>reviews</a>
+        <a href="/shelf" class={linkClass('/shelf')}>the shelf</a>
+        <a href="/media" class={linkClass('/media')}>media</a>
+        <a href="/stats" class={linkClass('/stats')}>stats</a>
+        <a href="/about" class={linkClass('/about')}>about</a>
       </div>
 
-      <button id="menu-btn" class="md:hidden text-zinc-900">
+      <button id="menu-btn" class="md:hidden text-zinc-900" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
@@ -29,11 +38,11 @@ const { big = false } = Astro.props;
     </div>
 
     <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 space-y-2 text-sm">
-      <a href="/reviews" class="block py-2 text-zinc-500 hover:text-zinc-900 transition-colors">reviews</a>
-      <a href="/shelf" class="block py-2 text-zinc-500 hover:text-zinc-900 transition-colors">the shelf</a>
-      <a href="/media" class="block py-2 text-zinc-500 hover:text-zinc-900 transition-colors">media</a>
-      <a href="/stats" class="block py-2 text-zinc-500 hover:text-zinc-900 transition-colors">stats</a>
-      <a href="/about" class="block py-2 text-zinc-500 hover:text-zinc-900 transition-colors">about</a>
+      <a href="/reviews" class={`block py-2 ${linkClass('/reviews')}`}>reviews</a>
+      <a href="/shelf" class={`block py-2 ${linkClass('/shelf')}`}>the shelf</a>
+      <a href="/media" class={`block py-2 ${linkClass('/media')}`}>media</a>
+      <a href="/stats" class={`block py-2 ${linkClass('/stats')}`}>stats</a>
+      <a href="/about" class={`block py-2 ${linkClass('/about')}`}>about</a>
     </div>
   </div>
 </nav>
@@ -42,6 +51,8 @@ const { big = false } = Astro.props;
   const mobileMenu = document.getElementById('mobile-menu');
 
   menuBtn?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
+    const isOpen = mobileMenu?.classList.toggle('hidden') === false;
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+    menuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
   });
 </script>
