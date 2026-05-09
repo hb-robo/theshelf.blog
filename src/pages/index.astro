@@ -22,7 +22,7 @@ const stripItems = publishedMedia.slice().sort((a, b) => a.title.localeCompare(b
 const totalReviews: number = publishedReviews.length;
 const totalMedia: number = publishedMedia.length;
 const totalOnShelf: number = publishedMedia.filter(
-  (m) => m.result === 'made-the-shelf'
+  (m) => m.result === 'shelved'
 ).length;
 const approvalRate =
   totalMedia > 0 ? Math.round((totalOnShelf / totalMedia) * 100) : 0;

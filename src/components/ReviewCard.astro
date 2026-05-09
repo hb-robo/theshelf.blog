@@ -11,8 +11,8 @@ const { itemData } = Astro.props;
 const { title, date, published, media, heroImage, excerpt } = itemData.data;
 const formattedDate = date.toLocaleDateString("fr-CA");
 
-const madeCount = media.filter((m) => m.result == "made-the-shelf").length;
-const snoozeCount = media.filter((m) => m.result == "maybe-later").length;
+const madeCount = media.filter((m) => m.result == "shelved").length;
+const snoozeCount = media.filter((m) => m.result == "deferred").length;
 const totalCount = media.length;
 const missedCount = totalCount - madeCount - snoozeCount;
 

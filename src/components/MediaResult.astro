@@ -18,8 +18,8 @@ const scoreColor = itemData.score ? getScoreColor(Number(itemData.score)) : null
         {itemData.score}
       </span>
     )}
-    {itemData.result === "made-the-shelf" && <span class="font-mono text-sm text-emerald-600">shelved</span>}
-    {itemData.result === "maybe-later" && <span class="font-mono text-sm text-yellow-500">deferred</span>}
-    {itemData.result === "no" && <span class="font-mono text-sm text-zinc-400">passed on</span>}
+    {itemData.result === "shelved" && <span class="font-mono text-sm text-emerald-600">shelved</span>}
+    {itemData.result === "deferred" && <span class="font-mono text-sm text-yellow-500">deferred</span>}
+    {itemData.result === "passed" && <span class="font-mono text-sm text-zinc-400">passed on</span>}
   </div>
 </div>

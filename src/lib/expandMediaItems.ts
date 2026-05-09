@@ -5,7 +5,7 @@ import type { ExpandedMediaItem } from './types.ts';
 interface ReviewMediaItemFlat {
   id: string;
   score?: number | null;
-  result?: 'made-the-shelf' | 'maybe-later' | 'no';
+  result?: 'shelved' | 'deferred' | 'passed';
   published?: boolean;
   reviewDate: Date;
   articleSlug: string;

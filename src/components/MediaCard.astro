@@ -119,7 +119,7 @@ const mediaColor = mediaColors[itemData.mediaType];
           {
             itemData.published && itemData.result ? (
               <>
-                {itemData.result === "made-the-shelf" && (
+                {itemData.result === "shelved" && (
                   <span class="text-emerald-600 inline-flex items-center gap-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +133,7 @@ const mediaColor = mediaColors[itemData.mediaType];
                   </span>
                 )}
 
-                {itemData.result === "maybe-later" && (
+                {itemData.result === "deferred" && (
                   <span class="text-yellow-500 inline-flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32" class="w-5 h-5">
                       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"/>
@@ -142,7 +142,7 @@ const mediaColor = mediaColors[itemData.mediaType];
                   </span>
                 )}
 
-                {itemData.result === "no" && (
+                {itemData.result === "passed" && (
                   <span class="text-zinc-400 inline-flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
                       <g fill="currentColor">

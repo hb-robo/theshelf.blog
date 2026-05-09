@@ -1,24 +1,24 @@
 ---
-// src/components/MediaVerdict.astro
+type Result = "shelved" | "deferred" | "passed";
+
 export interface Props {
-  result: "made-the-shelf" | "maybe-later" | "no";
-  score?: number;        // optional, can show inline
-  compact?: boolean;     // optional styling flag
+  result: Result;
+  score?: number;
+  compact?: boolean;
 }
 
-const { result, score, compact = false } = Astro.props;
+const { result, score, compact = false } = Astro.props as Props;
 
-// Semantic colors
-const resultColors = {
-  "made-the-shelf": "text-emerald-600",
-  "maybe-later": "text-yellow-500",
-  "no": "text-zinc-400"
+const resultColors: Record<Result, string> = {
+  "shelved": "text-emerald-600",
+  "deferred": "text-yellow-500",
+  "passed": "text-zinc-400"
 };
 
-const labels = {
-  "made-the-shelf": "Made the shelf",
-  "maybe-later": "Deferred",
-  "no": "Passed on"
+const labels: Record<Result, string> = {
+  "shelved": "shelved",
+  "deferred": "deferred",
+  "passed": "passed"
 };
 ---
 

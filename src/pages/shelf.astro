@@ -9,12 +9,12 @@ const allMedia: ExpandedMediaItem[] = await getExpandedMediaList();
 
 const shelfItems = allMedia.filter(
   m => m.published
-  && m.result === 'made-the-shelf'
+  && m.result === 'shelved'
   && m.shelfStatus === 'owned'
 );
 const wishlistItems = allMedia.filter(
   m => m.published
-  && m.result === 'made-the-shelf'
+  && m.result === 'shelved'
   && m.shelfStatus === 'not-owned'
 );
 const backlogItems = allMedia.filter(

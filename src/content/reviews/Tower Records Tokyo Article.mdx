@@ -8,24 +8,23 @@ heroImage: "/images/Tower Records Tokyo.webp"
 media:
   - id: "casiopea"
     score: 7
-    result: "made-the-shelf"
+    result: "shelved"
 
   - id: "perfume-game"
     score: 6.5
-    result: "maybe-later"
+    result: "deferred"
 
   - id: "one-room-survival"
     score: 7.5
-    result: "made-the-shelf"
+    result: "shelved"
 
   - id: "for-you"
-    result: "made-the-shelf"
+    result: "shelved"
 
   - id: "fantasma"
-    result: "made-the-shelf"
+    result: "shelved"
 ---
 
-import MediaCard from "../../components/MediaCard.astro"
 import MediaIntro from "../../components/MediaIntro.astro";
 import MediaResult from "../../components/MediaResult.astro";
 import MediaVerdict from "../../components/MediaVerdict.astro"
@@ -48,7 +47,7 @@ This album has followed me for years as a kind of reference point—something I 
 What stands out isn’t virtuosity (though there’s plenty), but restraint. The band knows exactly when to lock into a groove and when to show off, and rarely confuses the two. It’s music that respects your attention span.
 
 <MediaResult itemData={await getExpandedMediaById("casiopea")} />
-<MediaVerdict result="maybe-later" score={6.5} compact />
+<MediaVerdict result="deferred" score={6.5} compact />
 
 
 

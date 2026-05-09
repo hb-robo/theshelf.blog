@@ -14,7 +14,7 @@ const publishedMedia = allMedia.filter(m => m.published);
 const totalReviews = reviews.filter(r => r.data.published).length;
 const totalMedia = allMedia.length;
 const reviewed = publishedMedia.length;
-const onShelf = publishedMedia.filter(m => m.result === 'made-the-shelf').length;
+const onShelf = publishedMedia.filter(m => m.result === 'shelved').length;
 const unreviewed = totalMedia - reviewed;
 
 const scoreCounts: Record<string, number> = {};
@@ -80,7 +80,7 @@ const topCreators = Object.entries(creatorCounts)
 const maxCreatorCount = topCreators[0]?.[1] ?? 1;
 
 const typeStats = Object.entries(byType).map(([type, items]) => {
-  const onShelfItems = items.filter(m => m.result === 'made-the-shelf');
+  const onShelfItems = items.filter(m => m.result === 'shelved');
   return {
     type,
     total: items.length,
