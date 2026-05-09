@@ -82,10 +82,8 @@ export function getPriorityCreatives(item: ExpandedMediaItem): PriorityCreatives
 
 export function formatCreativeLine(role: string | undefined, names: string[] | undefined): string {
   if (role === "" || role === undefined || names === undefined) return "";
-  let prefix = 'by';
-  if (role == 'director' || role == 'developer') {
-    prefix = role.substring(0, 3) + '.';
-  }
+  let prefix = '';
+  if (role == 'director') prefix = role.substring(0, 3) + '.';
   const namesList = names.length < 3 ? names.join(', ') : `${names[0]} et al.`;
   return `${prefix} ${namesList}`;
 }
