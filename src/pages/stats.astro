@@ -1,17 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import { getScoreColor, getPriorityCreatives, formatCreativeLine, getMediaTypeBorder } from '../lib/cardElements';
+import { getScoreColor, getMediaTypeBorder } from '../lib/cardElements';
 import type { ExpandedMediaItem } from '../lib/types';
 import { getExpandedMediaList } from '../lib/expandMediaItems';
 
-const reviews = await getCollection('reviews');
 const allMedia: ExpandedMediaItem[] = await getExpandedMediaList();
 
-// Only count media that has appeared in a published review
 const publishedMedia = allMedia.filter(m => m.published);
 
-const totalReviews = reviews.filter(r => r.data.published).length;
 const totalMedia = allMedia.length;
 const reviewed = publishedMedia.length;
 const onShelf = publishedMedia.filter(m => m.result === 'shelved').length;
@@ -65,19 +61,22 @@ publishedMedia.forEach(m => {
 const decades = Object.entries(decadeCounts).sort(([a], [b]) => parseInt(a) - parseInt(b));
 const maxDecadeCount = Math.max(...Object.values(decadeCounts), 1);
 
-// Top creators
-const creatorCounts: Record<string, number> = {};
+// Highest rated creators
+const creatorScores: Record<string, number[]> = {};
 publishedMedia.forEach(m => {
-  if (m.creatives) {
+  if (m.creatives && m.score) {
     m.creatives.forEach((c: { name: string; role: string }) => {
-      creatorCounts[c.name] = (creatorCounts[c.name] || 0) + 1;
+      if (!creatorScores[c.name]) creatorScores[c.name] = [];
+      creatorScores[c.name].push(Number(m.score));
     });
   }
 });
-const topCreators = Object.entries(creatorCounts)
+const topCreators = Object.entries(creatorScores)
+  .filter(([, scores]) => scores.length >= 2)
+  .map(([name, scores]) => [name, scores.reduce((s, n) => s + n, 0) / scores.length] as [string, number])
   .sort(([, a], [, b]) => b - a)
   .slice(0, 10);
-const maxCreatorCount = topCreators[0]?.[1] ?? 1;
+const maxCreatorCount = 10;
 
 const typeStats = Object.entries(byType).map(([type, items]) => {
   const onShelfItems = items.filter(m => m.result === 'shelved');
@@ -209,19 +208,19 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
 
     <!-- Top Creators -->
     <section class="mb-12">
-      <h2 class="text-2xl font-mono mb-6 text-zinc-900">most reviewed creators</h2>
+      <h2 class="text-2xl font-mono mb-6 text-zinc-900">highest rated creators</h2>
       <div class="space-y-1.5">
-        {topCreators.map(([name, count], i) => (
+        {topCreators.map(([name, avg], i) => (
           <div class="flex items-center gap-3">
             <div class="w-4 text-right font-mono text-zinc-300 text-xs">{i + 1}</div>
             <div class="flex-1 h-6 overflow-hidden relative">
               <div
                 class="h-full bg-zinc-200"
-                style={`width: ${(count / maxCreatorCount) * 100}%`}
+                style={`width: ${(avg / maxCreatorCount) * 100}%`}
               />
               <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-zinc-700">{name}</span>
             </div>
-            <div class="w-6 font-mono text-zinc-400 text-xs">{count}</div>
+            <div class="w-10 font-mono text-zinc-400 text-xs">{avg.toFixed(2)}</div>
           </div>
         ))}
       </div>
