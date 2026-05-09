@@ -23,141 +23,83 @@ const backlogItems = allMedia.filter(
 )
 
 const totalOnShelf = shelfItems.length;
-const approvalRate = allMedia.length > 0 
-  ? Math.round((totalOnShelf / allMedia.length) * 100) 
-  : 0;
 ---
 
-<BaseLayout title="The Shelf - Made the Shelf" >
-  <div
-    class="shelf-container h-full bg-linear-to-b  bg-amber-50 dark:bg-black"
-  >
-    <!-- Header -->
+<BaseLayout title="The Shelf - Made the Shelf">
+  <div class="shelf-container h-full">
     <header class="max-w-4xl mx-auto px-4 pt-8 pb-4">
-      <h1 class="text-4xl md:text-5xl font-bold mb-2 tracking-tight text-gray-900 dark:text-gray-100">
-        digital shelf visualizer
-      </h1>
-      <p>
-        Visual representation of my physical media. It's like you're in my house, but less weird :)
-      </p>
+      <h1 class="text-4xl font-mono mb-2 text-zinc-900">digital shelf visualizer</h1>
+      <p class="text-base text-zinc-500">less weird than being in my house... mostly :)</p>
     </header>
 
-    <!-- Shelf selector buttons -->
-    <div class="flex max-w-4xl mx-auto px-4 space-x-4 py-6">
+    <div class="flex max-w-4xl mx-auto px-4 space-x-4 py-6 font-mono text-sm">
       <button
         data-shelf-target="the-shelf"
-        class="shelf-toggle-btn px-4 py-2 text-sm font-medium rounded-lg bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
+        class="shelf-toggle-btn px-4 py-2 border border-zinc-900 text-zinc-900"
       >
-        The Shelf
+        the shelf
       </button>
       <button
         data-shelf-target="wishlist"
-        class="shelf-toggle-btn px-4 py-2 text-sm font-medium rounded-lg bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+        class="shelf-toggle-btn px-4 py-2 border border-zinc-200 text-zinc-500 hover:border-zinc-400 transition-colors"
       >
-        Wishlist
+        wishlist
       </button>
       <button
         data-shelf-target="backlog"
-        class="shelf-toggle-btn px-4 py-2 text-sm font-medium rounded-lg bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+        class="shelf-toggle-btn px-4 py-2 border border-zinc-200 text-zinc-500 hover:border-zinc-400 transition-colors"
       >
-        Backlog
+        backlog
       </button>
     </div>
 
-
-    <!-- Main Shelf -->
     <section id="the-shelf" data-shelf-id="the-shelf" class="mt-2">
-      <div class="max-w-4xl mx-auto px-4 mb-4">
-        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-          The Shelf
-          <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
-            ({totalOnShelf} items)
-          </span>
-        </h2>
-        <p>
-          Works that were reviewed and earned their space. Swipe to see more, click into a spine to read the corresponding article.
-        </p>
+      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-zinc-200 py-3">
+        <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">the shelf</span>
+        <span class="text-xs font-mono text-zinc-400">{totalOnShelf} items</span>
       </div>
-      <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
-        <div
-          class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
-        >
+      <div class="shelf-row w-full bg-zinc-100 border-y border-zinc-200 shadow-inner overflow-hidden">
+        <div class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth">
           {shelfItems
             .sort((a, b) => a.title.localeCompare(b.title))
-            .map(item => {
-              return (
-                <SpineDisplay itemData={item} />
-              );
-            })}
+            .map(item => <SpineDisplay itemData={item} />)}
         </div>
       </div>
     </section>
 
     {totalOnShelf === 0 && (
       <div class="max-w-4xl mx-auto px-4 text-center py-16">
-        <p class="text-xl text-gray-600 dark:text-gray-400">
-          The shelf is empty. Nothing has earned its place yet.
-        </p>
+        <p class="text-xl text-zinc-500">The shelf is empty. Nothing has earned its place yet.</p>
       </div>
     )}
 
-    <!-- Wishlist Section -->
     <section id="wishlist" data-shelf-id="wishlist" class="mt-2 hidden">
-      <div class="max-w-4xl mx-auto px-4 mb-4">
-        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-          The Wishlist
-          <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
-            ({wishlistItems.length} items)
-          </span>
-        </h2>
-        <p>
-          Works that earned a spot, but I don't own yet. Physical media prices may keep some items here for long periods of time. Swipe to see more, click into a spine to read the corresponding article.
-        </p>
+      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-zinc-200 py-3">
+        <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">wishlist</span>
+        <span class="text-xs font-mono text-zinc-400">{wishlistItems.length} items</span>
       </div>
-      <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
-        <div
-          class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
-        >
+      <div class="shelf-row w-full bg-zinc-100 border-y border-zinc-200 shadow-inner overflow-hidden">
+        <div class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth">
           {wishlistItems
             .sort((a, b) => a.title.localeCompare(b.title))
-            .map(item => {
-              return (
-                <SpineDisplay itemData={item} />
-              );
-            })}
+            .map(item => <SpineDisplay itemData={item} />)}
         </div>
       </div>
     </section>
 
-    <!-- Backlog Section -->
     <section id="backlog" data-shelf-id="backlog" class="mt-2 hidden">
-      <div class="max-w-4xl mx-auto px-4 mb-4">
-        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-          The Backlog
-          <span class="text-lg font-normal text-gray-600 dark:text-gray-400 ml-2">
-            ({backlogItems.length} items)
-          </span>
-        </h2>
-        <p>
-          Works that I own, but have not written about, sometimes never opened. Swipe to see more.
-        </p>
+      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-zinc-200 py-3">
+        <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">backlog</span>
+        <span class="text-xs font-mono text-zinc-400">{backlogItems.length} items</span>
       </div>
-      <div class="shelf-row w-full bg-gray-50 dark:bg-gray-900 border-y-2 border-gray-300 dark:border-gray-600 shadow-inner overflow-hidden">
-        <div
-          class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth"
-        >
+      <div class="shelf-row w-full bg-zinc-100 border-y border-zinc-200 shadow-inner overflow-hidden">
+        <div class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth">
           {backlogItems
             .sort((a, b) => a.title.localeCompare(b.title))
-            .map(item => {
-              return (
-                <SpineDisplay itemData={item} />
-              );
-            })}
+            .map(item => <SpineDisplay itemData={item} />)}
         </div>
       </div>
     </section>
-
-
   </div>
 </BaseLayout>
 
@@ -166,12 +108,8 @@ const approvalRate = allMedia.length > 0
     --shelf-scale: 1;
   }
 
-  /* @media (max-width: 1024px) { :root { --shelf-scale: 0.85; } }
-  @media (max-width: 768px)  { :root { --shelf-scale: 0.7; } }
-  @media (max-width: 640px)  { :root { --shelf-scale: 0.6; } } */
-
   .shelf-scroll {
-    padding-left: max(1rem, calc((100vw - 1280px) / 2 + 1rem + 1rem + 11rem)); /* Align with max-w-4xl + its px-4 */
+    padding-left: max(1rem, calc((100vw - 1280px) / 2 + 1rem + 1rem + 11rem));
   }
 
   .shelf-scroll::-webkit-scrollbar {
@@ -180,61 +118,38 @@ const approvalRate = allMedia.length > 0
 
   .shelf-scroll::-webkit-scrollbar-thumb {
     border-radius: 4px;
-  }
-
-  :global(.light) .shelf-scroll::-webkit-scrollbar-thumb {
-    background: rgb(156 163 175);
-  }
-
-  :global(.dark) .shelf-scroll::-webkit-scrollbar-thumb {
-    background: rgb(75 85 99);
+    background: rgb(161 161 170); /* zinc-400 */
   }
 </style>
 
-
 <script>
   function setupShelfSwitcher() {
-    // Function to handle showing the correct shelf and updating button styles
     function showShelf(shelfId: string) {
-      // 1. Hide all shelves
       document.querySelectorAll('[data-shelf-id]').forEach(el => {
         el.classList.add('hidden');
       });
 
-      // 2. Show the target shelf
       const targetShelf = document.querySelector(`[data-shelf-id="${shelfId}"]`);
-      if (targetShelf) {
-        targetShelf.classList.remove('hidden');
-      }
+      if (targetShelf) targetShelf.classList.remove('hidden');
 
-      // 3. Update button active states (Tailwind styles)
       document.querySelectorAll('.shelf-toggle-btn').forEach(button => {
         if (button.getAttribute('data-shelf-target') === shelfId) {
-          // Active state styles
-          button.classList.remove('bg-white', 'text-gray-700', 'hover:bg-gray-50', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
-          button.classList.add('bg-gray-600', 'text-white', 'hover:bg-gray-700');
+          button.classList.remove('border-zinc-200', 'text-zinc-500', 'hover:border-zinc-400');
+          button.classList.add('border-zinc-900', 'text-zinc-900');
         } else {
-          // Inactive state styles
-          button.classList.remove('bg-gray-600', 'text-white', 'hover:bg-gray-700');
-          button.classList.add('bg-white', 'text-gray-700', 'hover:bg-gray-50', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
+          button.classList.remove('border-zinc-900', 'text-zinc-900');
+          button.classList.add('border-zinc-200', 'text-zinc-500', 'hover:border-zinc-400');
         }
       });
     }
 
-    // Add click listeners to all buttons
     document.querySelectorAll('.shelf-toggle-btn').forEach(button => {
-      button.addEventListener('click', (event) => {
+      button.addEventListener('click', () => {
         const targetId = button.getAttribute('data-shelf-target');
-        if (targetId) {
-          showShelf(targetId);
-        }
+        if (targetId) showShelf(targetId);
       });
     });
-
-    // Initialize the view when the script runs (shows 'The Shelf' by default)
-    // showShelf('the-shelf'); // This is handled by the initial HTML structure
   }
 
-  // Run the setup function once the component script loads
   setupShelfSwitcher();
 </script>

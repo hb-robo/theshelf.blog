@@ -6,253 +6,181 @@ import type { ExpandedMediaItem } from '../lib/types';
 import { getExpandedMediaList } from '../lib/expandMediaItems';
 
 const reviews = await getCollection('reviews');
-const allMedia: ExpandedMediaItem[] = await getExpandedMediaList(); 
+const allMedia: ExpandedMediaItem[] = await getExpandedMediaList();
 
-// Calculate comprehensive stats
+// Only count media that has appeared in a published review
+const publishedMedia = allMedia.filter(m => m.published);
+
 const totalReviews = reviews.filter(r => r.data.published).length;
 const totalMedia = allMedia.length;
-const onShelf = allMedia.filter(m => m.result === 'made-the-shelf' && m.published).length;
-const reviewed = allMedia.filter(m => m.published).length;
+const reviewed = publishedMedia.length;
+const onShelf = publishedMedia.filter(m => m.result === 'made-the-shelf').length;
 const unreviewed = totalMedia - reviewed;
 
-// Score distribution (including half-steps)
 const scoreCounts: Record<string, number> = {};
 const allScores = [10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1];
 allScores.forEach(s => scoreCounts[s.toString()] = 0);
 
-allMedia.forEach(m => {
-  if (m.published && m.score) {
+publishedMedia.forEach(m => {
+  if (m.score) {
     const scoreStr = m.score.toString();
-    if (scoreCounts.hasOwnProperty(scoreStr)) {
-      scoreCounts[scoreStr]++;
-    }
+    if (scoreCounts.hasOwnProperty(scoreStr)) scoreCounts[scoreStr]++;
   }
 });
 
-// Calculate max based on COMBINED whole + half counts
 let maxCombinedCount = 0;
 for (let i = 1; i <= 10; i++) {
   const wholeCount = scoreCounts[i.toString()] || 0;
-  // Only check for half-step if it's valid (no 10.5)
   const halfCount = i < 10 ? (scoreCounts[(i + 0.5).toString()] || 0) : 0;
   const combined = wholeCount + halfCount;
-  if (combined > maxCombinedCount) {
-    maxCombinedCount = combined;
-  }
+  if (combined > maxCombinedCount) maxCombinedCount = combined;
 }
 
-// Average score
-const scoredMedia = allMedia.filter(m => m.published && m.score && typeof m.score === 'number');
-const avgScore = scoredMedia.length > 0 
+const scoredMedia = publishedMedia.filter(m => m.score && typeof m.score === 'number');
+const avgScore = scoredMedia.length > 0
   ? (scoredMedia.reduce((sum, m) => sum + Number(m.score), 0) / scoredMedia.length).toFixed(1)
   : '0';
 
-// Approval rate
 const approvalRate = reviewed > 0 ? Math.round((onShelf / reviewed) * 100) : 0;
 
-// Media type breakdown
 const byType = {
-  film: allMedia.filter(m => m.mediaType === 'film'),
-  music: allMedia.filter(m => m.mediaType === 'music'),
-  book: allMedia.filter(m => m.mediaType === 'book'),
-  game: allMedia.filter(m => m.mediaType === 'game'),
- };
+  film: publishedMedia.filter(m => m.mediaType === 'film'),
+  music: publishedMedia.filter(m => m.mediaType === 'music'),
+  book: publishedMedia.filter(m => m.mediaType === 'book'),
+  game: publishedMedia.filter(m => m.mediaType === 'game'),
+};
+
+// Decade breakdown
+const decadeCounts: Record<string, number> = {};
+publishedMedia.forEach(m => {
+  if (m.releaseDate) {
+    const year = parseInt(m.releaseDate.substring(0, 4));
+    if (!isNaN(year)) {
+      const decade = Math.floor(year / 10) * 10;
+      const key = `${decade}s`;
+      decadeCounts[key] = (decadeCounts[key] || 0) + 1;
+    }
+  }
+});
+const decades = Object.entries(decadeCounts).sort(([a], [b]) => parseInt(a) - parseInt(b));
+const maxDecadeCount = Math.max(...Object.values(decadeCounts), 1);
+
+// Top creators
+const creatorCounts: Record<string, number> = {};
+publishedMedia.forEach(m => {
+  if (m.creatives) {
+    m.creatives.forEach((c: { name: string; role: string }) => {
+      creatorCounts[c.name] = (creatorCounts[c.name] || 0) + 1;
+    });
+  }
+});
+const topCreators = Object.entries(creatorCounts)
+  .sort(([, a], [, b]) => b - a)
+  .slice(0, 10);
+const maxCreatorCount = topCreators[0]?.[1] ?? 1;
 
 const typeStats = Object.entries(byType).map(([type, items]) => {
-  const reviewedItems = items.filter(m => m.published);
-  const onShelfItems = items.filter(m => m.result === 'made-the-shelf' && m.published);
+  const onShelfItems = items.filter(m => m.result === 'made-the-shelf');
   return {
     type,
     total: items.length,
-    reviewed: reviewedItems.length,
     onShelf: onShelfItems.length,
-    approvalRate: reviewedItems.length > 0 ? Math.round((onShelfItems.length / reviewedItems.length) * 100) : 0,
-    avgScore: reviewedItems.length > 0
-      ? (reviewedItems.filter(m => m.score).reduce((sum, m) => sum + Number(m.score), 0) / reviewedItems.filter(m => m.score).length).toFixed(1)
+    approvalRate: items.length > 0 ? Math.round((onShelfItems.length / items.length) * 100) : 0,
+    avgScore: items.length > 0
+      ? (items.filter(m => m.score).reduce((sum, m) => sum + Number(m.score), 0) / items.filter(m => m.score).length).toFixed(1)
       : '0',
   };
 });
-
-// Recent activity (last 6 months)
-const sixMonthsAgo = new Date();
-sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-
-// TODO: shelf composition over time graph
 ---
 
 <BaseLayout title="Blog statistics">
-  <div class="max-w-6xl mx-auto px-4 py-12">
-    <!-- Header -->
+  <div class="max-w-4xl mx-auto px-4 py-12">
     <header class="mb-12">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-gray-900 dark:text-gray-100">
-        Statistics
-      </h1>
-      <p class="text-lg text-gray-600 dark:text-gray-400">
-        A look at my critical tendencies
-      </p>
+      <h1 class="text-4xl font-mono mb-2 text-zinc-900">statistics</h1>
+      <p class="text-base text-zinc-500">a look at my critical tendencies</p>
     </header>
 
     <!-- Big Numbers -->
-    <section class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-      <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 text-center">
-        <div class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">{totalMedia}</div>
-        <div class="text-sm text-gray-600 dark:text-gray-400">artworks reviewed</div>
+    <section class="border border-zinc-200 grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-zinc-200 mb-12 font-mono">
+      <div class="p-6 text-center">
+        <div class="text-4xl text-zinc-900 mb-2">{totalMedia}</div>
+        <div class="text-xs text-zinc-400 uppercase tracking-widest">reviewed</div>
       </div>
-      <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 text-center">
-        <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">{onShelf}</div>
-        <div class="text-sm text-gray-600 dark:text-gray-400">made the shelf</div>
+      <div class="p-6 text-center">
+        <div class="text-4xl text-zinc-900 mb-2">{onShelf}</div>
+        <div class="text-xs text-zinc-400 uppercase tracking-widest">shelved</div>
       </div>
-      <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 text-center">
-        <div class="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">{avgScore}</div>
-        <div class="text-sm text-gray-600 dark:text-gray-400">avg. score</div>
+      <div class="p-6 text-center">
+        <div class="text-4xl text-zinc-900 mb-2">{avgScore}</div>
+        <div class="text-xs text-zinc-400 uppercase tracking-widest">avg. score</div>
       </div>
-      <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 text-center">
-        <div class="text-4xl font-bold text-orange-600 dark:text-orange-400 mb-2">{approvalRate}%</div>
-        <div class="text-sm text-gray-600 dark:text-gray-400">approval rate</div>
+      <div class="p-6 text-center">
+        <div class="text-4xl text-zinc-900 mb-2">{approvalRate}%</div>
+        <div class="text-xs text-zinc-400 uppercase tracking-widest">approval</div>
       </div>
     </section>
 
     <!-- Score Distribution -->
     <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Score Distribution</h2>
-      <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
-        <div class="space-y-2">
-          {[10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(baseScore => {
-            const wholeCount = scoreCounts[baseScore.toString()];
-            const halfCount = baseScore < 10 ? scoreCounts[(baseScore + 0.5).toString()] : 0;
-            const totalCount = wholeCount + halfCount;
-            const percentage = maxCombinedCount > 0 ? (totalCount / maxCombinedCount) * 100 : 0;
-            const wholePercentage = totalCount > 0 ? (wholeCount / totalCount) * 100 : 0;
-            const isShelfWorthy = baseScore >= 7;
-            
-            return (
-              <div class="flex items-center gap-4 md:ml-5 md:mr-5">
-                <div class="w-10 text-right font-bold text-gray-900 dark:text-gray-100 text-sm">
-                  {baseScore}/10
-                </div>
-                <div class="flex-1 bg-gray-100 dark:bg-gray-800 rounded-full h-10 relative overflow-hidden">
-                  <div 
-                    class={`h-full rounded-full transition-all flex`}
-                    style={`width: ${percentage}%`}
-                  >
-                    {/* Whole number scores (left side, darker) */}
-                    {wholeCount > 0 && (
-                      <div 
-                        class={`h-full flex items-center justify-center ${
-                          isShelfWorthy 
-                            ? 'bg-green-600 dark:bg-green-700' 
-                            : 'bg-red-600 dark:bg-red-700'
-                        }`}
-                        style={`width: ${wholePercentage}%`}
-                      >
-                        {percentage >= 25 && (
-                          <span class="text-xs font-semibold text-white px-2">
-                            {wholeCount}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                    {/* Half-step scores (right side, lighter) */}
-                    {halfCount > 0 && (
-                      <div 
-                        class={`h-full flex items-center justify-center ${
-                          isShelfWorthy 
-                            ? 'bg-green-400 dark:bg-green-500' 
-                            : 'bg-red-400 dark:bg-red-500'
-                        }`}
-                        style={`width: ${100 - wholePercentage}%`}
-                      >
-                        {percentage >= 25 && (
-                          <span class="text-xs font-semibold text-white px-2">
-                            {halfCount}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  {/* Labels when bar is too small or empty */}
-                  {totalCount === 0 && (
-                    <div class="absolute inset-0 flex items-center justify-center text-xs text-gray-500 dark:text-gray-400">
-                      0 items
-                    </div>
+      <h2 class="text-2xl font-mono mb-6 text-zinc-900">score distribution</h2>
+      <div class="space-y-1.5">
+        {[10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(baseScore => {
+          const wholeCount = scoreCounts[baseScore.toString()];
+          const halfCount = baseScore < 10 ? scoreCounts[(baseScore + 0.5).toString()] : 0;
+          const totalCount = wholeCount + halfCount;
+          const percentage = maxCombinedCount > 0 ? (totalCount / maxCombinedCount) * 100 : 0;
+          const wholePercentage = totalCount > 0 ? (wholeCount / totalCount) * 100 : 0;
+          const scoreColor = getScoreColor(baseScore);
+
+          return (
+            <div class="flex items-center gap-3">
+              <div class="w-6 text-right font-mono text-zinc-400 text-xs">{baseScore}</div>
+              <div class="flex-1 h-6 relative overflow-hidden">
+                <div class="h-full flex" style={`width: ${percentage}%`}>
+                  {wholeCount > 0 && (
+                    <div
+                      class={`h-full ${scoreColor}`}
+                      style={`width: ${wholePercentage}%`}
+                    />
                   )}
-                  {totalCount > 0 && percentage < 25 && (
-                    <div class="absolute inset-y-0 left-full ml-2 flex items-center text-xs font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap">
-                      {wholeCount > 0 && `${wholeCount}`}
-                      {wholeCount > 0 && halfCount > 0 && ' + '}
-                      {halfCount > 0 && `${halfCount}`}
-                    </div>
+                  {halfCount > 0 && (
+                    <div
+                      class={`h-full ${scoreColor} opacity-50`}
+                      style={`width: ${100 - wholePercentage}%`}
+                    />
                   )}
                 </div>
-                {/* <div class="w-24 text-xs text-gray-500 dark:text-gray-400">
-                  {wholeCount > 0 && halfCount > 0 && (
-                    <span>{wholeCount} × {baseScore}, {halfCount} × {baseScore}.5</span>
-                  )}
-                  {wholeCount > 0 && halfCount === 0 && (
-                    <span>{wholeCount} × {baseScore}</span>
-                  )}
-                  {wholeCount === 0 && halfCount > 0 && (
-                    <span>{halfCount} × {baseScore}.5</span>
-                  )}
-                </div> */}
               </div>
-            );
-          })}
-        </div>
-        <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between text-sm flex-wrap gap-4">
-          <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 bg-green-600 rounded"></div>
-              <span class="text-gray-600 dark:text-gray-400">Whole scores (7+)</span>
+              <div class="w-6 font-mono text-zinc-400 text-xs">{totalCount || ''}</div>
             </div>
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 bg-green-400 rounded"></div>
-              <span class="text-gray-600 dark:text-gray-400">Half-step scores (7+)</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 bg-red-600 rounded"></div>
-              <span class="text-gray-600 dark:text-gray-400">Whole scores (&lt;7)</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 bg-red-400 rounded"></div>
-              <span class="text-gray-600 dark:text-gray-400">Half-step scores (&lt;7)</span>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </section>
 
     <!-- By Media Type -->
     <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">By Media Type</h2>
+      <h2 class="text-2xl font-mono mb-6 text-zinc-900">by media type</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {typeStats.map(stat => (
-          <div class={`bg-white dark:bg-gray-900 rounded-lg border ${getMediaTypeBorder(stat.type)} p-6`}>
-            <div class="text-lg font-bold mb-4 capitalize text-gray-900 dark:text-gray-100">
-              {stat.type}
-            </div>
-            <div class="space-y-3 text-sm">
+          <div class={`border ${getMediaTypeBorder(stat.type)} p-6`}>
+            <div class="text-sm font-mono uppercase tracking-widest text-zinc-400 mb-4">{stat.type}</div>
+            <div class="space-y-3 text-sm font-mono">
               <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Total:</span>
-                <span class="font-semibold text-gray-900 dark:text-gray-100">{stat.total}</span>
+                <span class="text-zinc-500">reviewed</span>
+                <span class="text-zinc-900">{stat.total}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Reviewed:</span>
-                <span class="font-semibold text-gray-900 dark:text-gray-100">{stat.reviewed}</span>
+                <span class="text-zinc-500">shelved</span>
+                <span class="text-emerald-600">{stat.onShelf}</span>
+              </div>
+              <div class="flex justify-between pt-3 border-t border-zinc-200">
+                <span class="text-zinc-500">approval</span>
+                <span class="text-zinc-900">{stat.approvalRate}%</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Shelved:</span>
-                <span class="font-semibold text-green-600 dark:text-green-400">{stat.onShelf}</span>
-              </div>
-              <div class="flex justify-between pt-3 border-t border-gray-200 dark:border-gray-800">
-                <span class="text-gray-600 dark:text-gray-400">Approval:</span>
-                <span class="font-semibold text-gray-900 dark:text-gray-100">{stat.approvalRate}%</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Avg Score:</span>
-                <span class="font-semibold text-gray-900 dark:text-gray-100">{stat.avgScore}/10</span>
+                <span class="text-zinc-500">avg score</span>
+                <span class="text-zinc-900">{stat.avgScore}/10</span>
               </div>
             </div>
           </div>
@@ -260,29 +188,61 @@ sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
       </div>
     </section>
 
-    {/* Backlog Status */}
-    <section>
-      <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Collection Status</h2>
-      <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-          <div class="flex-1 w-full">
-            <div class="mb-2 flex justify-between text-sm">
-              <span class="text-gray-600 dark:text-gray-400">Collection Progress</span>
-              <span class="font-semibold text-gray-900 dark:text-gray-100">{reviewed} / {totalMedia}</span>
+    <!-- Release Decade -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-mono mb-6 text-zinc-900">by decade</h2>
+      <div class="space-y-1.5">
+        {decades.map(([decade, count]) => (
+          <div class="flex items-center gap-3">
+            <div class="w-12 text-right font-mono text-zinc-400 text-xs">{decade}</div>
+            <div class="flex-1 h-6 overflow-hidden">
+              <div
+                class="h-full bg-zinc-400"
+                style={`width: ${(count / maxDecadeCount) * 100}%`}
+              />
             </div>
-            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-6 overflow-hidden">
-              <div 
-                class="h-full bg-linear-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold transition-all"
-                style={`width: ${totalMedia > 0 ? (reviewed / totalMedia) * 100 : 0}%`}
-              >
-                {totalMedia > 0 ? Math.round((reviewed / totalMedia) * 100) : 0}%
-              </div>
-            </div>
-            <div class="mt-4 text-center">
-              <div class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{unreviewed}</div>
-              <div class="text-sm text-gray-600 dark:text-gray-400">items awaiting review</div>
-            </div>
+            <div class="w-6 font-mono text-zinc-400 text-xs">{count}</div>
           </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Top Creators -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-mono mb-6 text-zinc-900">most reviewed creators</h2>
+      <div class="space-y-1.5">
+        {topCreators.map(([name, count], i) => (
+          <div class="flex items-center gap-3">
+            <div class="w-4 text-right font-mono text-zinc-300 text-xs">{i + 1}</div>
+            <div class="flex-1 h-6 overflow-hidden relative">
+              <div
+                class="h-full bg-zinc-200"
+                style={`width: ${(count / maxCreatorCount) * 100}%`}
+              />
+              <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-zinc-700">{name}</span>
+            </div>
+            <div class="w-6 font-mono text-zinc-400 text-xs">{count}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-mono mb-6 text-zinc-900">collection status</h2>
+      <div class="border border-zinc-200 p-6">
+        <div class="flex justify-between text-xs font-mono text-zinc-400 uppercase tracking-widest mb-2">
+          <span>reviewed</span>
+          <span>{reviewed} / {totalMedia}</span>
+        </div>
+        <div class="w-full bg-zinc-100 h-2 overflow-hidden">
+          <div
+            class="h-full bg-zinc-900 transition-all"
+            style={`width: ${totalMedia > 0 ? (reviewed / totalMedia) * 100 : 0}%`}
+          />
+        </div>
+        <div class="mt-3 flex justify-between font-mono text-xs text-zinc-400">
+          <span>{reviewed} reviewed</span>
+          <span>{unreviewed} pending</span>
         </div>
       </div>
     </section>

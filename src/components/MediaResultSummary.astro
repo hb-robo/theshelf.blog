@@ -1,5 +1,4 @@
 ---
-// src/components/MediaResultSummary.astro
 import { getScoreColor, getMediaById } from "../lib/cardElements.ts";
 
 export interface Props {
@@ -12,129 +11,83 @@ export interface Props {
 
 const { reviewMedia } = Astro.props;
 
-const mediaPromises = reviewMedia.map(async (item) => {
-  let mediaDetails = await getMediaById(item.id);
-  let combinedItem = {
-    ...mediaDetails,
+const media = await Promise.all(
+  reviewMedia.map(async (item) => ({
+    ...await getMediaById(item.id),
     ...item,
-  };
-  return combinedItem;
-});
-const media = await Promise.all(mediaPromises);
+  }))
+);
 ---
 
-<article
-  class="not-prose bg-slate-50 dark:bg-slate-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden p-4"
->
-  <h2 class="text-xl font-bold mb-3">shelf impact</h2>
+<div class="not-prose border border-zinc-200 p-4 mt-8">
+  <h2 class="text-sm font-mono uppercase tracking-widest text-zinc-400 mb-3">verdicts</h2>
+  <ul class="divide-y divide-zinc-200">
+    {media.map((item) => (
+      <li class="flex items-center gap-4 py-3">
+        {item.coverImage ? (
+          <img
+            src={item.coverImage}
+            alt={`Cover for ${item.title}`}
+            class="h-12 object-contain shrink-0"
+          />
+        ) : (
+          <div class="h-12 w-9 shrink-0" />
+        )}
 
-  {
-    media.length > 0 && (
-      <section class=>
-        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-          {media.map((item) => (
-            <li class="flex items-center gap-3 py-3">
-              {item.coverImage ? (
-                <img
-                  src={item.coverImage}
-                  alt={`Cover for ${item.title}`}
-                  class="h-16 object-contain shrink-0  bg-gray-100 dark:bg-gray-700"
-                />
-              ) : (
-                <div class="h-16 shrink-0 rounded bg-gray-200 dark:bg-gray-700" />
-              )}
-              <div class="flex-1 min-w-0">
-                <div class="font-medium truncate">{item.title}</div>
-              </div>
+        <div class="flex-1 min-w-0 font-mono text-sm text-zinc-900 truncate">
+          {item.title}
+        </div>
 
-              <div class="flex flex-col md:flex-row md:min-w-1/4 items-center justify-start gap-2 w-8">
-                <div class="">
-                  {item.score && (
-                    <div
-                      class={`flex items-center justify-center w-8 h-8 rounded-md font-bold text-sm ${getScoreColor(Number(item.score))}`}
-                      title={`Score: ${item.score}/10`}
-                    >
-                      {item.score}
-                    </div>
-                  )}
-                </div>
+        <div class="flex items-center gap-3 shrink-0">
+          {item.score && (
+            <div
+              class={`flex items-center justify-center w-8 h-8 font-bold text-sm ${getScoreColor(Number(item.score))}`}
+              title={`Score: ${item.score}/10`}
+            >
+              {item.score}
+            </div>
+          )}
 
-                <div class="flex items-center justify-center min-w-2rem">
-                  {item.result === "made-the-shelf" && (
-                    <span class="text-emerald-600 dark:text-emerald-300 inline-flex items-center gap-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        class="w-5 h-5"
-                      >
-                        <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z" />
-                      </svg>
-                      <span class="hidden md:block">Shelved</span>
-                    </span>
-                  )}
+          {item.result === "made-the-shelf" && (
+            <span class="text-emerald-600 inline-flex items-center gap-1 font-mono text-sm w-28">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5 shrink-0">
+                <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z" />
+              </svg>
+              <span>shelved</span>
+            </span>
+          )}
 
-                  {item.result === "maybe-later" && (
-                    <span class="text-yellow-500 dark:text-yellow-400 inline-flex items-center gap-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 32 32"
-                        class="w-5 h-5"
-                      >
-                        <path
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"
-                        />
-                      </svg>
-                      <span class="hidden md:block">Deferred</span>
-                    </span>
-                  )}
+          {item.result === "maybe-later" && (
+            <span class="text-yellow-500 inline-flex items-center gap-1 font-mono text-sm w-28">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32" class="w-5 h-5 shrink-0">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"/>
+              </svg>
+              <span>deferred</span>
+            </span>
+          )}
 
-                  {item.result === "no" && (
-                    <span class="text-gray-500 inline-flex items-center gap-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        class="w-5 h-5"
-                      >
-                        <g fill="currentColor">
-                          <path d="M8.478 8.478a1 1 0 0 1 1.414 0l2.154 2.153l2.153-2.153a1 1 0 1 1 1.414 1.414l-2.153 2.154l2.153 2.153a1 1 0 0 1-1.414 1.414l-2.153-2.153l-2.154 2.153A1 1 0 0 1 8.478 14.2l2.153-2.153l-2.153-2.154a1 1 0 0 1 0-1.414" />
-                          <path
-                            fill-rule="evenodd"
-                            d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2M4 12a8 8 0 1 1 16 0a8 8 0 0 1-16 0"
-                            clip-rule="evenodd"
-                          />
-                        </g>
-                      </svg>
-                      <span class="hidden md:block">Passed On</span>
-                    </span>
-                  )}
+          {item.result === "no" && (
+            <span class="text-zinc-400 inline-flex items-center gap-1 font-mono text-sm w-28">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5 shrink-0">
+                <g fill="currentColor">
+                  <path d="M8.478 8.478a1 1 0 0 1 1.414 0l2.154 2.153l2.153-2.153a1 1 0 1 1 1.414 1.414l-2.153 2.154l2.153 2.153a1 1 0 0 1-1.414 1.414l-2.153-2.153l-2.154 2.153A1 1 0 0 1 8.478 14.2l2.153-2.153l-2.153-2.154a1 1 0 0 1 0-1.414"/>
+                  <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2M4 12a8 8 0 1 1 16 0a8 8 0 0 1-16 0" clip-rule="evenodd"/>
+                </g>
+              </svg>
+              <span>passed on</span>
+            </span>
+          )}
 
-                  {!item.result && (
-                    <span class="text-gray-400 inline-flex items-center gap-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        class="w-5 h-5"
-                      >
-                        <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z" />
-                      </svg>
-                      <span class="hidden md:block">Pending</span>
-                    </span>
-                  )}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
-</article>
+          {!item.result && (
+            <span class="text-zinc-300 inline-flex items-center gap-1 font-mono text-sm w-28">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5 shrink-0">
+                <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z" />
+              </svg>
+              <span>pending</span>
+            </span>
+          )}
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
