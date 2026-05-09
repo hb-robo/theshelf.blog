@@ -19,4 +19,19 @@ const reviews = defineCollection({
   }),
 });
 
-export const collections = { reviews };
+const events = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/events' }),
+  schema: z.object({
+    mediaId: z.string(),
+    date: z.date(),
+    eventType: z.enum(['note', 'acquisition', 'disposition', 'verdict']),
+    source: z.enum(['site', 'rym', 'letterboxd', 'goodreads', 'glitchwave', 'backloggd']).default('site'),
+    sourceUrl: z.string().url().optional(),
+    score: z.number().min(1).max(10).optional(),
+    result: z.enum(['shelved', 'deferred', 'passed']).optional(),
+    shelfStatus: z.enum(['owned', 'digital-only', 'not-owned']).optional(),
+    published: z.boolean().default(false),
+  }),
+});
+
+export const collections = { reviews, events };

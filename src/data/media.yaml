@@ -1,7 +1,6 @@
 - id: casiopea
   title: "Casiopea"
   releaseDate: 1979-05-25
-  shelfStatus: owned
   mediaType: music
   subtype: cd
   creatives:
@@ -14,7 +13,6 @@
 - id: perfume-game
   title: GAME
   releaseDate: 2008-04-16
-  shelfStatus: owned
   mediaType: music
   subtype: cd
   creatives:
@@ -28,7 +26,6 @@
 - id: one-room-survival
   title: One-Room Survival
   releaseDate: 2002-11-21
-  shelfStatus: owned
   mediaType: music
   subtype: cd
   creatives: 
@@ -43,7 +40,6 @@
   title: For You
   releaseDate: 1982-01-21
   # score: 8
-  shelfStatus: owned
   mediaType: music
   subtype: cd
   creatives:
@@ -58,7 +54,6 @@
   title: Fantasma
   releaseDate: 2008-04-16
   # score: 8
-  shelfStatus: owned
   mediaType: music
   subtype: cd
   creatives:
@@ -72,7 +67,6 @@
 - id: demons-souls
   title: Demon's Souls
   releaseDate: 2009-02-05
-  shelfStatus: owned
   mediaType: game
   subtype: ps3
   creatives:
@@ -88,7 +82,6 @@
   title: Demon's Souls
   releaseDate: 2020-11-12
   # score: _
-  shelfStatus: not-owned
   mediaType: game
   subtype: ps5
   creatives:
@@ -103,7 +96,6 @@
 - id: samurai-champloo-departure
   title: "Samurai Champloo Music Record: Departure"
   releaseDate: 2004-06-23
-  shelfStatus: owned
   mediaType: music
   subtype: cd
   creatives:
@@ -120,7 +112,6 @@
 - id: samurai-champloo-masta
   title: "Samurai Champloo Music Record: Masta"
   releaseDate: 2004-06-23
-  shelfStatus: not-owned
   mediaType: music
   subtype: cd
   creatives:
@@ -137,7 +128,6 @@
 - id: samurai-champloo-impression
   title: "Samurai Champloo Music Record: Impression"
   releaseDate: 2004-09-22
-  shelfStatus: owned
   mediaType: music
   subtype: cd
   creatives:
@@ -157,7 +147,6 @@
 - id: samurai-champloo-playlist
   title: "Samurai Champloo Music Record: Playlist"
   releaseDate: 2004-09-22
-  shelfStatus: not-owned
   mediaType: music
   subtype: cd
   creatives:
@@ -172,7 +161,6 @@
 - id: dqxi-s
   title: Dragon Quest XI
   releaseDate: 2017-07-29
-  shelfStatus: owned
   mediaType: game
   subtype: 3ds
   creatives:
@@ -189,7 +177,6 @@
   title: A Wizard of Earthsea
   releaseDate: 1968-01-01
   # score: 
-  shelfStatus: not-owned
   mediaType: book
   # subtype: 
   creatives:
@@ -204,7 +191,6 @@
 - id: gravity-rush
   title: Gravity Rush
   releaseDate: 2012-02-09
-  shelfStatus: not-owned
   mediaType: game
   subtype: vita
   creatives:
@@ -221,7 +207,6 @@
   title: "Gravity Rush: Remastered"
   releaseDate: 2015-12-10
   # score: -
-  shelfStatus: not-owned
   mediaType: game
   subtype: ps4
   creatives:
@@ -238,7 +223,6 @@
   title: Gravity Rush 2
   releaseDate: 2017-01-18
   # score: -
-  shelfStatus: not-owned
   mediaType: game
   subtype: ps4
   creatives:
@@ -254,7 +238,6 @@
 - id: katamari-damacy
   title: Katamari Damacy
   releaseDate: 2004-03-18
-  shelfStatus: not-owned
   mediaType: game
   subtype: ps2
   creatives:
@@ -270,7 +253,6 @@
 - id: katamari-ost
   title: Katamari Fortissimo Damacy
   releaseDate: 2004-05-19
-  shelfStatus: owned
   mediaType: music
   subtype: cd
   creatives:
@@ -294,7 +276,6 @@
 - id: kh1
   title: Kingdom Hearts
   releaseDate: 2002-03-28
-  shelfStatus: not-owned
   mediaType: game
   subtype: ps2
   creatives:
@@ -310,7 +291,6 @@
 - id: kh1fm
   title: "Kingdom Hearts: Final Mix"
   releaseDate: 2002-12-26
-  shelfStatus: not-owned
   mediaType: game
   subtype: ps2
   creatives:
@@ -326,7 +306,6 @@
 - id: lumines
   title: "Lumines: Puzzle Fusion"
   releaseDate: 2004-12-12
-  shelfStatus: not-owned
   mediaType: game
   subtype: psp
   creatives:
@@ -342,7 +321,6 @@
 - id: pokemon-legends-arceus
   title: "Pokemon Legends: Arceus"
   releaseDate: 2022-01-28
-  shelfStatus: not-owned
   mediaType: game
   subtype: switch
   creatives:
@@ -358,7 +336,6 @@
 - id: stray
   title: Stray
   releaseDate: 2022-07-19
-  shelfStatus: owned
   mediaType: game
   subtype: ps5
   creatives:
@@ -376,7 +353,6 @@
 - id: virgin-suicides-coppola
   title: The Virgin Suicides
   releaseDate: 2000-04-21
-  shelfStatus: owned
   mediaType: film
   # subtype: 
   creatives:
@@ -390,7 +366,6 @@
 - id: casts-of-a-dreamer
   title: Casts of a Dreamer
   releaseDate: 1979-05-25
-  shelfStatus: not-owned
   mediaType: music
   # subtype: cd
   creatives:
@@ -404,7 +379,6 @@
 - id: del-toro-frankenstein
   title: Frankenstein
   releaseDate: 2025-08-30
-  shelfStatus: not-owned
   mediaType: film
   # subtype: 
   creatives:
@@ -419,7 +393,6 @@
 - id: the-witness
   title: The Witness
   releaseDate: 2016-01-26
-  shelfStatus: digital-only
   mediaType: game
   creatives:
     - name: Thekla
@@ -433,7 +406,6 @@
 - id: twewy
   title: The World Ends With You
   releaseDate: 2008-04-22
-  shelfStatus: not-owned
   mediaType: game
   subtype: ds
   creatives:
@@ -455,7 +427,6 @@
 - id: neo-twewy
   title: "NEO: The World Ends With You"
   releaseDate: 2021-07-27
-  shelfStatus: not-owned
   mediaType: game
   subtype: ps4
   creatives:
@@ -475,7 +446,6 @@
 - id: the-silent-patient
   title: The Silent Patient
   releaseDate: 2019-02-05
-  shelfStatus: not-owned
   mediaType: book
   subtype: novel
   creatives:
@@ -488,7 +458,6 @@
 - id: verity
   title: Verity
   releaseDate: 2018-12-07
-  shelfStatus: not-owned
   mediaType: book
   subtype: novel
   creatives:
@@ -501,7 +470,6 @@
 - id: the-teacher
   title: The Teacher
   releaseDate: 2024-02-06
-  shelfStatus: not-owned
   mediaType: book
   subtype: novel
   creatives:
@@ -515,7 +483,6 @@
 - id: chrono-trigger
   title: Chrono Trigger
   releaseDate: 1995-03-11
-  shelfStatus: not-owned
   mediaType: game
   subtype: snes
   creatives:
@@ -534,7 +501,6 @@
 - id: its-a-wonderful-life
   title: "It's a Wonderful Life"
   releaseDate: 1946-12-20
-  shelfStatus: not-owned
   mediaType: film
   creatives:
     - name: Frank Capra
@@ -547,7 +513,6 @@
 - id: shop-around-the-corner
   title: The Shop Around the Corner
   releaseDate: 1940-01-12
-  shelfStatus: not-owned
   mediaType: film
   creatives:
     - name: Ernst Lubitsch
@@ -560,7 +525,6 @@
 - id: pluribus-s1
   title: Pluribus, Season 1
   releaseDate: 2025-11-07
-  shelfStatus: not-owned
   mediaType: film
   subtype: series
   creatives:
@@ -574,7 +538,6 @@
 - id: i-love-la-s1
   title: I Love L.A., Season 1
   releaseDate: 2025-11-02
-  shelfStatus: not-owned
   mediaType: film
   subtype: series
   creatives:
@@ -587,7 +550,6 @@
 - id: march-of-the-wooden-soldiers
   title: March of the Wooden Soldiers
   releaseDate: 1934-11-30
-  shelfStatus: not-owned
   mediaType: film
   creatives:
     - name: Gus Meins
@@ -602,7 +564,6 @@
 - id: knives-out-3
   title: "Wake Up Dead Man"
   releaseDate: 2025-10-08
-  shelfStatus: not-owned
   mediaType: film
   creatives:
     - name: Rian Johnson
@@ -614,7 +575,6 @@
 - id: marty-supreme
   title: Marty Supreme
   releaseDate: 2025-12-25
-  shelfStatus: not-owned
   mediaType: film
   creatives:
     - name: Josh Safdie
@@ -627,7 +587,6 @@
 - id: resurrection-2025
   title: Resurrection
   releaseDate: 2025-11-22
-  shelfStatus: not-owned
   mediaType: film
   subtype: bluray
   creatives:
@@ -640,7 +599,6 @@
 - id: die-hard-2
   title: Die Hard 2
   releaseDate: 1990-07-04
-  shelfStatus: not-owned
   mediaType: film
   subtype: bluray
   creatives:
@@ -652,7 +610,6 @@
 - id: fcukers-o
   title: O
   releaseDate: 2026-03-27
-  shelfStatus: not-owned
   mediaType: music
   subtype: cd
   creatives:
