@@ -34,7 +34,7 @@ const totalOnShelf = shelfItems.length;
     <div class="flex max-w-4xl mx-auto px-4 space-x-4 py-6 font-mono text-sm">
       <button
         data-shelf-target="the-shelf"
-        class="shelf-toggle-btn px-4 py-2 border border-stone-900 text-stone-900"
+        class="shelf-toggle-btn px-4 py-2 border border-amber-900 bg-amber-900 text-amber-50"
       >
         the shelf
       </button>
@@ -109,6 +109,7 @@ const totalOnShelf = shelfItems.length;
 
   .shelf-scroll {
     padding-left: max(1rem, calc((100vw - 1280px) / 2 + 1rem + 1rem + 11rem));
+    overscroll-behavior-x: contain;
   }
 
   .shelf-scroll::-webkit-scrollbar {
@@ -133,11 +134,11 @@ const totalOnShelf = shelfItems.length;
 
       document.querySelectorAll('.shelf-toggle-btn').forEach(button => {
         if (button.getAttribute('data-shelf-target') === shelfId) {
-          button.classList.remove('border-stone-200', 'text-stone-500', 'hover:border-stone-400');
-          button.classList.add('border-stone-900', 'text-stone-900');
+          button.classList.remove('border-stone-200', 'text-stone-500', 'hover:border-stone-400', 'transition-colors');
+          button.classList.add('border-amber-900', 'bg-amber-900', 'text-amber-50');
         } else {
-          button.classList.remove('border-stone-900', 'text-stone-900');
-          button.classList.add('border-stone-200', 'text-stone-500', 'hover:border-stone-400');
+          button.classList.remove('border-amber-900', 'bg-amber-900', 'text-amber-50');
+          button.classList.add('border-stone-200', 'text-stone-500', 'hover:border-stone-400', 'transition-colors');
         }
       });
     }
