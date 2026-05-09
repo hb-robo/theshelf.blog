@@ -22,3 +22,11 @@ export function getAllMediaItems(): MediaItem[] {
 export function getMediaItemById(id: string): MediaItem | null {
   return getAllMediaItems().find(m => m.id === id) ?? null;
 }
+
+export function getMediaTitle(id: string): string | null {
+  return getMediaItemById(id)?.title ?? null;
+}
+
+export function getMediaCoverImage(id: string): string | null {
+  return getMediaItemById(id)?.coverImage ?? null;
+}

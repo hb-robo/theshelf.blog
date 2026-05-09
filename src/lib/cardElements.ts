@@ -1,6 +1,4 @@
-import { getMediaItemById } from './mediaData.ts';
 import type { ExpandedMediaItem, PriorityCreatives } from './types.ts';
-import { getMostRecentReviewForMedia } from './expandMediaItems.ts';
 
 export const mediaColors: Record<string, string> = {
   music: 'bg-blue-50',
@@ -118,21 +116,3 @@ export function formatCreativeLine(role: string | undefined, names: string[] | u
   return `${prefix} ${namesList}`;
 }
 
-export async function getMediaById(mediaId: string) {
-  return getMediaItemById(mediaId);
-}
-
-export async function getExpandedMediaById(mediaId: string): Promise<ExpandedMediaItem | null> {
-  const mediaItem = getMediaItemById(mediaId);
-  if (!mediaItem) return null;
-  const reviewDetails = await getMostRecentReviewForMedia(mediaItem.id);
-  return { ...mediaItem, ...reviewDetails } as ExpandedMediaItem;
-}
-
-export async function getMediaCoverImage(mediaId: string): Promise<string | null> {
-  return getMediaItemById(mediaId)?.coverImage ?? null;
-}
-
-export async function getMediaTitle(mediaId: string): Promise<string | null> {
-  return getMediaItemById(mediaId)?.title ?? null;
-}

@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { getAllMediaItems } from './mediaData.ts';
+import { getAllMediaItems, getMediaItemById } from './mediaData.ts';
 import type { ExpandedMediaItem } from './types.ts';
 
 interface ReviewMediaItemFlat {
@@ -41,6 +41,13 @@ export async function getMostRecentReviewForMedia(mediaId: string) {
   }
 
   return null;
+}
+
+export async function getExpandedMediaById(mediaId: string): Promise<ExpandedMediaItem | null> {
+  const mediaItem = getMediaItemById(mediaId);
+  if (!mediaItem) return null;
+  const reviewDetails = await getMostRecentReviewForMedia(mediaItem.id);
+  return { ...mediaItem, ...reviewDetails } as ExpandedMediaItem;
 }
 
 export async function getExpandedMediaList(): Promise<ExpandedMediaItem[]> {
