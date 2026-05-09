@@ -12,11 +12,17 @@ const recentReviews = publishedReviews
   .sort(
     (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
   )
-  .slice(0, 5);
+  .slice(0, 3);
 
 const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
 const publishedMedia = expandedMediaList.filter((m) => m.published);
-const stripItems = publishedMedia.slice().sort((a, b) => a.title.localeCompare(b.title));
+const stripItems = expandedMediaList
+  .filter(m => m.published && m.result === 'shelved')
+  .sort((a, b) => {
+    if (!a.reviewDate) return 1;
+    if (!b.reviewDate) return -1;
+    return new Date(b.reviewDate).getTime() - new Date(a.reviewDate).getTime();
+  });
 
 const totalReviews: number = publishedReviews.length;
 const totalMedia: number = publishedMedia.length;
@@ -45,7 +51,7 @@ const approvalRate =
     </div>
     <div class="max-w-4xl mx-auto px-4">
       <div class="bg-stone-100 border border-stone-200 shadow-inner overflow-hidden">
-        <div class="flex items-end gap-0.5 px-4 pt-4 pb-3 overflow-x-auto overflow-y-hidden">
+        <div class="flex items-end gap-0.5 px-4 pt-4 pb-3">
           {stripItems.map(item => <SpineDisplay itemData={item} />)}
         </div>
       </div>
