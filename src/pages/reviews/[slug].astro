@@ -29,7 +29,11 @@ const enrichedMedia = entry.data.media.map((item) => ({
 }));
 ---
 
-<BaseLayout title={entry.data.title}>
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.excerpt}
+  ogImage={entry.data.heroImage}
+>
   <div class="max-w-4xl mx-auto px-4 pt-8">
     <MediaPreviewGrid
       heroImage={entry.data.heroImage}
