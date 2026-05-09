@@ -36,15 +36,14 @@ const spinePath = itemData.spineImage
   : null;
 const imageExists = spinePath ? fs.existsSync(spinePath) : false;
 
-// <a> without href is a valid HTML5 placeholder — non-interactive, non-navigating
-const href = itemData.articleSlug ? `/reviews/${itemData.articleSlug}` : undefined;
+const href = `/media/${itemData.id}`;
 
 const releaseYear = itemData.releaseDate ? new Date(itemData.releaseDate).getFullYear() : null;
 ---
 
 <a
   href={href}
-  class={`spine-item group block relative${!href ? ' cursor-default' : ''}`}
+  class="spine-item group block relative"
   style={`
     height: calc(${heightPx}px * var(--shelf-scale));
     width: calc(${depthPx}px * var(--shelf-scale));
@@ -129,9 +128,8 @@ const releaseYear = itemData.releaseDate ? new Date(itemData.releaseDate).getFul
   </div>
 
   <!-- Hover overlay with title -->
-  {href && (
-    <div class={`absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity
-                flex flex-col items-center justify-center p-1 pointer-events-none ${spec.topRounding} ${spec.bottomRounding}`}>
+  <div class={`absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity
+              flex flex-col items-center justify-center p-1 pointer-events-none ${spec.topRounding} ${spec.bottomRounding}`}>
       <div class="spine-text transform rotate-90 text-center flex gap-1 items-baseline overflow-hidden"
           style={`max-width: calc(${contentHeightPx}px * var(--shelf-scale));`}>
         <span class="font-bold text-s text-white leading-tight truncate flex-1 min-w-0" style="font-size: calc(0.85rem * var(--shelf-scale));">
@@ -144,7 +142,6 @@ const releaseYear = itemData.releaseDate ? new Date(itemData.releaseDate).getFul
         )}
       </div>
     </div>
-  )}
 
   <!-- Depth shadow effect -->
   <div class={`absolute inset-0 pointer-events-none shadow-md group-hover:shadow-md transition-shadow ${spec.topRounding} ${spec.bottomRounding}`}></div>

@@ -1,0 +1,236 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpineDisplay from '../../components/SpineDisplay.astro';
+import { getAllMediaItems } from '../../lib/mediaData';
+import { getExpandedMediaById } from '../../lib/expandMediaItems';
+import { getCollection, render } from 'astro:content';
+import { getScoreColor, getPriorityCreatives, formatCreativeLine } from '../../lib/cardElements';
+
+export async function getStaticPaths() {
+  const mediaItems = getAllMediaItems();
+  return mediaItems.map(item => ({ params: { id: item.id } }));
+}
+
+const { id } = Astro.params;
+const item = await getExpandedMediaById(id!);
+if (!item) return Astro.redirect('/media');
+
+const [allEvents, allReviews] = await Promise.all([
+  getCollection('events'),
+  getCollection('reviews'),
+]);
+
+const mediaEvents = allEvents.filter(e => e.data.mediaId === id);
+const reviewAppearances = allReviews
+  .filter(r => r.data.media.some(m => m.id === id))
+  .map(r => {
+    const m = r.data.media.find(m => m.id === id)!;
+    return {
+      kind: 'review' as const,
+      date: r.data.date,
+      title: r.data.title,
+      slug: r.id,
+      result: m.result,
+      score: m.score,
+      published: r.data.published,
+    };
+  });
+
+const renderedEvents = await Promise.all(
+  mediaEvents.map(async e => {
+    const { Content } = await render(e);
+    return { kind: 'event' as const, date: e.data.date, data: e.data, Content };
+  })
+);
+
+const changelog = [...renderedEvents, ...reviewAppearances]
+  .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const spineItem = { ...item, articleSlug: null };
+
+const priorityCreatives = getPriorityCreatives(item);
+const creativesLine = formatCreativeLine(priorityCreatives?.role, priorityCreatives?.names);
+const releaseYear = item.releaseDate ? new Date(item.releaseDate).getFullYear() : null;
+
+const SOURCE_LABELS: Record<string, string> = {
+  rym: 'RYM', letterboxd: 'Letterboxd', goodreads: 'GoodReads',
+  glitchwave: 'Glitchwave', backloggd: 'Backloggd',
+};
+const STATUS_LABELS: Record<string, string> = {
+  owned: 'owned', 'digital-only': 'digital', 'not-owned': 'not owned',
+};
+const EVENT_LABELS: Record<string, string> = {
+  acquisition: 'acquired', disposition: 'let go', verdict: 'verdict', note: 'note',
+};
+---
+
+<BaseLayout title={item.title}>
+  <div class="max-w-4xl mx-auto px-4 pt-8 pb-2">
+    <a href="/media" class="text-xs font-mono text-stone-400 hover:text-stone-900 transition-colors">← all media</a>
+  </div>
+
+  <!-- Spine strip -->
+  <div class="max-w-4xl mx-auto px-4 mt-4" style="--shelf-scale: 1.5;">
+    <div class="bg-stone-100 border border-stone-200 shadow-inner flex items-end px-8 py-4 w-fit">
+      <SpineDisplay itemData={spineItem} />
+    </div>
+  </div>
+
+  <!-- Meta + current status -->
+  <div class="max-w-4xl mx-auto px-4 py-6 flex gap-8 items-start">
+    {item.coverImage && (
+      <img
+        src={item.coverImage}
+        alt={`Cover for ${item.title}`}
+        class="hidden md:block max-h-36 object-contain shrink-0"
+      />
+    )}
+    <div class="flex-1 min-w-0">
+      <h1 class="text-3xl font-mono text-stone-900 mb-1">{item.title}</h1>
+      {creativesLine && (
+        <p class="text-stone-500 font-mono text-sm mb-2">{creativesLine}</p>
+      )}
+      <p class="text-xs font-mono text-stone-400 uppercase tracking-widest mb-5">
+        {item.mediaType}{item.subtype ? ` · ${item.subtype}` : ''}{releaseYear ? ` · ${releaseYear}` : ''}
+      </p>
+
+      <div class="flex items-center gap-3 flex-wrap">
+        {item.score && (
+          <div class={`w-9 h-9 flex items-center justify-center font-bold font-mono text-sm ${getScoreColor(item.score)}`}>
+            {item.score}
+          </div>
+        )}
+        {item.result === 'shelved' && (
+          <span class="text-emerald-600 font-mono text-sm">shelved</span>
+        )}
+        {item.result === 'deferred' && (
+          <span class="text-yellow-500 font-mono text-sm">deferred</span>
+        )}
+        {item.result === 'passed' && (
+          <span class="text-red-400 font-mono text-sm">passed on</span>
+        )}
+        {item.shelfStatus && (
+          <span class="text-xs font-mono text-stone-400 border border-stone-200 px-2 py-1">
+            {STATUS_LABELS[item.shelfStatus]}
+          </span>
+        )}
+        {item.articleSlug && (
+          <a
+            href={`/reviews/${item.articleSlug}`}
+            class="text-xs font-mono text-stone-400 hover:text-stone-900 transition-colors border border-stone-200 px-2 py-1"
+          >
+            read review →
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <!-- Changelog -->
+  <div class="max-w-4xl mx-auto px-4 pb-16">
+    <div class="flex justify-between items-center border-b border-stone-200 py-3 mb-0">
+      <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">history</span>
+      <span class="text-xs font-mono text-stone-400">{changelog.length} {changelog.length === 1 ? 'entry' : 'entries'}</span>
+    </div>
+
+    {changelog.length === 0 && (
+      <p class="text-stone-400 font-mono text-sm py-8">no history yet.</p>
+    )}
+
+    {changelog.map(entry => (
+      <div class="border-b border-stone-100 py-4">
+        <div class="flex gap-6 font-mono">
+          <time class="text-xs text-stone-400 shrink-0 pt-0.5 w-24">
+            {entry.date.toLocaleDateString('fr-CA')}
+          </time>
+
+          <div class="flex-1 min-w-0">
+            {entry.kind === 'event' && (
+              <>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-xs uppercase tracking-widest text-stone-500">
+                    {EVENT_LABELS[entry.data.eventType] ?? entry.data.eventType}
+                  </span>
+                  {entry.data.source !== 'site' && (
+                    <span class="text-xs text-stone-400 border border-stone-200 px-1.5 py-0.5">
+                      {SOURCE_LABELS[entry.data.source] ?? entry.data.source}
+                    </span>
+                  )}
+                  {entry.data.sourceUrl && (
+                    <a
+                      href={entry.data.sourceUrl}
+                      class="text-xs text-stone-400 hover:text-stone-700 transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      ↗
+                    </a>
+                  )}
+                </div>
+
+                <div class="flex items-center gap-3 text-sm flex-wrap">
+                  {entry.data.shelfStatus && (
+                    <span class="text-stone-600">{STATUS_LABELS[entry.data.shelfStatus]}</span>
+                  )}
+                  {entry.data.score && (
+                    <span class={`w-7 h-7 flex items-center justify-center font-bold text-xs ${getScoreColor(entry.data.score)}`}>
+                      {entry.data.score}
+                    </span>
+                  )}
+                  {entry.data.result === 'shelved' && (
+                    <span class="text-emerald-600 text-sm">shelved</span>
+                  )}
+                  {entry.data.result === 'deferred' && (
+                    <span class="text-yellow-500 text-sm">deferred</span>
+                  )}
+                  {entry.data.result === 'passed' && (
+                    <span class="text-red-400 text-sm">passed on</span>
+                  )}
+                </div>
+
+                {entry.data.published && (
+                  <div class="mt-3 text-sm text-stone-700 leading-relaxed prose prose-stone prose-sm font-mono max-w-none">
+                    <entry.Content />
+                  </div>
+                )}
+              </>
+            )}
+
+            {entry.kind === 'review' && (
+              <>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-xs uppercase tracking-widest text-stone-500">review</span>
+                  {!entry.published && (
+                    <span class="text-xs text-stone-300 border border-stone-200 px-1.5 py-0.5">draft</span>
+                  )}
+                </div>
+                <div class="flex items-center gap-3 flex-wrap">
+                  <a
+                    href={`/reviews/${entry.slug}`}
+                    class="text-sm text-stone-900 hover:text-stone-500 transition-colors"
+                  >
+                    {entry.title}
+                  </a>
+                  {entry.score && (
+                    <span class={`w-7 h-7 flex items-center justify-center font-bold text-xs ${getScoreColor(entry.score)}`}>
+                      {entry.score}
+                    </span>
+                  )}
+                  {entry.result === 'shelved' && (
+                    <span class="text-emerald-600 text-sm">shelved</span>
+                  )}
+                  {entry.result === 'deferred' && (
+                    <span class="text-yellow-500 text-sm">deferred</span>
+                  )}
+                  {entry.result === 'passed' && (
+                    <span class="text-red-400 text-sm">passed on</span>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</BaseLayout>

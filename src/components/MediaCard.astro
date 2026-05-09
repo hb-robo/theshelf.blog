@@ -42,18 +42,12 @@ const mediaColor = mediaColors[itemData.mediaType];
     <div class="p-2.5 @[32rem]:p-4 flex w-full flex-col justify-between">
       <div class="mb-1">
           <h3 class="text-base @[32rem]:text-xl font-mono mb-1">
-            {
-              itemData.articleSlug ? (
-                <a
-                  href={`/reviews/${itemData.articleSlug}`}
-                  class="hover:text-stone-600 transition-colors"
-                >
-                  {itemData.title}
-                </a>
-              ) : (
-                itemData.title
-              )
-            }
+            <a
+              href={`/media/${itemData.id}`}
+              class="hover:text-stone-600 transition-colors"
+            >
+              {itemData.title}
+            </a>
           </h3>
 
           <div class="creatives-output mb-1 @[32rem]:mb-2 font-mono">
