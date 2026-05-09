@@ -27,7 +27,7 @@ const enrichedMediaList = media.map((mediaItem) => ({
 ---
 
 <article
-  class="border border-stone-200 overflow-hidden hover:border-stone-400 transition-colors"
+  class="relative border border-stone-200 overflow-hidden hover:border-stone-400 transition-colors"
 >
   <div class="flex flex-col md:flex-row md:max-h-48">
     <MediaPreviewGrid
@@ -42,7 +42,7 @@ const enrichedMediaList = media.map((mediaItem) => ({
           <h3 class="text-xl font-mono mb-1">
             <a
               href={`/reviews/${itemData.id}`}
-              class="hover:text-stone-600 transition-colors"
+              class="hover:text-stone-600 transition-colors after:absolute after:inset-0"
             >
               {title}
             </a>
@@ -99,12 +99,7 @@ const enrichedMediaList = media.map((mediaItem) => ({
             </div>
           )
         }
-        <a
-          href={`/reviews/${itemData.id}`}
-          class="text-stone-400 hover:text-stone-900 transition-colors text-sm"
-        >
-          read review →
-        </a>
+        <span class="text-stone-400 text-sm">read review →</span>
       </div>
     </div>
   </div>
