@@ -1,5 +1,5 @@
 - id: casiopea
-  title: "Casiopea: The Complete Self-Titled Debut Album Remastered Edition"
+  title: "Casiopea"
   releaseDate: 1979-05-25
   shelfStatus: owned
   mediaType: music
@@ -26,7 +26,7 @@
   # spineImage: /images/games/spines/the-world-ends-with-you-spine.jpg
 
 - id: one-room-survival
-  title: One-Room Survival One Room Survival One Room Survival
+  title: One-Room Survival
   releaseDate: 2002-11-21
   shelfStatus: owned
   mediaType: music
