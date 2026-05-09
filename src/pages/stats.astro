@@ -125,6 +125,14 @@ const totalByType: Record<string, number> = {
   game:  allMedia.filter(m => m.mediaType === 'game').length,
 };
 
+const shelvedMedia = publishedMedia.filter(m => m.result === 'shelved');
+const collectionCounts = {
+  owned: shelvedMedia.filter(m => m.shelfStatus === 'owned').length,
+  digital: shelvedMedia.filter(m => m.shelfStatus === 'digital-only').length,
+  wishlisted: shelvedMedia.filter(m => m.shelfStatus === 'not-owned').length,
+};
+const collectionTotal = shelvedMedia.length;
+
 const typeStats = Object.entries(byType).map(([type, items]) => {
   const onShelfItems = items.filter(m => m.result === 'shelved');
   return {
@@ -447,8 +455,8 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
       });
     </script>
 
-    <section>
-      <h2 class="text-2xl font-mono mb-6 text-stone-900">collection status</h2>
+    <section class="mb-12">
+      <h2 class="text-2xl font-mono mb-6 text-stone-900">backlog status</h2>
       <div class="border border-stone-200 p-6 space-y-4">
         <div>
           <div class="flex justify-between text-xs font-mono text-stone-400 uppercase tracking-widest mb-2">
@@ -483,6 +491,48 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
         <div class="flex justify-between font-mono text-xs text-stone-400 pt-1">
           <span>{reviewed} reviewed</span>
           <span>{unreviewed} pending</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-mono mb-6 text-stone-900">collection status</h2>
+      <p class="text-xs font-mono text-stone-400 mb-4 -mt-4">shelved items only</p>
+      <div class="border border-stone-200 p-6 space-y-4">
+        <div class="w-full h-4 overflow-hidden flex">
+          {collectionCounts.owned > 0 && (
+            <div class="h-full bg-violet-400" style={`width: ${(collectionCounts.owned / collectionTotal) * 100}%`} />
+          )}
+          {collectionCounts.digital > 0 && (
+            <div class="h-full bg-orange-400" style={`width: ${(collectionCounts.digital / collectionTotal) * 100}%`} />
+          )}
+          {collectionCounts.wishlisted > 0 && (
+            <div class="h-full bg-stone-200" style={`width: ${(collectionCounts.wishlisted / collectionTotal) * 100}%`} />
+          )}
+        </div>
+
+        <div class="space-y-2">
+          {([
+            { key: 'owned',      label: 'owned',      count: collectionCounts.owned,      color: 'bg-violet-400' },
+            { key: 'digital',    label: 'digital-only',    count: collectionCounts.digital,    color: 'bg-orange-400' },
+            { key: 'wishlisted', label: 'wishlisted', count: collectionCounts.wishlisted, color: 'bg-stone-200' },
+          ] as const).map(({ label, count, color }) => (
+            <div class="flex items-center gap-3">
+              <div class="w-22 text-right font-mono text-stone-400 text-xs">{label}</div>
+              <div class="flex-1 h-4 overflow-hidden">
+                <div
+                  class={`h-full ${color}`}
+                  style={`width: ${collectionTotal > 0 ? (count / collectionTotal) * 100 : 0}%`}
+                />
+              </div>
+              <div class="w-6 font-mono text-stone-400 text-xs">{count}</div>
+            </div>
+          ))}
+        </div>
+
+        <div class="flex justify-between font-mono text-xs text-stone-400 pt-1 border-t border-stone-100">
+          <span>{collectionCounts.owned + collectionCounts.digital} in collection</span>
+          <span>{collectionCounts.wishlisted} wishlisted</span>
         </div>
       </div>
     </section>
