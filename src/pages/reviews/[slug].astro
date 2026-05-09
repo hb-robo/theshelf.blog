@@ -25,7 +25,7 @@ const { Content } = await render(entry);
 const enrichedMedia = entry.data.media.map((item) => ({
   ...item,
   title: getMediaTitle(item.id) || 'Unknown',
-  coverImage: getMediaCoverImage(item.id) || '/placeholder.jpg',
+  coverImage: getMediaCoverImage(item.id),
 }));
 ---
 

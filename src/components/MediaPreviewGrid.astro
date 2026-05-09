@@ -1,6 +1,6 @@
 ---
 export interface MediaPreviewItem {
-  coverImage: string;
+  coverImage?: string | null;
   title?: string;
 }
 
@@ -22,8 +22,9 @@ const {
   height = "h-56",
 } = Astro.props;
 
-const count = items.length;
-const visibleItems = items.slice(0, maxItems);
+const withImages = items.filter(m => m.coverImage);
+const count = withImages.length;
+const visibleItems = withImages.slice(0, maxItems);
 const overflow = count - maxItems;
 ---
 
@@ -41,15 +42,15 @@ const overflow = count - maxItems;
     <>
       {count === 1 && (
         <div class="flex items-center justify-center h-full">
-          <img src={items[0].coverImage} alt={items[0].title} class="max-h-full object-contain" />
+          <img src={withImages[0].coverImage!} alt={withImages[0].title} class="max-h-full object-contain" />
         </div>
       )}
 
       {count === 2 && (
         <div class="grid grid-cols-2 gap-2 h-full">
-          {items.map((m) => (
+          {withImages.map((m) => (
             <div class="flex items-center justify-center h-full overflow-hidden">
-              <img src={m.coverImage} alt={m.title} class="max-w-full max-h-full object-contain" />
+              <img src={m.coverImage!} alt={m.title} class="max-w-full max-h-full object-contain" />
             </div>
           ))}
         </div>
@@ -57,9 +58,9 @@ const overflow = count - maxItems;
 
       {count === 4 && (
         <div class="grid grid-cols-2 grid-rows-2 gap-2 h-full">
-          {items.map((m) => (
+          {withImages.map((m) => (
             <div class="flex items-center justify-center h-full">
-              <img src={m.coverImage} alt={m.title} class="max-h-full max-w-full object-contain" />
+              <img src={m.coverImage!} alt={m.title} class="max-h-full max-w-full object-contain" />
             </div>
           ))}
         </div>
@@ -67,9 +68,9 @@ const overflow = count - maxItems;
 
       {(count === 3 || count === 6) && (
         <div class={`grid grid-cols-3 gap-2 h-full ${count === 6 ? 'grid-rows-2' : 'grid-rows-1'}`}>
-          {items.slice(0, 6).map((m) => (
+          {withImages.slice(0, 6).map((m) => (
             <div class="flex items-center justify-center h-full">
-              <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
+              <img src={m.coverImage!} alt={m.title} class="max-h-full object-contain" />
             </div>
           ))}
         </div>
@@ -77,14 +78,14 @@ const overflow = count - maxItems;
 
       {count === 5 && (
         <div class="grid grid-cols-6 grid-rows-2 gap-2 h-full">
-          {items.slice(0, 3).map((m) => (
+          {withImages.slice(0, 3).map((m) => (
             <div class="col-span-2 flex items-center justify-center h-full">
-              <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
+              <img src={m.coverImage!} alt={m.title} class="max-h-full object-contain" />
             </div>
           ))}
-          {items.slice(3, 5).map((m) => (
+          {withImages.slice(3, 5).map((m) => (
             <div class="col-span-3 flex items-center justify-center h-full">
-              <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
+              <img src={m.coverImage!} alt={m.title} class="max-h-full object-contain" />
             </div>
           ))}
         </div>
@@ -92,9 +93,9 @@ const overflow = count - maxItems;
 
       {count >= 7 && count <= 9 && (
         <div class="grid grid-cols-3 grid-rows-3 gap-1 h-full">
-          {items.slice(0, 9).map((m) => (
+          {withImages.slice(0, 9).map((m) => (
             <div class="flex items-center justify-center h-full">
-              <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
+              <img src={m.coverImage!} alt={m.title} class="max-h-full object-contain" />
             </div>
           ))}
         </div>

@@ -22,7 +22,7 @@ const displayExcerpt = excerpt || generateExcerpt(shelvedCount, missedCount);
 const enrichedMediaList = media.map((mediaItem) => ({
   ...mediaItem,
   title: getMediaTitle(mediaItem.id) || "Unknown Title",
-  coverImage: getMediaCoverImage(mediaItem.id) || "/placeholder.jpg",
+  coverImage: getMediaCoverImage(mediaItem.id),
 }));
 ---
 
