@@ -44,8 +44,14 @@ const defaultDescription = "musings on the ultimate zero-sum game: what books, a
   <body
     class="flex flex-col min-h-screen bg-amber-50 text-stone-900 overscroll-none"
   >
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-amber-900 focus:text-amber-50 focus:font-mono focus:text-sm"
+    >
+      skip to content
+    </a>
     <Navigation big={bigNav} />
-    <div class="grow">
+    <div id="main-content" class="grow">
       <slot />
     </div>
     <Footer />
