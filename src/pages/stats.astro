@@ -39,6 +39,25 @@ const avgScore = scoredMedia.length > 0
 
 const approvalRate = reviewed > 0 ? Math.round((onShelf / reviewed) * 100) : 0;
 
+const toggleActiveClasses: Record<string, string> = {
+  all:   'border-zinc-900 bg-zinc-900 text-white',
+  film:  'border-slate-400 bg-slate-400 text-white',
+  music: 'border-blue-400 bg-blue-400 text-white',
+  book:  'border-emerald-400 bg-emerald-400 text-white',
+  game:  'border-red-400 bg-red-400 text-white',
+};
+
+const scoresByType: Record<string, number[]> = { film: [], music: [], book: [], game: [] };
+publishedMedia.forEach(m => {
+  if (m.score) {
+    const t = m.mediaType as string;
+    if (t in scoresByType) scoresByType[t].push(Number(m.score));
+  }
+});
+
+const scoreColorMap: Record<number, string> = {};
+[10, 9, 8, 7, 6, 5, 4, 3, 2, 1].forEach(s => { scoreColorMap[s] = getScoreColor(s).split(' ')[0]; });
+
 const byType = {
   film: publishedMedia.filter(m => m.mediaType === 'film'),
   music: publishedMedia.filter(m => m.mediaType === 'music'),
@@ -46,37 +65,65 @@ const byType = {
   game: publishedMedia.filter(m => m.mediaType === 'game'),
 };
 
-// Decade breakdown
-const decadeCounts: Record<string, number> = {};
+// Decade breakdown by media type
+const mediaTypeOrder = ['film', 'music', 'book', 'game'] as const;
+const mediaTypeColors: Record<string, string> = {
+  film: 'bg-slate-400',
+  music: 'bg-blue-400',
+  book: 'bg-emerald-400',
+  game: 'bg-red-400',
+};
+const decadeByType: Record<string, Record<string, number>> = {};
 publishedMedia.forEach(m => {
   if (m.releaseDate) {
     const year = parseInt(m.releaseDate.substring(0, 4));
     if (!isNaN(year)) {
-      const decade = Math.floor(year / 10) * 10;
-      const key = `${decade}s`;
-      decadeCounts[key] = (decadeCounts[key] || 0) + 1;
+      const key = `${Math.floor(year / 10) * 10}s`;
+      if (!decadeByType[key]) decadeByType[key] = { film: 0, music: 0, book: 0, game: 0 };
+      if (m.mediaType in decadeByType[key]) decadeByType[key][m.mediaType]++;
     }
   }
 });
-const decades = Object.entries(decadeCounts).sort(([a], [b]) => parseInt(a) - parseInt(b));
-const maxDecadeCount = Math.max(...Object.values(decadeCounts), 1);
+const decades = Object.entries(decadeByType).sort(([a], [b]) => parseInt(a) - parseInt(b));
+const maxDecadeCount = Math.max(...decades.map(([, counts]) => Object.values(counts).reduce((s, n) => s + n, 0)), 1);
+const maxByType: Record<string, number> = { film: 0, music: 0, book: 0, game: 0 };
+decades.forEach(([, counts]) => {
+  mediaTypeOrder.forEach(type => { if (counts[type] > maxByType[type]) maxByType[type] = counts[type]; });
+});
 
 // Highest rated creators
-const creatorScores: Record<string, number[]> = {};
+const creatorScoresByType: Record<string, Record<string, number[]>> = {};
 publishedMedia.forEach(m => {
   if (m.creatives && m.score) {
     m.creatives.forEach((c: { name: string; role: string }) => {
-      if (!creatorScores[c.name]) creatorScores[c.name] = [];
-      creatorScores[c.name].push(Number(m.score));
+      if (!creatorScoresByType[c.name]) creatorScoresByType[c.name] = { film: [], music: [], book: [], game: [] };
+      const t = m.mediaType as string;
+      if (t in creatorScoresByType[c.name]) creatorScoresByType[c.name][t].push(Number(m.score));
     });
   }
 });
-const topCreators = Object.entries(creatorScores)
-  .filter(([, scores]) => scores.length >= 2)
-  .map(([name, scores]) => [name, scores.reduce((s, n) => s + n, 0) / scores.length] as [string, number])
-  .sort(([, a], [, b]) => b - a)
-  .slice(0, 10);
+function topCreatorsForFilter(filter: string) {
+  return Object.entries(creatorScoresByType)
+    .map(([name, byType]) => {
+      const scores = filter === 'all'
+        ? Object.values(byType).flat()
+        : byType[filter] ?? [];
+      return [name, scores] as [string, number[]];
+    })
+    .filter(([, scores]) => scores.length >= 2)
+    .map(([name, scores]) => [name, scores.reduce((s, n) => s + n, 0) / scores.length] as [string, number])
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 10);
+}
+const topCreators = topCreatorsForFilter('all');
 const maxCreatorCount = 10;
+
+const totalByType: Record<string, number> = {
+  film:  allMedia.filter(m => m.mediaType === 'film').length,
+  music: allMedia.filter(m => m.mediaType === 'music').length,
+  book:  allMedia.filter(m => m.mediaType === 'book').length,
+  game:  allMedia.filter(m => m.mediaType === 'game').length,
+};
 
 const typeStats = Object.entries(byType).map(([type, items]) => {
   const onShelfItems = items.filter(m => m.result === 'shelved');
@@ -121,8 +168,21 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
 
     <!-- Score Distribution -->
     <section class="mb-12">
-      <h2 class="text-2xl font-mono mb-6 text-zinc-900">score distribution</h2>
-      <div class="space-y-1.5">
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-2xl font-mono text-zinc-900">score distribution</h2>
+        <div class="flex gap-2 font-mono text-xs" id="score-dist-toggles">
+          {(['all', ...mediaTypeOrder] as const).map(type => (
+            <button
+              data-filter={type}
+              data-active-class={toggleActiveClasses[type]}
+              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div class="space-y-1.5" id="score-dist-chart">
         {[10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(baseScore => {
           const wholeCount = scoreCounts[baseScore.toString()];
           const halfCount = baseScore < 10 ? scoreCounts[(baseScore + 0.5).toString()] : 0;
@@ -130,24 +190,13 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
           const percentage = maxCombinedCount > 0 ? (totalCount / maxCombinedCount) * 100 : 0;
           const wholePercentage = totalCount > 0 ? (wholeCount / totalCount) * 100 : 0;
           const scoreColor = getScoreColor(baseScore);
-
           return (
             <div class="flex items-center gap-3">
               <div class="w-6 text-right font-mono text-zinc-400 text-xs">{baseScore}</div>
               <div class="flex-1 h-6 relative overflow-hidden">
                 <div class="h-full flex" style={`width: ${percentage}%`}>
-                  {wholeCount > 0 && (
-                    <div
-                      class={`h-full ${scoreColor}`}
-                      style={`width: ${wholePercentage}%`}
-                    />
-                  )}
-                  {halfCount > 0 && (
-                    <div
-                      class={`h-full ${scoreColor} opacity-50`}
-                      style={`width: ${100 - wholePercentage}%`}
-                    />
-                  )}
+                  {wholeCount > 0 && <div class={`h-full ${scoreColor}`} style={`width: ${wholePercentage}%`} />}
+                  {halfCount > 0 && <div class={`h-full ${scoreColor} opacity-50`} style={`width: ${100 - wholePercentage}%`} />}
                 </div>
               </div>
               <div class="w-6 font-mono text-zinc-400 text-xs">{totalCount || ''}</div>
@@ -156,6 +205,53 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
         })}
       </div>
     </section>
+
+    <script is:inline define:vars={{ scoresByType, scoreColorMap }}>
+      const baseScores = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+
+      function renderScoreDist(filter) {
+        const scores = filter === 'all'
+          ? Object.values(scoresByType).flat()
+          : (scoresByType[filter] ?? []);
+
+        const counts = {};
+        scores.forEach(s => { counts[s] = (counts[s] || 0) + 1; });
+
+        let max = 0;
+        baseScores.forEach(base => {
+          const total = (counts[base] || 0) + (base < 10 ? (counts[base + 0.5] || 0) : 0);
+          if (total > max) max = total;
+        });
+
+        document.getElementById('score-dist-chart').innerHTML = baseScores.map(base => {
+          const whole = counts[base] || 0;
+          const half = base < 10 ? (counts[base + 0.5] || 0) : 0;
+          const total = whole + half;
+          const pct = max > 0 ? (total / max) * 100 : 0;
+          const wholePct = total > 0 ? (whole / total) * 100 : 0;
+          const bg = scoreColorMap[base];
+          return `
+            <div class="flex items-center gap-3">
+              <div class="w-6 text-right font-mono text-zinc-400 text-xs">${base}</div>
+              <div class="flex-1 h-6 relative overflow-hidden">
+                <div class="h-full flex" style="width: ${pct}%">
+                  ${whole > 0 ? `<div class="h-full ${bg}" style="width: ${wholePct}%"></div>` : ''}
+                  ${half > 0 ? `<div class="h-full ${bg} opacity-50" style="width: ${100 - wholePct}%"></div>` : ''}
+                </div>
+              </div>
+              <div class="w-6 font-mono text-zinc-400 text-xs">${total || ''}</div>
+            </div>`;
+        }).join('');
+
+        document.querySelectorAll('#score-dist-toggles button').forEach(btn => {
+          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`;
+        });
+      }
+
+      document.querySelectorAll('#score-dist-toggles button').forEach(btn => {
+        btn.addEventListener('click', () => renderScoreDist(btn.dataset.filter));
+      });
+    </script>
 
     <!-- By Media Type -->
     <section class="mb-12">
@@ -189,35 +285,120 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
 
     <!-- Release Decade -->
     <section class="mb-12">
-      <h2 class="text-2xl font-mono mb-6 text-zinc-900">by decade</h2>
-      <div class="space-y-1.5">
-        {decades.map(([decade, count]) => (
-          <div class="flex items-center gap-3">
-            <div class="w-12 text-right font-mono text-zinc-400 text-xs">{decade}</div>
-            <div class="flex-1 h-6 overflow-hidden">
-              <div
-                class="h-full bg-zinc-400"
-                style={`width: ${(count / maxDecadeCount) * 100}%`}
-              />
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-2xl font-mono text-zinc-900">by decade</h2>
+        <div class="flex gap-2 font-mono text-xs" id="decade-toggles">
+          {(['all', ...mediaTypeOrder] as const).map(type => (
+            <button
+              data-filter={type}
+              data-active-class={toggleActiveClasses[type]}
+              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div
+        class="space-y-1.5"
+        id="decade-chart"
+        data-max-all={maxDecadeCount}
+        data-max-film={maxByType.film}
+        data-max-music={maxByType.music}
+        data-max-book={maxByType.book}
+        data-max-game={maxByType.game}
+      >
+        {decades.map(([decade, counts]) => {
+          const total = Object.values(counts).reduce((s, n) => s + n, 0);
+          return (
+            <div
+              class="flex items-center gap-3 decade-row"
+              data-film={counts.film}
+              data-music={counts.music}
+              data-book={counts.book}
+              data-game={counts.game}
+              data-total={total}
+            >
+              <div class="w-12 text-right font-mono text-zinc-400 text-xs">{decade}</div>
+              <div class="flex-1 h-6 overflow-hidden flex">
+                <div class="h-full flex decade-bar" style={`width: ${(total / maxDecadeCount) * 100}%`}>
+                  {mediaTypeOrder.map(type => counts[type] > 0 && (
+                    <div
+                      class={`h-full ${mediaTypeColors[type]} decade-segment`}
+                      data-type={type}
+                      style={`width: ${(counts[type] / total) * 100}%`}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div class="w-6 font-mono text-zinc-400 text-xs decade-count">{total}</div>
             </div>
-            <div class="w-6 font-mono text-zinc-400 text-xs">{count}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
 
+    <script>
+      const toggles = document.querySelectorAll<HTMLButtonElement>('#decade-toggles button');
+      const chart = document.getElementById('decade-chart')!;
+      const rows = chart.querySelectorAll<HTMLElement>('.decade-row');
+
+      function setFilter(filter: string) {
+        const maxAll = Number(chart.dataset.maxAll);
+        const maxType = filter !== 'all' ? Number(chart.dataset[`max${filter.charAt(0).toUpperCase() + filter.slice(1)}`]) : maxAll;
+
+        rows.forEach(row => {
+          const total = Number(row.dataset.total);
+          const typeCount = Number(row.dataset[filter] ?? total);
+          const count = filter === 'all' ? total : typeCount;
+          const max = filter === 'all' ? maxAll : maxType;
+
+          const bar = row.querySelector<HTMLElement>('.decade-bar')!;
+          bar.style.width = `${max > 0 ? (count / max) * 100 : 0}%`;
+
+          row.querySelectorAll<HTMLElement>('.decade-segment').forEach(seg => {
+            if (filter === 'all') {
+              seg.style.display = '';
+              seg.style.width = `${(Number(row.dataset[seg.dataset.type!]) / total) * 100}%`;
+            } else {
+              seg.style.display = seg.dataset.type === filter ? '' : 'none';
+              seg.style.width = '100%';
+            }
+          });
+
+          row.querySelector('.decade-count')!.textContent = String(count || '');
+        });
+
+        toggles.forEach(btn => {
+          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`;
+        });
+      }
+
+      toggles.forEach(btn => btn.addEventListener('click', () => setFilter(btn.dataset.filter!)));
+    </script>
+
     <!-- Top Creators -->
     <section class="mb-12">
-      <h2 class="text-2xl font-mono mb-6 text-zinc-900">highest rated creators</h2>
-      <div class="space-y-1.5">
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-2xl font-mono text-zinc-900">highest rated creators</h2>
+        <div class="flex gap-2 font-mono text-xs" id="creator-toggles">
+          {(['all', ...mediaTypeOrder] as const).map(type => (
+            <button
+              data-filter={type}
+              data-active-class={toggleActiveClasses[type]}
+              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div class="space-y-1.5" id="creators-chart">
         {topCreators.map(([name, avg], i) => (
           <div class="flex items-center gap-3">
             <div class="w-4 text-right font-mono text-zinc-300 text-xs">{i + 1}</div>
             <div class="flex-1 h-6 overflow-hidden relative">
-              <div
-                class="h-full bg-zinc-200"
-                style={`width: ${(avg / maxCreatorCount) * 100}%`}
-              />
+              <div class="h-full bg-zinc-200" style={`width: ${(avg / maxCreatorCount) * 100}%`} />
               <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-zinc-700">{name}</span>
             </div>
             <div class="w-10 font-mono text-zinc-400 text-xs">{avg.toFixed(2)}</div>
@@ -226,20 +407,80 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
       </div>
     </section>
 
+    <script is:inline define:vars={{ creatorScoresByType }}>
+      const mediaTypes = ['film', 'music', 'book', 'game'];
+
+      function computeTopCreators(filter) {
+        return Object.entries(creatorScoresByType)
+          .map(([name, byType]) => {
+            const scores = filter === 'all' ? mediaTypes.flatMap(t => byType[t]) : (byType[filter] ?? []);
+            return [name, scores];
+          })
+          .filter(([, scores]) => scores.length >= 2)
+          .map(([name, scores]) => [name, scores.reduce((s, n) => s + n, 0) / scores.length])
+          .sort(([, a], [, b]) => b - a)
+          .slice(0, 10);
+      }
+
+      function renderCreators(filter) {
+        const top = computeTopCreators(filter);
+        const chart = document.getElementById('creators-chart');
+        chart.innerHTML = top.length
+          ? top.map(([name, avg], i) => `
+              <div class="flex items-center gap-3">
+                <div class="w-4 text-right font-mono text-zinc-300 text-xs">${i + 1}</div>
+                <div class="flex-1 h-6 overflow-hidden relative">
+                  <div class="h-full bg-zinc-200" style="width: ${(avg / 10) * 100}%"></div>
+                  <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-zinc-700">${name}</span>
+                </div>
+                <div class="w-10 font-mono text-zinc-400 text-xs">${avg.toFixed(2)}</div>
+              </div>`).join('')
+          : '<p class="font-mono text-xs text-zinc-400">no creators with 2+ scored entries</p>';
+
+        document.querySelectorAll('#creator-toggles button').forEach(btn => {
+          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`;
+        });
+      }
+
+      document.querySelectorAll('#creator-toggles button').forEach(btn => {
+        btn.addEventListener('click', () => renderCreators(btn.dataset.filter));
+      });
+    </script>
+
     <section>
       <h2 class="text-2xl font-mono mb-6 text-zinc-900">collection status</h2>
-      <div class="border border-zinc-200 p-6">
-        <div class="flex justify-between text-xs font-mono text-zinc-400 uppercase tracking-widest mb-2">
-          <span>reviewed</span>
-          <span>{reviewed} / {totalMedia}</span>
+      <div class="border border-zinc-200 p-6 space-y-4">
+        <div>
+          <div class="flex justify-between text-xs font-mono text-zinc-400 uppercase tracking-widest mb-2">
+            <span>all</span>
+            <span>{reviewed} / {totalMedia}</span>
+          </div>
+          <div class="w-full bg-zinc-100 h-2 overflow-hidden">
+            <div
+              class="h-full bg-zinc-900 transition-all"
+              style={`width: ${totalMedia > 0 ? (reviewed / totalMedia) * 100 : 0}%`}
+            />
+          </div>
         </div>
-        <div class="w-full bg-zinc-100 h-2 overflow-hidden">
-          <div
-            class="h-full bg-zinc-900 transition-all"
-            style={`width: ${totalMedia > 0 ? (reviewed / totalMedia) * 100 : 0}%`}
-          />
+
+        <div class="border-t border-zinc-100 space-y-3 pt-1">
+          {mediaTypeOrder.map(type => (
+            <div>
+              <div class="flex justify-between text-xs font-mono text-zinc-400 mb-1.5">
+                <span>{type}</span>
+                <span>{byType[type].length} / {totalByType[type]}</span>
+              </div>
+              <div class="w-full bg-zinc-100 h-1.5 overflow-hidden">
+                <div
+                  class={`h-full ${mediaTypeColors[type]}`}
+                  style={`width: ${totalByType[type] > 0 ? (byType[type].length / totalByType[type]) * 100 : 0}%`}
+                />
+              </div>
+            </div>
+          ))}
         </div>
-        <div class="mt-3 flex justify-between font-mono text-xs text-zinc-400">
+
+        <div class="flex justify-between font-mono text-xs text-zinc-400 pt-1">
           <span>{reviewed} reviewed</span>
           <span>{unreviewed} pending</span>
         </div>
