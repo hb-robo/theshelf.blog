@@ -634,28 +634,29 @@
       role: director
   genre:
     - ?????
-  coverImage: ../../public/images/films/resurrection-2025.jpg
+  coverImage: /images/films/resurrection-2025.jpg
 
 - id: die-hard-2
   title: Die Hard 2
   releaseDate: 1990-07-04
   shelfStatus: not-owned
   mediaType: film
+  subtype: blu-ray
   creatives:
     - name: Renny Harlin
       role: director
   genre:
     - Action
-  coverImage:
 
 - id: fcukers-o
   title: O
   releaseDate: 2026-03-27
   shelfStatus: not-owned
   mediaType: music
+  subtype: cd
   creatives:
     - name: Fcukers
       role: artist
   genre:
     - House, Electropop
-  coverImage: ../../public/images/albums/fcukers-o.webp
+  coverImage: /images/albums/fcukers-o.webp
