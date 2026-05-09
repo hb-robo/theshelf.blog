@@ -17,15 +17,6 @@ export function getMediaTypeBorder(type: string): string {
   return "";
 }
 
-export function getMediaTypeBadge(type: string): string {
-  const badges: Record<string, string> = {
-    music: 'bg-blue-100 text-blue-800',
-    game: 'bg-red-100 text-red-800',
-    film: 'bg-slate-100 text-slate-800',
-    book: 'bg-green-100 text-green-800',
-  };
-  return badges[type] || 'bg-zinc-100 text-zinc-800';
-}
 
 export function getScoreColor(score: number): string {
   if (score == 10) return 'bg-blue-500 text-white';
@@ -41,23 +32,6 @@ export function getScoreColor(score: number): string {
   return 'bg-black text-white';
 }
 
-export function getScoreLabel(score: number): string {
-  if (score == 10) return 'Masterwork';
-  if (score >= 9) return 'Exceptional';
-  if (score >= 8) return 'Excellent';
-  if (score >= 7) return 'Good';
-  if (score >= 6) return 'Decent';
-  if (score >= 5) return 'Mediocre';
-  if (score >= 4) return 'Below Average';
-  if (score >= 3) return 'Deeply Flawed';
-  if (score >= 2) return 'Horrible';
-  if (score >= 1) return 'Irredeemable';
-  return 'No Score';
-}
-
-export function formatMediaType(type: string): string {
-  return type.charAt(0).toUpperCase() + type.slice(1);
-}
 
 export function generateExcerpt(madeCount: number, missedCount: number) {
   var defaultExcerpt = "Read the full review to see why ";

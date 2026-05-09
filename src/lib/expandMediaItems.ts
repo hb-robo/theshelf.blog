@@ -5,7 +5,6 @@ import type { ExpandedMediaItem } from './types.ts';
 interface ReviewMediaItemFlat {
   id: string;
   score?: number | null;
-  madeTheShelf?: boolean | null;
   result?: 'made-the-shelf' | 'maybe-later' | 'no';
   published?: boolean;
   reviewDate: Date;
@@ -17,7 +16,7 @@ export async function getMostRecentReviewForMedia(mediaId: string) {
 
   const allReviewMediaItems: ReviewMediaItemFlat[] = allReviews
     .flatMap((reviewEntry: CollectionEntry<'reviews'>) => {
-      return reviewEntry.data.media.map((item: ReviewMediaItemFlat) => ({
+      return reviewEntry.data.media.map((item) => ({
         ...item,
         published: reviewEntry.data.published,
         reviewDate: reviewEntry.data.date,
@@ -32,7 +31,6 @@ export async function getMostRecentReviewForMedia(mediaId: string) {
     const mostRecent = allReviewMediaItems[0];
     return {
       score: mostRecent.score,
-      madeTheShelf: mostRecent.madeTheShelf,
       result: mostRecent.result,
       articleSlug: mostRecent.articleSlug,
       reviewDate: mostRecent.reviewDate,
