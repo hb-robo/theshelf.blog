@@ -1,5 +1,4 @@
 ---
-// src/components/ReviewCard.astro
 import type { CollectionEntry } from "astro:content";
 import { generateExcerpt } from "../lib/cardElements";
 import { getMediaTitle, getMediaCoverImage } from "../lib/mediaData";
@@ -19,17 +18,11 @@ const missedCount = totalCount - madeCount - snoozeCount;
 
 const displayExcerpt = excerpt || generateExcerpt(madeCount, missedCount);
 
-const mediaDetailsPromises = media.map(async (mediaItem) => {
-  const title = await getMediaTitle(mediaItem.id);
-  const coverImage = await getMediaCoverImage(mediaItem.id);
-
-  return {
-    ...mediaItem,
-    title: title || "Unknown Title",
-    coverImage: coverImage || "/placeholder.jpg",
-  };
-});
-const enrichedMediaList = await Promise.all(mediaDetailsPromises);
+const enrichedMediaList = media.map((mediaItem) => ({
+  ...mediaItem,
+  title: getMediaTitle(mediaItem.id) || "Unknown Title",
+  coverImage: getMediaCoverImage(mediaItem.id) || "/placeholder.jpg",
+}));
 ---
 
 <article
