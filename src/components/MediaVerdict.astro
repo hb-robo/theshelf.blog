@@ -15,14 +15,9 @@ const resultColors: Record<Result, string> = {
   "passed": "text-zinc-400"
 };
 
-const labels: Record<Result, string> = {
-  "shelved": "shelved",
-  "deferred": "deferred",
-  "passed": "passed"
-};
 ---
 
 <span class={`inline-flex items-center gap-1 font-mono ${resultColors[result]} ${compact ? "text-sm" : "text-base"}`}>
-  {labels[result]}
+  {result}
   {score && <span class="ml-1">· {score}/10</span>}
 </span>

@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-import BigNav from "../components/BigNav.astro";
 import Navigation from "../components/Navigation.astro";
 import Footer from "../components/Footer.astro";
 
@@ -23,14 +22,14 @@ const { title, bigNav = false } = Astro.props;
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Made the Shelf"
+      title="theshelf.blog"
       href={new URL("rss.xml", Astro.site)}
     />
   </head>
   <body
     class="flex flex-col min-h-screen bg-sky-50 text-zinc-900 overscroll-none"
   >
-    {bigNav ? <BigNav /> : <Navigation />}
+    <Navigation big={bigNav} />
     <div class="grow">
       <slot />
     </div>
