@@ -118,6 +118,24 @@ function topCreatorsForFilter(filter: string) {
 const topCreators = topCreatorsForFilter('all');
 const maxCreatorCount = 10;
 
+type GenreEntry = { total: number; film: number; music: number; book: number; game: number };
+const genreCounts: Record<string, GenreEntry> = {};
+publishedMedia.forEach(m => {
+  if (!m.genre) return;
+  const raw = Array.isArray(m.genre) ? m.genre : [m.genre];
+  raw.flatMap(g => g ? g.split(', ') : []).forEach(g => {
+    const key = g.trim().toLowerCase();
+    if (!key) return;
+    if (!genreCounts[key]) genreCounts[key] = { total: 0, film: 0, music: 0, book: 0, game: 0 };
+    genreCounts[key].total++;
+    genreCounts[key][m.mediaType as keyof GenreEntry]++;
+  });
+});
+const topGenres = Object.entries(genreCounts)
+  .sort(([, a], [, b]) => b.total - a.total)
+  .slice(0, 10);
+const maxGenreCount = topGenres[0]?.[1]?.total ?? 1;
+
 const totalByType: Record<string, number> = {
   film:  allMedia.filter(m => m.mediaType === 'film').length,
   music: allMedia.filter(m => m.mediaType === 'music').length,
@@ -454,6 +472,34 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
         btn.addEventListener('click', () => renderCreators(btn.dataset.filter));
       });
     </script>
+
+    {/* TODO: uncomment when genre data is more populated
+    <section class="mb-12">
+      <h2 class="text-2xl font-mono mb-6 text-stone-900">most reviewed genres</h2>
+      {topGenres.length > 0 ? (
+        <div class="space-y-1.5">
+          {topGenres.map(([genre, counts], i) => (
+            <div class="flex items-center gap-3">
+              <div class="w-4 text-right font-mono text-stone-300 text-xs">{i + 1}</div>
+              <div class="flex-1 h-6 overflow-hidden relative">
+                <div class="h-full bg-stone-200" style={`width: ${(counts.total / maxGenreCount) * 100}%`} />
+                <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-stone-700 capitalize">{genre}</span>
+              </div>
+              <div class="flex gap-0.5 items-center">
+                {counts.film  > 0 && <span class="w-2 h-2 bg-slate-400"   title="film"  />}
+                {counts.music > 0 && <span class="w-2 h-2 bg-blue-400"    title="music" />}
+                {counts.book  > 0 && <span class="w-2 h-2 bg-emerald-400" title="book"  />}
+                {counts.game  > 0 && <span class="w-2 h-2 bg-red-400"     title="game"  />}
+              </div>
+              <div class="w-4 font-mono text-stone-400 text-xs">{counts.total}</div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p class="font-mono text-sm text-stone-400">no genre data yet</p>
+      )}
+    </section>
+    */}
 
     <section class="mb-12">
       <h2 class="text-2xl font-mono mb-6 text-stone-900">backlog status</h2>
