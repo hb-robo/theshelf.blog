@@ -1,11 +1,8 @@
 ---
 // src/components/ReviewCard.astro
 import type { CollectionEntry } from "astro:content";
-import {
-  generateExcerpt,
-  getMediaTitle,
-  getMediaCoverImage,
-} from "../lib/cardElements.ts";
+import { generateExcerpt } from "../lib/cardElements";
+import { getMediaTitle, getMediaCoverImage } from "../lib/mediaData";
 import MediaPreviewGrid from "./MediaPreviewGrid.astro";
 
 export interface Props {

@@ -1,5 +1,6 @@
 ---
-import { getScoreColor, getMediaById } from "../lib/cardElements.ts";
+import { getScoreColor } from "../lib/cardElements";
+import { getMediaItemById } from "../lib/mediaData";
 
 export interface Props {
   reviewMedia: Array<{
@@ -11,12 +12,10 @@ export interface Props {
 
 const { reviewMedia } = Astro.props;
 
-const media = await Promise.all(
-  reviewMedia.map(async (item) => ({
-    ...await getMediaById(item.id),
-    ...item,
-  }))
-);
+const media = reviewMedia.map((item) => ({
+  ...getMediaItemById(item.id),
+  ...item,
+}));
 ---
 
 <div class="not-prose border border-zinc-200 p-4 mt-8">
