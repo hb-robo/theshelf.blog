@@ -10,6 +10,7 @@ export interface Props {
   items?: MediaPreviewItem[];
   maxItems?: number;
   class?: string;
+  height?: string;
 }
 
 const {
@@ -18,6 +19,7 @@ const {
   items = [],
   maxItems = 12,
   class: className = "",
+  height = "h-56",
 } = Astro.props;
 
 const count = items.length;
@@ -26,6 +28,7 @@ const overflow = count - maxItems;
 ---
 
 <div class={className}>
+  <div class={`${height} overflow-hidden`}>
   {heroImage ? (
     <div class="flex items-center justify-center h-full">
       <img
@@ -62,8 +65,8 @@ const overflow = count - maxItems;
         </div>
       )}
 
-      {(count === 3 || (count >= 5 && count <= 6)) && (
-        <div class="grid grid-cols-3 gap-2 h-full">
+      {(count === 3 || count === 6) && (
+        <div class={`grid grid-cols-3 gap-2 h-full ${count === 6 ? 'grid-rows-2' : 'grid-rows-1'}`}>
           {items.slice(0, 6).map((m) => (
             <div class="flex items-center justify-center h-full">
               <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
@@ -72,8 +75,23 @@ const overflow = count - maxItems;
         </div>
       )}
 
+      {count === 5 && (
+        <div class="grid grid-cols-6 grid-rows-2 gap-2 h-full">
+          {items.slice(0, 3).map((m) => (
+            <div class="col-span-2 flex items-center justify-center h-full">
+              <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
+            </div>
+          ))}
+          {items.slice(3, 5).map((m) => (
+            <div class="col-span-3 flex items-center justify-center h-full">
+              <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
+            </div>
+          ))}
+        </div>
+      )}
+
       {count >= 7 && count <= 9 && (
-        <div class="grid grid-cols-3 gap-1 h-full">
+        <div class="grid grid-cols-3 grid-rows-3 gap-1 h-full">
           {items.slice(0, 9).map((m) => (
             <div class="flex items-center justify-center h-full">
               <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
@@ -84,7 +102,7 @@ const overflow = count - maxItems;
 
       {count >= 10 && (
         <div class="relative h-full">
-          <div class="grid grid-cols-4 gap-1 h-full">
+          <div class="grid grid-cols-4 grid-rows-3 gap-1 h-full">
             {visibleItems.map((m, idx) => (
               <div class="flex items-center justify-center h-full relative">
                 <img src={m.coverImage} alt={m.title} class="max-h-full object-contain" />
@@ -100,4 +118,5 @@ const overflow = count - maxItems;
       )}
     </>
   ) : null}
+  </div>
 </div>

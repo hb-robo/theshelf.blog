@@ -1,0 +1,31 @@
+---
+title: "Test Review: Five Items"
+date: 2026-05-09
+published: true
+excerpt: "A test review spanning film, album, novel, game, and series to exercise the MediaPreviewGrid count=5 layout."
+heroImage: ""
+
+media:
+  - id: stray
+    result: shelved
+    score: 9
+  - id: fantasma
+    result: shelved
+    score: 8
+  - id: the-silent-patient
+    result: passed
+    score: 7
+  - id: fcukers-o
+    result: shelved
+    score: 8
+  - id: resurrection-2025
+    result: shelved
+    score: 10
+---
+
+import MediaIntro from "../../components/MediaIntro.astro";
+import MediaResult from "../../components/MediaResult.astro";
+import MediaVerdict from "../../components/MediaVerdict.astro";
+import { getExpandedMediaById } from "../../lib/expandMediaItems.ts";
+
+This is a test review to exercise the five-item MediaPreviewGrid layout (3 on top, 2 centered below).

@@ -1,0 +1,43 @@
+---
+title: "Test Review: Nine Items"
+date: 2026-05-09
+published: true
+excerpt: "A test review with nine items to exercise the 3×3 MediaPreviewGrid layout."
+heroImage: ""
+
+media:
+  - id: stray
+    result: shelved
+    score: 9
+  - id: fantasma
+    result: shelved
+    score: 8
+  - id: the-silent-patient
+    result: passed
+    score: 7
+  - id: resurrection-2025
+    result: shelved
+    score: 10
+  - id: kh1
+    result: shelved
+    score: 9
+  - id: verity
+    result: passed
+    score: 6
+  - id: virgin-suicides-coppola
+    result: shelved
+    score: 8
+  - id: casiopea
+    result: shelved
+    score: 9
+  - id: chrono-trigger
+    result: shelved
+    score: 10
+---
+
+import MediaIntro from "../../components/MediaIntro.astro";
+import MediaResult from "../../components/MediaResult.astro";
+import MediaVerdict from "../../components/MediaVerdict.astro";
+import { getExpandedMediaById } from "../../lib/expandMediaItems.ts";
+
+This is a test review to exercise the nine-item MediaPreviewGrid layout (3×3 grid).
