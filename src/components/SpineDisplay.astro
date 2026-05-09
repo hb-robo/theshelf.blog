@@ -49,7 +49,7 @@ const imageExists = spinePath ? fs.existsSync(spinePath) : false;
   title={`${itemData.title}${creativesLine ? ` ${creativesLine}` : ''}`}
 >
   <!-- Case Structure -->
-  <div class="spine-case h-full w-full relative flex flex-col bg-inherit ${spec.topRounding} ${spec.bottomRounding} overflow-hidden`}">
+  <div class={`spine-case h-full w-full relative flex flex-col bg-inherit ${spec.topRounding} ${spec.bottomRounding} overflow-hidden`}>
     
     <!-- Top Buffer (clear plastic, etc.) -->
     {spec.topBuffer > 0 && (
