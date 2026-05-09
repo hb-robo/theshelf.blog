@@ -1,5 +1,4 @@
 ---
-// src/components/MediaCard.astro
 import {
   mediaColors,
   getScoreColor,
@@ -75,7 +74,7 @@ const mediaColor = mediaColors[itemData.mediaType];
           </div>
 
           
-          <p class="text-zinc-400 text-sm flex flex-row flex-wrap gap-x-1">
+          <p class="text-zinc-400 text-sm flex flex-row flex-wrap gap-x-2">
             {
               itemData.releaseDate && (
                 <span>
@@ -94,8 +93,8 @@ const mediaColor = mediaColors[itemData.mediaType];
               itemData.genre && (
                 <span>
                   {Array.isArray(itemData.genre)
-                    ? itemData.genre.join(", ")
-                    : itemData.genre}
+                    ? itemData.genre.map(g => g.toLowerCase()).join(", ")
+                    : itemData.genre.toLowerCase()}
                 </span>
               )
             }
@@ -103,7 +102,6 @@ const mediaColor = mediaColors[itemData.mediaType];
         </div>
       </div>
 
-      <!-- MediaCard footer - release date, badges -->
       <div
         class="flex justify-between items-center text-sm text-zinc-400 border-t border-zinc-200 mt-4 pt-3"
       >
@@ -131,7 +129,7 @@ const mediaColor = mediaColors[itemData.mediaType];
                     >
                       <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z" />
                     </svg>
-                    <span>Shelved</span>
+                    <span>shelved</span>
                   </span>
                 )}
 
@@ -140,7 +138,7 @@ const mediaColor = mediaColors[itemData.mediaType];
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32" class="w-5 h-5">
                       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"/>
                     </svg>
-                    <span>Deferred</span>
+                    <span>deferred</span>
                   </span>
                 )}
 
@@ -152,7 +150,7 @@ const mediaColor = mediaColors[itemData.mediaType];
                         <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2M4 12a8 8 0 1 1 16 0a8 8 0 0 1-16 0" clip-rule="evenodd"/>
                       </g>
                     </svg>
-                    <span>Passed On</span>
+                    <span>passed on</span>
                   </span>
                 )}
               </>
@@ -166,7 +164,7 @@ const mediaColor = mediaColors[itemData.mediaType];
                 >
                   <path d="M4 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4.703L16 20a1 1 0 0 0 1.186.77l3.912-.832a1 1 0 0 0 .77-1.186l-2.91-13.694a1 1 0 0 0-1.186-.77l-2.78.59A1 1 0 0 0 14 4h-4a1 1 0 0 0-1-1zm6 3h3v8h-3zm0 13v-3h3v3zM8 5v10H5V5zm0 12v2H5v-2zm9.332-.35l1.956-.416l.416 1.956l-1.956.416zm-.416-1.957l-1.663-7.825l1.956-.416l1.664 7.826z" />
                 </svg>
-                <span class="block">Pending Review</span>
+                <span class="block">pending review</span>
               </span>
             )
           }
