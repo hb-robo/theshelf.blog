@@ -22,29 +22,26 @@ const mediaColor = mediaColors[itemData.mediaType];
 ---
 
 <article
-  class={`media-item border ${mediaBorder} overflow-hidden hover:border-zinc-400 transition-colors`}
+  class={`@container media-item border ${mediaBorder} overflow-hidden hover:border-zinc-400 transition-colors`}
 >
-  <div class="flex flex-col md:flex-row">
+  <div class="flex flex-row">
     {
       itemData.coverImage && (
         <div
-          class={`md:w-48 md:min-w-48 flex items-center justify-center p-2 md:p-3 ${mediaColor} border-b md:border-b-0 md:border-r ${mediaBorder}`}
+          class={`w-32 min-w-32 @[32rem]:w-48 @[32rem]:min-w-48 flex items-center justify-center p-2 @[32rem]:p-3 ${mediaColor} border-r ${mediaBorder}`}
         >
           <img
             src={itemData.coverImage}
             alt={`Cover art for ${itemData.title}`}
-            class="max-w-full max-h-48 object-contain"
+            class="max-w-full max-h-full object-contain"
           />
         </div>
       )
     }
 
-    <div class="p-5 flex w-full flex-col justify-between">
-      <div
-        class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-1"
-      >
-        <div class="flex-1">
-          <h3 class="text-xl font-mono mb-1">
+    <div class="p-2.5 @[32rem]:p-4 flex w-full flex-col justify-between">
+      <div class="mb-1">
+          <h3 class="text-base @[32rem]:text-xl font-mono mb-1">
             {
               itemData.articleSlug ? (
                 <a
@@ -59,7 +56,7 @@ const mediaColor = mediaColors[itemData.mediaType];
             }
           </h3>
 
-          <div class="creatives-output mb-2 text-lg">
+          <div class="creatives-output mb-1 @[32rem]:mb-2">
             {rolesInOrder.length > 0 ? (
               <ul>
                 {rolesInOrder.map(role => (
@@ -99,11 +96,10 @@ const mediaColor = mediaColors[itemData.mediaType];
               )
             }
           </p>
-        </div>
       </div>
 
       <div
-        class="flex justify-between items-center text-sm text-zinc-400 border-t border-zinc-200 mt-4 pt-3"
+        class="flex justify-between items-center text-sm text-zinc-400 border-t border-zinc-200 mt-2 pt-1.5 @[32rem]:mt-3 @[32rem]:pt-2"
       >
         <div class="flex gap-2 h-8">
           {
