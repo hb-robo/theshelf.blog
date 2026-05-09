@@ -14,7 +14,8 @@ function linkClass(href: string) {
 }
 ---
 
-<nav class="font-mono">
+<div id="menu-backdrop" class="fixed inset-x-0 bottom-0 z-10 bg-stone-900/20 hidden"></div>
+<nav class="relative z-20 font-mono">
   <div class="max-w-4xl mx-auto px-4 py-4">
     <div class={`flex items-center justify-between ${big ? "mt-10" : ""}`}>
       <a href="/" class={`${big ? "text-4xl border-b-[3px]" : "text-2xl border-b-[3px]"} font-mono flex items-end gap-2 border-amber-900 text-amber-950 hover:text-amber-800 transition-colors`}>
@@ -49,10 +50,37 @@ function linkClass(href: string) {
 <script>
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('menu-backdrop');
+
+  function closeMenu() {
+    mobileMenu?.classList.add('hidden');
+    backdrop?.classList.add('hidden');
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    menuBtn?.setAttribute('aria-label', 'Open menu');
+  }
+
+  function getNavBottom() {
+    const nav = document.querySelector('nav');
+    return nav ? nav.getBoundingClientRect().bottom + window.scrollY : 0;
+  }
 
   menuBtn?.addEventListener('click', () => {
     const isOpen = mobileMenu?.classList.toggle('hidden') === false;
+    if (isOpen && backdrop) {
+      backdrop.style.top = getNavBottom() + 'px';
+    }
+    backdrop?.classList.toggle('hidden', !isOpen);
     menuBtn.setAttribute('aria-expanded', String(isOpen));
     menuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menuBtn?.contains(e.target as Node) && !mobileMenu?.contains(e.target as Node)) {
+      closeMenu();
+    }
   });
 </script>
