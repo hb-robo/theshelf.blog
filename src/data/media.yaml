@@ -626,7 +626,7 @@
 
 - id: resurrection-2025
   title: Resurrection
-  releaseDate: 
+  releaseDate: 2025-11-22
   shelfStatus: not-owned
   mediaType: film
   creatives:
@@ -634,7 +634,7 @@
       role: director
   genre:
     - ?????
-  coverImage: 
+  coverImage: ../../public/images/films/resurrection-2025.jpg
 
 - id: die-hard-2
   title: Die Hard 2
@@ -646,4 +646,16 @@
       role: director
   genre:
     - Action
-  coverImage: 
+  coverImage:
+
+- id: fcukers-o
+  title: O
+  releaseDate: 2026-03-27
+  shelfStatus: not-owned
+  mediaType: music
+  creatives:
+    - name: Fcukers
+      role: artist
+  genre:
+    - House, Electropop
+  coverImage: ../../public/images/albums/fcukers-o.webp
