@@ -27,37 +27,37 @@ const totalOnShelf = shelfItems.length;
 <BaseLayout title="The Shelf - Made the Shelf">
   <div class="shelf-container h-full">
     <header class="max-w-4xl mx-auto px-4 pt-8 pb-4">
-      <h1 class="text-4xl font-mono mb-2 text-zinc-900">digital shelf visualizer</h1>
-      <p class="text-base text-zinc-500">less weird than being in my house... mostly :)</p>
+      <h1 class="text-4xl font-mono mb-2 text-stone-900">digital shelf visualizer</h1>
+      <p class="text-base text-stone-500">less weird than being in my house... mostly :)</p>
     </header>
 
     <div class="flex max-w-4xl mx-auto px-4 space-x-4 py-6 font-mono text-sm">
       <button
         data-shelf-target="the-shelf"
-        class="shelf-toggle-btn px-4 py-2 border border-zinc-900 text-zinc-900"
+        class="shelf-toggle-btn px-4 py-2 border border-stone-900 text-stone-900"
       >
         the shelf
       </button>
       <button
         data-shelf-target="wishlist"
-        class="shelf-toggle-btn px-4 py-2 border border-zinc-200 text-zinc-500 hover:border-zinc-400 transition-colors"
+        class="shelf-toggle-btn px-4 py-2 border border-stone-200 text-stone-500 hover:border-stone-400 transition-colors"
       >
         wishlist
       </button>
       <button
         data-shelf-target="backlog"
-        class="shelf-toggle-btn px-4 py-2 border border-zinc-200 text-zinc-500 hover:border-zinc-400 transition-colors"
+        class="shelf-toggle-btn px-4 py-2 border border-stone-200 text-stone-500 hover:border-stone-400 transition-colors"
       >
         backlog
       </button>
     </div>
 
     <section id="the-shelf" data-shelf-id="the-shelf" class="mt-2">
-      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-zinc-200 py-3">
-        <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">the shelf</span>
-        <span class="text-xs font-mono text-zinc-400">{totalOnShelf} items</span>
+      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-stone-200 py-3">
+        <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">the shelf</span>
+        <span class="text-xs font-mono text-stone-400">{totalOnShelf} items</span>
       </div>
-      <div class="shelf-row w-full bg-zinc-100 border-y border-zinc-200 shadow-inner overflow-hidden">
+      <div class="shelf-row w-full bg-stone-100 border-y border-stone-200 shadow-inner overflow-hidden">
         <div class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth">
           {shelfItems
             .sort((a, b) => a.title.localeCompare(b.title))
@@ -68,16 +68,16 @@ const totalOnShelf = shelfItems.length;
 
     {totalOnShelf === 0 && (
       <div class="max-w-4xl mx-auto px-4 text-center py-16">
-        <p class="text-xl text-zinc-500">The shelf is empty. Nothing has earned its place yet.</p>
+        <p class="text-xl text-stone-500">The shelf is empty. Nothing has earned its place yet.</p>
       </div>
     )}
 
     <section id="wishlist" data-shelf-id="wishlist" class="mt-2 hidden">
-      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-zinc-200 py-3">
-        <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">wishlist</span>
-        <span class="text-xs font-mono text-zinc-400">{wishlistItems.length} items</span>
+      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-stone-200 py-3">
+        <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">wishlist</span>
+        <span class="text-xs font-mono text-stone-400">{wishlistItems.length} items</span>
       </div>
-      <div class="shelf-row w-full bg-zinc-100 border-y border-zinc-200 shadow-inner overflow-hidden">
+      <div class="shelf-row w-full bg-stone-100 border-y border-stone-200 shadow-inner overflow-hidden">
         <div class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth">
           {wishlistItems
             .sort((a, b) => a.title.localeCompare(b.title))
@@ -87,11 +87,11 @@ const totalOnShelf = shelfItems.length;
     </section>
 
     <section id="backlog" data-shelf-id="backlog" class="mt-2 hidden">
-      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-zinc-200 py-3">
-        <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">backlog</span>
-        <span class="text-xs font-mono text-zinc-400">{backlogItems.length} items</span>
+      <div class="max-w-4xl mx-auto px-4 mb-4 flex justify-between items-center border-b border-stone-200 py-3">
+        <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">backlog</span>
+        <span class="text-xs font-mono text-stone-400">{backlogItems.length} items</span>
       </div>
-      <div class="shelf-row w-full bg-zinc-100 border-y border-zinc-200 shadow-inner overflow-hidden">
+      <div class="shelf-row w-full bg-stone-100 border-y border-stone-200 shadow-inner overflow-hidden">
         <div class="shelf-scroll flex items-end gap-0.5 p-4 overflow-x-auto overflow-y-hidden scroll-smooth">
           {backlogItems
             .sort((a, b) => a.title.localeCompare(b.title))
@@ -117,7 +117,7 @@ const totalOnShelf = shelfItems.length;
 
   .shelf-scroll::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background: rgb(161 161 170); /* zinc-400 */
+    background: rgb(161 161 170); /* stone-400 */
   }
 </style>
 
@@ -133,11 +133,11 @@ const totalOnShelf = shelfItems.length;
 
       document.querySelectorAll('.shelf-toggle-btn').forEach(button => {
         if (button.getAttribute('data-shelf-target') === shelfId) {
-          button.classList.remove('border-zinc-200', 'text-zinc-500', 'hover:border-zinc-400');
-          button.classList.add('border-zinc-900', 'text-zinc-900');
+          button.classList.remove('border-stone-200', 'text-stone-500', 'hover:border-stone-400');
+          button.classList.add('border-stone-900', 'text-stone-900');
         } else {
-          button.classList.remove('border-zinc-900', 'text-zinc-900');
-          button.classList.add('border-zinc-200', 'text-zinc-500', 'hover:border-zinc-400');
+          button.classList.remove('border-stone-900', 'text-stone-900');
+          button.classList.add('border-stone-200', 'text-stone-500', 'hover:border-stone-400');
         }
       });
     }

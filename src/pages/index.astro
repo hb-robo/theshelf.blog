@@ -31,7 +31,7 @@ const approvalRate =
   <!-- Hero Section -->
   <section>
     <div class="max-w-4xl mx-auto px-4 py-12 md:py-8">
-      <p class="max-w-2xl text-xl md:text-2xl font-serif text-zinc-900 leading-snug">
+      <p class="max-w-2xl text-xl md:text-2xl font-serif text-stone-900 leading-snug">
         musings on the ultimate zero-sum game:<br />what books, albums, games, and films make my shelf?
       </p>
     </div>
@@ -40,11 +40,11 @@ const approvalRate =
   <!-- Shelf Strip -->
   <section style="--shelf-scale: 0.8;">
     <div class="max-w-4xl mx-auto px-4 flex justify-between items-center py-3">
-      <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">on the shelf lately</span>
-      <a href="/shelf" class="text-xs font-mono text-zinc-400 hover:text-zinc-900 transition-colors">explore the full shelf →</a>
+      <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">on the shelf lately</span>
+      <a href="/shelf" class="text-xs font-mono text-stone-400 hover:text-stone-900 transition-colors">explore the full shelf →</a>
     </div>
     <div class="max-w-4xl mx-auto px-4">
-      <div class="bg-zinc-100 border border-zinc-200 shadow-inner overflow-hidden">
+      <div class="bg-stone-100 border border-stone-200 shadow-inner overflow-hidden">
         <div class="flex items-end gap-0.5 px-4 pt-4 pb-3 overflow-x-auto overflow-y-hidden">
           {stripItems.map(item => <SpineDisplay itemData={item} />)}
         </div>
@@ -54,9 +54,9 @@ const approvalRate =
 
   <!-- Recent Reviews -->
   <section class="max-w-4xl mx-auto px-4 py-8">
-    <div class="flex justify-between items-center border-b border-zinc-200 py-3 mb-6">
-      <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">recent thoughts</span>
-      <a href="/reviews" class="text-xs font-mono text-zinc-400 hover:text-zinc-900 transition-colors">view all →</a>
+    <div class="flex justify-between items-center border-b border-stone-200 py-3 mb-6">
+      <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">recent thoughts</span>
+      <a href="/reviews" class="text-xs font-mono text-stone-400 hover:text-stone-900 transition-colors">view all →</a>
     </div>
     <div class="space-y-6">
       {recentReviews.map((review) => <ReviewCard itemData={review} />)}
@@ -65,26 +65,26 @@ const approvalRate =
 
   <!-- Stats Overview -->
   <section class="max-w-4xl mx-auto px-4 py-8">
-    <div class="flex justify-between items-center border-b border-zinc-200 py-3 mb-6">
-      <span class="text-xs font-mono text-zinc-400 uppercase tracking-widest">some numbers</span>
-      <a href="/stats" class="text-xs font-mono text-zinc-400 hover:text-zinc-900 transition-colors">more data →</a>
+    <div class="flex justify-between items-center border-b border-stone-200 py-3 mb-6">
+      <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">some numbers</span>
+      <a href="/stats" class="text-xs font-mono text-stone-400 hover:text-stone-900 transition-colors">more data →</a>
     </div>
-    <div class="border border-zinc-200 grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-zinc-200 font-mono">
+    <div class="border border-stone-200 grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-stone-200 font-mono">
       <div class="p-6 text-center">
-        <div class="text-4xl text-zinc-900 mb-2">{totalReviews}</div>
-        <div class="text-xs text-zinc-400 uppercase tracking-widest">reviews</div>
+        <div class="text-4xl text-stone-900 mb-2">{totalReviews}</div>
+        <div class="text-xs text-stone-400 uppercase tracking-widest">reviews</div>
       </div>
       <div class="p-6 text-center">
-        <div class="text-4xl text-zinc-900 mb-2">{totalMedia}</div>
-        <div class="text-xs text-zinc-400 uppercase tracking-widest">works covered</div>
+        <div class="text-4xl text-stone-900 mb-2">{totalMedia}</div>
+        <div class="text-xs text-stone-400 uppercase tracking-widest">works covered</div>
       </div>
       <div class="p-6 text-center">
-        <div class="text-4xl text-zinc-900 mb-2">{totalOnShelf}</div>
-        <div class="text-xs text-zinc-400 uppercase tracking-widest">shelved</div>
+        <div class="text-4xl text-stone-900 mb-2">{totalOnShelf}</div>
+        <div class="text-xs text-stone-400 uppercase tracking-widest">shelved</div>
       </div>
       <div class="p-6 text-center">
-        <div class="text-4xl text-zinc-900 mb-2">{approvalRate}%</div>
-        <div class="text-xs text-zinc-400 uppercase tracking-widest">approval</div>
+        <div class="text-4xl text-stone-900 mb-2">{approvalRate}%</div>
+        <div class="text-xs text-stone-400 uppercase tracking-widest">approval</div>
       </div>
     </div>
   </section>

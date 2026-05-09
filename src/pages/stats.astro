@@ -40,7 +40,7 @@ const avgScore = scoredMedia.length > 0
 const approvalRate = reviewed > 0 ? Math.round((onShelf / reviewed) * 100) : 0;
 
 const toggleActiveClasses: Record<string, string> = {
-  all:   'border-zinc-900 bg-zinc-900 text-white',
+  all:   'border-stone-900 bg-stone-900 text-white',
   film:  'border-slate-400 bg-slate-400 text-white',
   music: 'border-blue-400 bg-blue-400 text-white',
   book:  'border-emerald-400 bg-emerald-400 text-white',
@@ -110,7 +110,7 @@ function topCreatorsForFilter(filter: string) {
         : byType[filter] ?? [];
       return [name, scores] as [string, number[]];
     })
-    .filter(([, scores]) => scores.length >= 2)
+    .filter(([, scores]) => scores.length >= 1)
     .map(([name, scores]) => [name, scores.reduce((s, n) => s + n, 0) / scores.length] as [string, number])
     .sort(([, a], [, b]) => b - a)
     .slice(0, 10);
@@ -142,40 +142,40 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
 <BaseLayout title="Blog statistics">
   <div class="max-w-4xl mx-auto px-4 pt-8 pb-12">
     <header class="mb-12">
-      <h1 class="text-4xl font-mono mb-2 text-zinc-900">statistics</h1>
-      <p class="text-base text-zinc-500">a look at my critical tendencies</p>
+      <h1 class="text-4xl font-mono mb-2 text-stone-900">statistics</h1>
+      <p class="text-base text-stone-500">a look at my critical tendencies</p>
     </header>
 
     <!-- Big Numbers -->
-    <section class="border border-zinc-200 grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-zinc-200 mb-12 font-mono">
+    <section class="border border-stone-200 grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-stone-200 mb-12 font-mono">
       <div class="p-6 text-center">
-        <div class="text-4xl text-zinc-900 mb-2">{reviewed}</div>
-        <div class="text-xs text-zinc-400 uppercase tracking-widest">reviewed</div>
+        <div class="text-4xl text-stone-900 mb-2">{reviewed}</div>
+        <div class="text-xs text-stone-400 uppercase tracking-widest">reviewed</div>
       </div>
       <div class="p-6 text-center">
-        <div class="text-4xl text-zinc-900 mb-2">{onShelf}</div>
-        <div class="text-xs text-zinc-400 uppercase tracking-widest">shelved</div>
+        <div class="text-4xl text-stone-900 mb-2">{onShelf}</div>
+        <div class="text-xs text-stone-400 uppercase tracking-widest">shelved</div>
       </div>
       <div class="p-6 text-center">
-        <div class="text-4xl text-zinc-900 mb-2">{avgScore}</div>
-        <div class="text-xs text-zinc-400 uppercase tracking-widest">avg. score</div>
+        <div class="text-4xl text-stone-900 mb-2">{avgScore}</div>
+        <div class="text-xs text-stone-400 uppercase tracking-widest">avg. score</div>
       </div>
       <div class="p-6 text-center">
-        <div class="text-4xl text-zinc-900 mb-2">{approvalRate}%</div>
-        <div class="text-xs text-zinc-400 uppercase tracking-widest">approval</div>
+        <div class="text-4xl text-stone-900 mb-2">{approvalRate}%</div>
+        <div class="text-xs text-stone-400 uppercase tracking-widest">approval</div>
       </div>
     </section>
 
     <!-- Score Distribution -->
     <section class="mb-12">
       <div class="flex items-baseline justify-between mb-6">
-        <h2 class="text-2xl font-mono text-zinc-900">score distribution</h2>
+        <h2 class="text-2xl font-mono text-stone-900">score distribution</h2>
         <div class="flex gap-2 font-mono text-xs" id="score-dist-toggles">
           {(['all', ...mediaTypeOrder] as const).map(type => (
             <button
               data-filter={type}
               data-active-class={toggleActiveClasses[type]}
-              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`}
+              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-stone-200 text-stone-400 hover:border-stone-400'}`}
             >
               {type}
             </button>
@@ -192,14 +192,14 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
           const scoreColor = getScoreColor(baseScore);
           return (
             <div class="flex items-center gap-3">
-              <div class="w-6 text-right font-mono text-zinc-400 text-xs">{baseScore}</div>
+              <div class="w-6 text-right font-mono text-stone-400 text-xs">{baseScore}</div>
               <div class="flex-1 h-6 relative overflow-hidden">
                 <div class="h-full flex" style={`width: ${percentage}%`}>
                   {wholeCount > 0 && <div class={`h-full ${scoreColor}`} style={`width: ${wholePercentage}%`} />}
                   {halfCount > 0 && <div class={`h-full ${scoreColor} opacity-50`} style={`width: ${100 - wholePercentage}%`} />}
                 </div>
               </div>
-              <div class="w-6 font-mono text-zinc-400 text-xs">{totalCount || ''}</div>
+              <div class="w-6 font-mono text-stone-400 text-xs">{totalCount || ''}</div>
             </div>
           );
         })}
@@ -232,19 +232,19 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
           const bg = scoreColorMap[base];
           return `
             <div class="flex items-center gap-3">
-              <div class="w-6 text-right font-mono text-zinc-400 text-xs">${base}</div>
+              <div class="w-6 text-right font-mono text-stone-400 text-xs">${base}</div>
               <div class="flex-1 h-6 relative overflow-hidden">
                 <div class="h-full flex" style="width: ${pct}%">
                   ${whole > 0 ? `<div class="h-full ${bg}" style="width: ${wholePct}%"></div>` : ''}
                   ${half > 0 ? `<div class="h-full ${bg} opacity-50" style="width: ${100 - wholePct}%"></div>` : ''}
                 </div>
               </div>
-              <div class="w-6 font-mono text-zinc-400 text-xs">${total || ''}</div>
+              <div class="w-6 font-mono text-stone-400 text-xs">${total || ''}</div>
             </div>`;
         }).join('');
 
         document.querySelectorAll('#score-dist-toggles button').forEach(btn => {
-          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`;
+          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-stone-200 text-stone-400 hover:border-stone-400'}`;
         });
       }
 
@@ -255,27 +255,27 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
 
     <!-- By Media Type -->
     <section class="mb-12">
-      <h2 class="text-2xl font-mono mb-6 text-zinc-900">by media type</h2>
+      <h2 class="text-2xl font-mono mb-6 text-stone-900">by media type</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {typeStats.map(stat => (
           <div class={`border ${getMediaTypeBorder(stat.type)} p-6`}>
-            <div class="text-sm font-mono uppercase tracking-widest text-zinc-400 mb-4">{stat.type}</div>
+            <div class="text-sm font-mono uppercase tracking-widest text-stone-400 mb-4">{stat.type}</div>
             <div class="space-y-3 text-sm font-mono">
               <div class="flex justify-between">
-                <span class="text-zinc-500">reviewed</span>
-                <span class="text-zinc-900">{stat.total}</span>
+                <span class="text-stone-500">reviewed</span>
+                <span class="text-stone-900">{stat.total}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-zinc-500">shelved</span>
+                <span class="text-stone-500">shelved</span>
                 <span class="text-emerald-600">{stat.onShelf}</span>
               </div>
-              <div class="flex justify-between pt-3 border-t border-zinc-200">
-                <span class="text-zinc-500">approval</span>
-                <span class="text-zinc-900">{stat.approvalRate}%</span>
+              <div class="flex justify-between pt-3 border-t border-stone-200">
+                <span class="text-stone-500">approval</span>
+                <span class="text-stone-900">{stat.approvalRate}%</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-zinc-500">avg score</span>
-                <span class="text-zinc-900">{stat.avgScore}/10</span>
+                <span class="text-stone-500">avg score</span>
+                <span class="text-stone-900">{stat.avgScore}/10</span>
               </div>
             </div>
           </div>
@@ -286,13 +286,13 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
     <!-- Release Decade -->
     <section class="mb-12">
       <div class="flex items-baseline justify-between mb-6">
-        <h2 class="text-2xl font-mono text-zinc-900">by decade</h2>
+        <h2 class="text-2xl font-mono text-stone-900">by decade</h2>
         <div class="flex gap-2 font-mono text-xs" id="decade-toggles">
           {(['all', ...mediaTypeOrder] as const).map(type => (
             <button
               data-filter={type}
               data-active-class={toggleActiveClasses[type]}
-              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`}
+              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-stone-200 text-stone-400 hover:border-stone-400'}`}
             >
               {type}
             </button>
@@ -319,7 +319,7 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
               data-game={counts.game}
               data-total={total}
             >
-              <div class="w-12 text-right font-mono text-zinc-400 text-xs">{decade}</div>
+              <div class="w-12 text-right font-mono text-stone-400 text-xs">{decade}</div>
               <div class="flex-1 h-6 overflow-hidden flex">
                 <div class="h-full flex decade-bar" style={`width: ${(total / maxDecadeCount) * 100}%`}>
                   {mediaTypeOrder.map(type => counts[type] > 0 && (
@@ -331,7 +331,7 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
                   ))}
                 </div>
               </div>
-              <div class="w-6 font-mono text-zinc-400 text-xs decade-count">{total}</div>
+              <div class="w-6 font-mono text-stone-400 text-xs decade-count">{total}</div>
             </div>
           );
         })}
@@ -370,7 +370,7 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
         });
 
         toggles.forEach(btn => {
-          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`;
+          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-stone-200 text-stone-400 hover:border-stone-400'}`;
         });
       }
 
@@ -380,13 +380,13 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
     <!-- Top Creators -->
     <section class="mb-12">
       <div class="flex items-baseline justify-between mb-6">
-        <h2 class="text-2xl font-mono text-zinc-900">highest rated creators</h2>
+        <h2 class="text-2xl font-mono text-stone-900">highest rated creators</h2>
         <div class="flex gap-2 font-mono text-xs" id="creator-toggles">
           {(['all', ...mediaTypeOrder] as const).map(type => (
             <button
               data-filter={type}
               data-active-class={toggleActiveClasses[type]}
-              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`}
+              class={`px-2 py-1 border transition-colors ${type === 'all' ? toggleActiveClasses.all : 'border-stone-200 text-stone-400 hover:border-stone-400'}`}
             >
               {type}
             </button>
@@ -396,12 +396,12 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
       <div class="space-y-1.5" id="creators-chart">
         {topCreators.map(([name, avg], i) => (
           <div class="flex items-center gap-3">
-            <div class="w-4 text-right font-mono text-zinc-300 text-xs">{i + 1}</div>
+            <div class="w-4 text-right font-mono text-stone-300 text-xs">{i + 1}</div>
             <div class="flex-1 h-6 overflow-hidden relative">
-              <div class="h-full bg-zinc-200" style={`width: ${(avg / maxCreatorCount) * 100}%`} />
-              <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-zinc-700">{name}</span>
+              <div class="h-full bg-stone-300" style={`width: ${(avg / maxCreatorCount) * 100}%`} />
+              <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-stone-700">{name}</span>
             </div>
-            <div class="w-10 font-mono text-zinc-400 text-xs">{avg.toFixed(2)}</div>
+            <div class="w-10 font-mono text-stone-400 text-xs">{avg >= 10 ? avg.toFixed(1) : avg.toFixed(2)}</div>
           </div>
         ))}
       </div>
@@ -416,7 +416,7 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
             const scores = filter === 'all' ? mediaTypes.flatMap(t => byType[t]) : (byType[filter] ?? []);
             return [name, scores];
           })
-          .filter(([, scores]) => scores.length >= 2)
+          .filter(([, scores]) => scores.length >= 1)
           .map(([name, scores]) => [name, scores.reduce((s, n) => s + n, 0) / scores.length])
           .sort(([, a], [, b]) => b - a)
           .slice(0, 10);
@@ -428,17 +428,17 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
         chart.innerHTML = top.length
           ? top.map(([name, avg], i) => `
               <div class="flex items-center gap-3">
-                <div class="w-4 text-right font-mono text-zinc-300 text-xs">${i + 1}</div>
+                <div class="w-4 text-right font-mono text-stone-300 text-xs">${i + 1}</div>
                 <div class="flex-1 h-6 overflow-hidden relative">
-                  <div class="h-full bg-zinc-200" style="width: ${(avg / 10) * 100}%"></div>
-                  <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-zinc-700">${name}</span>
+                  <div class="h-full bg-stone-300" style="width: ${(avg / 10) * 100}%"></div>
+                  <span class="absolute inset-0 flex items-center px-2 font-mono text-xs text-stone-700">${name}</span>
                 </div>
-                <div class="w-10 font-mono text-zinc-400 text-xs">${avg.toFixed(2)}</div>
+                <div class="w-10 font-mono text-stone-400 text-xs">${avg >= 10 ? avg.toFixed(1) : avg.toFixed(2)}</div>
               </div>`).join('')
-          : '<p class="font-mono text-xs text-zinc-400">no creators with 2+ scored entries</p>';
+          : '<p class="font-mono text-xs text-stone-400">no creators with 2+ scored entries</p>';
 
         document.querySelectorAll('#creator-toggles button').forEach(btn => {
-          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-zinc-200 text-zinc-400 hover:border-zinc-400'}`;
+          btn.className = `px-2 py-1 border transition-colors ${btn.dataset.filter === filter ? btn.dataset.activeClass : 'border-stone-200 text-stone-400 hover:border-stone-400'}`;
         });
       }
 
@@ -448,29 +448,29 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
     </script>
 
     <section>
-      <h2 class="text-2xl font-mono mb-6 text-zinc-900">collection status</h2>
-      <div class="border border-zinc-200 p-6 space-y-4">
+      <h2 class="text-2xl font-mono mb-6 text-stone-900">collection status</h2>
+      <div class="border border-stone-200 p-6 space-y-4">
         <div>
-          <div class="flex justify-between text-xs font-mono text-zinc-400 uppercase tracking-widest mb-2">
+          <div class="flex justify-between text-xs font-mono text-stone-400 uppercase tracking-widest mb-2">
             <span>all</span>
             <span>{reviewed} / {totalMedia}</span>
           </div>
-          <div class="w-full bg-zinc-100 h-2 overflow-hidden">
+          <div class="w-full bg-stone-200 h-2 overflow-hidden">
             <div
-              class="h-full bg-zinc-900 transition-all"
+              class="h-full bg-stone-900 transition-all"
               style={`width: ${totalMedia > 0 ? (reviewed / totalMedia) * 100 : 0}%`}
             />
           </div>
         </div>
 
-        <div class="border-t border-zinc-100 space-y-3 pt-1">
+        <div class="border-t border-stone-100 space-y-3 pt-1">
           {mediaTypeOrder.map(type => (
             <div>
-              <div class="flex justify-between text-xs font-mono text-zinc-400 mb-1.5">
+              <div class="flex justify-between text-xs font-mono text-stone-400 mb-1.5">
                 <span>{type}</span>
                 <span>{byType[type].length} / {totalByType[type]}</span>
               </div>
-              <div class="w-full bg-zinc-100 h-1.5 overflow-hidden">
+              <div class="w-full bg-stone-200 h-1.5 overflow-hidden">
                 <div
                   class={`h-full ${mediaTypeColors[type]}`}
                   style={`width: ${totalByType[type] > 0 ? (byType[type].length / totalByType[type]) * 100 : 0}%`}
@@ -480,7 +480,7 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
           ))}
         </div>
 
-        <div class="flex justify-between font-mono text-xs text-zinc-400 pt-1">
+        <div class="flex justify-between font-mono text-xs text-stone-400 pt-1">
           <span>{reviewed} reviewed</span>
           <span>{unreviewed} pending</span>
         </div>

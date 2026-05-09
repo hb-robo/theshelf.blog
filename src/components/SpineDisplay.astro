@@ -29,7 +29,7 @@ const rightBufferPx = spec.rightBuffer ? mmToPx(spec.rightBuffer) : 0;
 // Net content area height minus inner padding to keep text clear of buffer edges
 const contentHeightPx = heightPx - topBufferPx - bottomBufferPx - mmToPx(6);
 
-const colorClass = spec.color || 'bg-zinc-200';
+const colorClass = spec.color || 'bg-stone-200';
 
 const spinePath = itemData.spineImage
   ? path.join(Astro.site ? '.' : '.', 'public', itemData.spineImage)
@@ -84,14 +84,14 @@ const href = itemData.articleSlug ? `/reviews/${itemData.articleSlug}` : undefin
       <!-- Middle Content -->
       <div class="relative overflow-hidden w-full h-full">
         <!-- Text spine is always rendered -->
-        <div class="absolute inset-0 flex flex-col items-center justify-center p-1 bg-white text-zinc-900">
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-1 bg-white text-stone-900">
           <div class="spine-text transform rotate-90 text-center flex gap-1 items-baseline overflow-hidden"
             style={`max-width: calc(${contentHeightPx}px * var(--shelf-scale));`}>
             <span class="font-bold text-s leading-tight truncate flex-1 min-w-0" style="font-size: calc(0.85rem * var(--shelf-scale));">
               {itemData.title}
             </span>
             {creativesLine && (
-              <span class="text-zinc-500 text-[0.6rem] flex-none truncate" style="font-size: calc(0.75rem * var(--shelf-scale));">
+              <span class="text-stone-500 text-[0.6rem] flex-none truncate" style="font-size: calc(0.75rem * var(--shelf-scale));">
                 {creativesLine}
               </span>
             )}
@@ -136,7 +136,7 @@ const href = itemData.articleSlug ? `/reviews/${itemData.articleSlug}` : undefin
           {itemData.title}
           </span>
           {creativesLine && (
-          <span class="text-zinc-300 text-[0.6rem] whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
+          <span class="text-stone-300 text-[0.6rem] whitespace-nowrap" style="font-size: calc(0.75rem * var(--shelf-scale));">
               {creativesLine}
           </span>
           )}

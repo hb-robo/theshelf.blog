@@ -11,8 +11,8 @@ const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
 <BaseLayout title="media library">
   <section class="max-w-4xl mx-auto px-4 pt-8 pb-12">
     <header class="mb-8">
-      <h1 class="text-4xl font-mono mb-2 text-zinc-900">media library</h1>
-      <p class="text-base text-zinc-500">everything i've written about, or plan to</p>
+      <h1 class="text-4xl font-mono mb-2 text-stone-900">media library</h1>
+      <p class="text-base text-stone-500">everything i've written about, or plan to</p>
     </header>
     <div class="grid gap-6 lg:grid-cols-2 items-start">
       {expandedMediaList.map((m) => <MediaCard itemData={m} />)}

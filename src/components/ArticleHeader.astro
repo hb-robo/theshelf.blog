@@ -13,13 +13,13 @@ const formattedDate = review.data.date.toLocaleDateString("en-CA", {
 } as const);
 ---
 
-<div class="not-prose mb-8 pb-8 border-b border-zinc-200">
-  <h1 class="text-3xl font-mono text-zinc-900 mb-3">{review.data.title}</h1>
-  <p class="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-4">
+<div class="not-prose mb-8 pb-8 border-b border-stone-200">
+  <h1 class="text-3xl font-mono text-stone-900 mb-3">{review.data.title}</h1>
+  <p class="text-xs font-mono uppercase tracking-widest text-stone-400 mb-4">
     Hayden Brown · {formattedDate}
   </p>
   {review.data.excerpt && (
-    <p class="text-base text-zinc-600 italic leading-relaxed">
+    <p class="text-base text-stone-600 italic leading-relaxed">
       {review.data.excerpt}
     </p>
   )}

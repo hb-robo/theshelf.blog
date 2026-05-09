@@ -39,14 +39,14 @@ const enrichedMedia = entry.data.media.map((item) => ({
       heroImage={entry.data.heroImage}
       heroAlt={`Cover art for ${entry.data.title}`}
       items={enrichedMedia}
-      class="w-full border border-zinc-200 p-8 bg-zinc-50"
+      class="w-full border border-stone-200 p-8 bg-stone-50"
     />
   </div>
   <article class="mx-auto max-w-2xl px-4 py-8 prose prose-zinc font-sans">
     <ArticleHeader review={entry} />
     <Content />
     <MediaResultSummary reviewMedia={entry.data.media} />
-    <footer class="not-prose mt-8 border-t border-zinc-200 flex justify-between font-mono">
+    <footer class="not-prose mt-8 border-t border-stone-200 flex justify-between font-mono">
       <a
         href="/"
         class="my-3 font-medium transition-colors no-underline hover:underline text-sm"
