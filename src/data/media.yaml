@@ -629,6 +629,7 @@
   releaseDate: 2025-11-22
   shelfStatus: not-owned
   mediaType: film
+  subtype: bluray
   creatives:
     - name: Bi Gan
       role: director
@@ -641,7 +642,7 @@
   releaseDate: 1990-07-04
   shelfStatus: not-owned
   mediaType: film
-  subtype: blu-ray
+  subtype: bluray
   creatives:
     - name: Renny Harlin
       role: director
