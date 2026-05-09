@@ -1,45 +1,42 @@
-import { getCollection } from 'astro:content';
-import { db, Media } from 'astro:db';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { getAllMediaItems } from './mediaData.ts';
 import type { ExpandedMediaItem } from './types.ts';
 
 interface ReviewMediaItemFlat {
-    id: string;
-    score?: number | null;
-    madeTheShelf?: boolean | null;
-    result?: 'made-the-shelf' | 'maybe-later' | 'no';
-    published?: boolean;
-    reviewDate: Date;
-    articleSlug: string;
+  id: string;
+  score?: number | null;
+  madeTheShelf?: boolean | null;
+  result?: 'made-the-shelf' | 'maybe-later' | 'no';
+  published?: boolean;
+  reviewDate: Date;
+  articleSlug: string;
 }
 
 export async function getMostRecentReviewForMedia(mediaId: string) {
   const allReviews = await getCollection('reviews');
 
   const allReviewMediaItems: ReviewMediaItemFlat[] = allReviews
-    .flatMap(reviewEntry => {
-      return reviewEntry.data.media.map((item: any) => ({
+    .flatMap((reviewEntry: CollectionEntry<'reviews'>) => {
+      return reviewEntry.data.media.map((item: ReviewMediaItemFlat) => ({
         ...item,
         published: reviewEntry.data.published,
         reviewDate: reviewEntry.data.date,
-        articleSlug: reviewEntry.slug
+        articleSlug: reviewEntry.id,
       }));
     })
     .filter(item => item.id === mediaId);
-  
-  
 
   allReviewMediaItems.sort((a, b) => b.reviewDate.getTime() - a.reviewDate.getTime());
 
   if (allReviewMediaItems.length > 0) {
-    // Return the properties defined in the interface
     const mostRecent = allReviewMediaItems[0];
     return {
-        score: mostRecent.score,
-        madeTheShelf: mostRecent.madeTheShelf,
-        result: mostRecent.result,
-        articleSlug: mostRecent.articleSlug,
-        reviewDate: mostRecent.reviewDate,
-        published: mostRecent.published,
+      score: mostRecent.score,
+      madeTheShelf: mostRecent.madeTheShelf,
+      result: mostRecent.result,
+      articleSlug: mostRecent.articleSlug,
+      reviewDate: mostRecent.reviewDate,
+      published: mostRecent.published,
     };
   }
 
@@ -47,22 +44,12 @@ export async function getMostRecentReviewForMedia(mediaId: string) {
 }
 
 export async function getExpandedMediaList(): Promise<ExpandedMediaItem[]> {
-  const mediaItemsFromDb = await db.select().from(Media);
+  const mediaItems = getAllMediaItems();
 
-  // Map over the DB items and await the review details for each
-  const expandedListPromises = mediaItemsFromDb.map(async (mediaItem) => {
+  const expandedListPromises = mediaItems.map(async (mediaItem) => {
     const reviewDetails = await getMostRecentReviewForMedia(mediaItem.id);
-
-    // Combine the database item with the review details
-    const combinedItem = {
-      ...mediaItem,
-      ...reviewDetails
-    };
-
-    return combinedItem as ExpandedMediaItem;
+    return { ...mediaItem, ...reviewDetails } as ExpandedMediaItem;
   });
 
-  const expandedList = await Promise.all(expandedListPromises);
-  
-  return expandedList;
+  return Promise.all(expandedListPromises);
 }

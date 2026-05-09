@@ -1,10 +1,6 @@
-// src/utils/types.ts
-
-import type { Media } from 'astro:db';
-
 export type Creative = {
-	name: string;
-	role: string;
+  name: string;
+  role: string;
 }
 
 export type PriorityCreatives = {
@@ -12,20 +8,24 @@ export type PriorityCreatives = {
   names: string[];
 }
 
-type MediaJsonFields = {
-    creatives: Creative[] | null;
-    genre: string[] | null;
+export type MediaItem = {
+  id: string;
+  title: string;
+  releaseDate: string;
+  shelfStatus: 'owned' | 'not-owned' | 'digital-only';
+  mediaType: 'book' | 'music' | 'game' | 'film';
+  subtype?: string;
+  creatives: Creative[];
+  genre?: string[];
+  coverImage?: string;
+  spineImage?: string;
 };
 
-export type MediaItemRawDB = typeof Media.$inferSelect;
-type MediaItemFromDB = Omit<MediaItemRawDB, 'creatives' | 'genre'> & MediaJsonFields;
-
-
-export type ExpandedMediaItem = MediaItemFromDB & {
-  score?: number | null | undefined;
-  madeTheShelf?: boolean | null | undefined;
-  result?: 'made-the-shelf' | 'maybe-later' | 'no' | null | undefined;
-  articleSlug?: string | null | undefined;
-  reviewDate?: Date | null | undefined;
-  published?: boolean | null | undefined;
+export type ExpandedMediaItem = MediaItem & {
+  score?: number | null;
+  madeTheShelf?: boolean | null;
+  result?: 'made-the-shelf' | 'maybe-later' | 'no' | null;
+  articleSlug?: string | null;
+  reviewDate?: Date | null;
+  published?: boolean | null;
 };
