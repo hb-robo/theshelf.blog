@@ -2,13 +2,40 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ReviewCard from '../components/ReviewCard.astro';
 import { getCollection } from 'astro:content';
+import { getMediaItemById } from '../lib/mediaData';
 
 const allReviews = await getCollection('reviews');
 const publishedReviews = allReviews.filter(r => r.data.published);
 
-const reviews = publishedReviews.sort((a, b) => 
+const reviews = publishedReviews.sort((a, b) =>
   new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
+
+const enriched = reviews.map((review, i) => {
+  const media = review.data.media ?? [];
+  const shelvedCount = media.filter(m => m.result === 'shelved').length;
+  const types = [...new Set(
+    media.map(m => getMediaItemById(m.id)?.mediaType).filter((t): t is string => !!t)
+  )];
+  return {
+    review,
+    index: i,
+    shelvedCount,
+    itemCount: media.length,
+    types,
+    dateStr: new Date(review.data.date).toISOString(),
+  };
+});
+
+const typeActiveClass: Record<string, string> = {
+  all:   'border-stone-900 bg-stone-900 text-white',
+  film:  'border-slate-400 bg-slate-400 text-white',
+  music: 'border-blue-400 bg-blue-400 text-white',
+  book:  'border-emerald-400 bg-emerald-400 text-white',
+  game:  'border-red-400 bg-red-400 text-white',
+};
+const inactive = 'border-stone-200 text-stone-400 hover:border-stone-400';
+const activeDefault = 'border-stone-900 bg-stone-900 text-white';
 ---
 
 <BaseLayout title="writing collection">
@@ -17,13 +44,211 @@ const reviews = publishedReviews.sort((a, b) =>
       <h1 class="text-4xl font-mono mb-2 text-stone-900">writing collection</h1>
       <p class="text-base text-stone-500">all of my public media criticism</p>
     </header>
-    <div id="reviews-container" class="space-y-6">
-      {reviews.map((review) => (
-        <div class="review-item">
-          <ReviewCard itemData={review}/>
+
+    <div class="border border-stone-200 p-4 mb-8 font-mono text-xs space-y-3">
+
+      <!-- Search + Sort -->
+      <div class="flex gap-3">
+        <input
+          id="reviews-search"
+          type="search"
+          autocomplete="off"
+          placeholder="search reviews..."
+          class="flex-1 border border-stone-200 px-3 py-1.5 text-xs font-mono text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-400 bg-transparent"
+        />
+        <select
+          id="reviews-sort"
+          class="border border-stone-200 px-2 py-1.5 text-xs font-mono text-stone-400 focus:outline-none focus:border-stone-400 bg-transparent cursor-pointer"
+        >
+          <option value="date-new">newest first</option>
+          <option value="date-old">oldest first</option>
+          <option value="most-items">most items</option>
+          <option value="most-shelved">most shelved</option>
+        </select>
+      </div>
+
+      <!-- Mobile filter toggle -->
+      <button
+        id="filter-toggle"
+        class="md:hidden w-full flex items-center justify-between text-stone-400 hover:text-stone-600 transition-colors"
+        aria-expanded="false"
+        aria-controls="filter-rows"
+      >
+        <span>filters</span>
+        <svg id="filter-chevron" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <div id="filter-rows" class="hidden md:block space-y-3">
+
+        <!-- Type -->
+        <div class="flex gap-2 items-start">
+          <span class="w-16 text-right text-stone-400 shrink-0 pt-1">type</span>
+          <div class="flex flex-wrap gap-2">
+            {(['all', 'film', 'music', 'book', 'game'] as const).map(t => (
+              <button
+                data-group="type"
+                data-value={t}
+                data-active-class={typeActiveClass[t]}
+                class={`px-2 py-1 border transition-colors ${t === 'all' ? typeActiveClass.all : inactive}`}
+              >{t}</button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Outcome -->
+        <div class="flex gap-2 items-start">
+          <span class="w-16 text-right text-stone-400 shrink-0 pt-1">outcome</span>
+          <div class="flex flex-wrap gap-2">
+            {(['all', 'shelved'] as const).map(s => (
+              <button
+                data-group="outcome"
+                data-value={s}
+                data-active-class={activeDefault}
+                class={`px-2 py-1 border transition-colors ${s === 'all' ? activeDefault : inactive}`}
+              >{s === 'shelved' ? 'has shelved' : 'all'}</button>
+            ))}
+          </div>
+        </div>
+
+        <div class="flex justify-between pt-1 border-t border-stone-200">
+          <button id="filter-reset" class="hidden text-stone-400 hover:text-stone-600 transition-colors">reset</button>
+          <span id="reviews-count" class="text-stone-400 ml-auto">{enriched.length} reviews</span>
+        </div>
+
+      </div> <!-- /filter-rows -->
+    </div>
+
+    <p id="reviews-empty" class="hidden font-mono text-sm text-stone-400 py-8 text-center">
+      no reviews match your filters
+    </p>
+
+    <div id="reviews-list" class="space-y-6">
+      {enriched.map(({ review, index, shelvedCount, itemCount, types, dateStr }) => (
+        <div
+          class="review-item"
+          data-index={String(index)}
+          data-title={review.data.title.toLowerCase()}
+          data-types={types.join(' ')}
+          data-shelved={String(shelvedCount)}
+          data-count={String(itemCount)}
+          data-date={dateStr}
+        >
+          <ReviewCard itemData={review} />
         </div>
       ))}
     </div>
-
   </div>
 </BaseLayout>
+
+<script>
+  type FilterKey = 'type' | 'outcome';
+
+  const state = {
+    search: '',
+    type: 'all',
+    outcome: 'all',
+    sort: 'date-new',
+  };
+
+  const defaults = { search: '', type: 'all', outcome: 'all', sort: 'date-new' };
+
+  const list = document.getElementById('reviews-list')!;
+  const countEl = document.getElementById('reviews-count')!;
+  const emptyEl = document.getElementById('reviews-empty')!;
+  const resetBtn = document.getElementById('filter-reset')!;
+
+  function isDefault() {
+    return Object.keys(defaults).every(k => state[k as keyof typeof state] === defaults[k as keyof typeof defaults]);
+  }
+
+  function checkReset() {
+    resetBtn.classList.toggle('hidden', isDefault());
+  }
+
+  function matchesFilters(el: HTMLElement): boolean {
+    if (state.search && !el.dataset.title!.includes(state.search.toLowerCase())) return false;
+    if (state.type !== 'all') {
+      const types = el.dataset.types!.split(' ');
+      if (!types.includes(state.type)) return false;
+    }
+    if (state.outcome === 'shelved' && Number(el.dataset.shelved) === 0) return false;
+    return true;
+  }
+
+  function sortCompare(a: HTMLElement, b: HTMLElement): number {
+    switch (state.sort) {
+      case 'date-old':
+        return (a.dataset.date || '').localeCompare(b.dataset.date || '');
+      case 'most-items':
+        return Number(b.dataset.count) - Number(a.dataset.count);
+      case 'most-shelved':
+        return Number(b.dataset.shelved) - Number(a.dataset.shelved);
+      default:
+        return (b.dataset.date || '').localeCompare(a.dataset.date || '');
+    }
+  }
+
+  function filterAndSort() {
+    const items = Array.from(list.querySelectorAll<HTMLElement>('.review-item'));
+
+    [...items].sort(sortCompare).forEach(el => list.appendChild(el));
+
+    let visible = 0;
+    items.forEach(el => {
+      const show = matchesFilters(el);
+      el.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    const total = items.length;
+    countEl.textContent = visible === total ? `${total} reviews` : `${visible} of ${total} reviews`;
+    emptyEl.classList.toggle('hidden', visible > 0);
+  }
+
+  document.getElementById('reviews-search')!.addEventListener('input', e => {
+    state.search = (e.target as HTMLInputElement).value.trim();
+    filterAndSort();
+    checkReset();
+  });
+
+  document.getElementById('reviews-sort')!.addEventListener('change', e => {
+    state.sort = (e.target as HTMLSelectElement).value;
+    filterAndSort();
+    checkReset();
+  });
+
+  const filterToggle = document.getElementById('filter-toggle');
+  const filterRows = document.getElementById('filter-rows');
+  const filterChevron = document.getElementById('filter-chevron');
+  filterToggle?.addEventListener('click', () => {
+    const open = filterRows!.classList.toggle('hidden');
+    filterToggle.setAttribute('aria-expanded', String(!open));
+    filterChevron!.style.transform = open ? '' : 'rotate(180deg)';
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('button[data-group]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.group! as FilterKey;
+      const value = btn.dataset.value!;
+      state[group] = value;
+      document.querySelectorAll<HTMLButtonElement>(`button[data-group="${group}"]`).forEach(b => {
+        b.className = `px-2 py-1 border transition-colors ${b.dataset.value === value ? b.dataset.activeClass! : 'border-stone-200 text-stone-400 hover:border-stone-400'}`;
+      });
+      filterAndSort();
+      checkReset();
+    });
+  });
+
+  resetBtn.addEventListener('click', () => {
+    Object.assign(state, defaults);
+    (document.getElementById('reviews-search') as HTMLInputElement).value = '';
+    (document.getElementById('reviews-sort') as HTMLSelectElement).value = 'date-new';
+    document.querySelectorAll<HTMLButtonElement>('button[data-group]').forEach(btn => {
+      btn.className = `px-2 py-1 border transition-colors ${btn.dataset.value === 'all' ? btn.dataset.activeClass! : 'border-stone-200 text-stone-400 hover:border-stone-400'}`;
+    });
+    filterAndSort();
+    checkReset();
+  });
+</script>
