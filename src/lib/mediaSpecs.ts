@@ -38,7 +38,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     leftBuffer: 0,
     rightBuffer: 0,
     label: 'CD w/ Slipcover',
-    color: 'bg-none',
+    color: 'bg-transparent',
   },
   'ps1': {
     height: 142,
@@ -94,7 +94,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 4,
     bottomBuffer: 4,
     label: 'Blu-ray',
-    color: 'blue',
+    color: 'bg-blue-100',
   },
   'ps3': {
     height: 169,
@@ -152,7 +152,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 4,
     bottomBuffer: 4,
     label: 'Xbox Series',
-    color: 'green',
+    color: 'bg-green-900',
   },
 
   // DVD height cases (~190mm)
@@ -162,7 +162,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 4,
     bottomBuffer: 4,
     label: 'DVD',
-    color: 'darkgray',
+    color: 'bg-zinc-500',
   },
   'ps2': {
     height: 188,
@@ -180,7 +180,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 4,
     bottomBuffer: 4,
     label: 'Xbox',
-    color: 'green',
+    color: 'bg-green-700',
   },
   'xbox360': {
     height: 189,
@@ -208,7 +208,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 4,
     bottomBuffer: 4,
     label: 'Wii U',
-    color: 'cyan',
+    color: 'bg-cyan-400',
   },
   'gamecube': {
     height: 190,
@@ -216,7 +216,7 @@ export const MEDIA_SPECS: Record<string, MediaSpec> = {
     topBuffer: 3,
     bottomBuffer: 3,
     label: 'GameCube',
-    color: 'darkgray',
+    color: 'bg-zinc-500',
   },
 };
 
