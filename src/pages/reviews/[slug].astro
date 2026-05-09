@@ -3,11 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from 'astro:content';
 import ArticleHeader from '../../components/ArticleHeader.astro';
-import MediaResultSummary from '../../components/MediaResultSummary.astro'
+import MediaResultSummary from '../../components/MediaResultSummary.astro';
+import MediaPreviewGrid from '../../components/MediaPreviewGrid.astro';
+import { getMediaTitle, getMediaCoverImage } from '../../lib/cardElements';
 
 export async function getStaticPaths() {
   const reviews = await getCollection("reviews");
-
   return reviews.map((entry: CollectionEntry<'reviews'>) => ({
     params: { slug: entry.id },
     props: { entry }
@@ -20,26 +21,42 @@ interface Props {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+const enrichedMedia = await Promise.all(
+  entry.data.media.map(async (item) => ({
+    ...item,
+    title: (await getMediaTitle(item.id)) || 'Unknown',
+    coverImage: (await getMediaCoverImage(item.id)) || '/placeholder.jpg',
+  }))
+);
 ---
 
 <BaseLayout title={entry.data.title}>
-  <article class="mx-auto max-w-2xl px-4 py-8 prose dark:prose-invert">
-    <ArticleHeader review={entry}/>
+  <div class="max-w-4xl mx-auto px-4 pt-8">
+    <MediaPreviewGrid
+      heroImage={entry.data.heroImage}
+      heroAlt={`Cover art for ${entry.data.title}`}
+      items={enrichedMedia}
+      class="w-full border border-zinc-200 p-8 bg-zinc-50"
+    />
+  </div>
+  <article class="mx-auto max-w-2xl px-4 py-8 prose prose-zinc font-sans">
+    <ArticleHeader review={entry} />
     <Content />
-    <MediaResultSummary reviewMedia={entry.data.media}/>
-    <footer class="mt-8 border-t border-gray-200 dark:border-gray-800 flex justify-between font-mono">
-      <a 
+    <MediaResultSummary reviewMedia={entry.data.media} />
+    <footer class="not-prose mt-8 border-t border-zinc-200 flex justify-between font-mono">
+      <a
         href="/"
         class="my-3 font-medium transition-colors no-underline hover:underline text-sm"
       >
         ← back to home
       </a>
-      <a 
+      <a
         href="/reviews"
         class="my-3 font-medium transition-colors no-underline hover:underline text-sm"
       >
         read more →
-      </a> 
+      </a>
     </footer>
   </article>
 </BaseLayout>
