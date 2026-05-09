@@ -6,6 +6,24 @@ import type { ExpandedMediaItem } from '../lib/types';
 
 const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
 
+const decadeSet = new Set<string>();
+expandedMediaList.forEach(m => {
+  if (m.releaseDate) {
+    const year = parseInt(m.releaseDate.substring(0, 4));
+    if (!isNaN(year)) decadeSet.add(`${Math.floor(year / 10) * 10}s`);
+  }
+});
+const decades = Array.from(decadeSet).sort();
+
+const typeActiveClass: Record<string, string> = {
+  all:   'border-stone-900 bg-stone-900 text-white',
+  film:  'border-slate-400 bg-slate-400 text-white',
+  music: 'border-blue-400 bg-blue-400 text-white',
+  book:  'border-emerald-400 bg-emerald-400 text-white',
+  game:  'border-red-400 bg-red-400 text-white',
+};
+const inactive = 'border-stone-200 text-stone-400 hover:border-stone-400';
+const activeDefault = 'border-stone-900 bg-stone-900 text-white';
 ---
 
 <BaseLayout title="media library">
@@ -14,8 +32,301 @@ const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
       <h1 class="text-4xl font-mono mb-2 text-stone-900">media library</h1>
       <p class="text-base text-stone-500">everything i've written about, or plan to</p>
     </header>
-    <div class="grid gap-6 lg:grid-cols-2 items-start">
-      {expandedMediaList.map((m) => <MediaCard itemData={m} />)}
+
+    <div class="border border-stone-200 p-4 mb-6 font-mono text-xs space-y-3">
+
+      <!-- Search + Sort -->
+      <div class="flex gap-3">
+        <input
+          id="media-search"
+          type="search"
+          autocomplete="off"
+          placeholder="search title or creator..."
+          class="flex-1 border border-stone-200 px-3 py-1.5 text-xs font-mono text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-400 bg-transparent"
+        />
+        <select
+          id="media-sort"
+          class="border border-stone-200 px-2 py-1.5 text-xs font-mono text-stone-400 focus:outline-none focus:border-stone-400 bg-transparent cursor-pointer"
+        >
+          <option value="default">default order</option>
+          <option value="alpha">a → z</option>
+          <option value="release-new">newest release</option>
+          <option value="release-old">oldest release</option>
+          <option value="review-new">recently reviewed</option>
+          <option value="score-high">highest rated</option>
+        </select>
+      </div>
+
+      <!-- Mobile filter toggle -->
+      <button
+        id="filter-toggle"
+        class="md:hidden w-full flex items-center justify-between text-stone-400 hover:text-stone-600 transition-colors"
+        aria-expanded="false"
+        aria-controls="filter-rows"
+      >
+        <span>filters</span>
+        <svg id="filter-chevron" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <div id="filter-rows" class="hidden md:block space-y-3">
+
+      <!-- Type -->
+      <div class="flex gap-2 items-start">
+        <span class="w-16 text-right text-stone-400 shrink-0 pt-1">type</span>
+        <div class="flex flex-wrap gap-2">
+          {(['all', 'film', 'music', 'book', 'game'] as const).map(t => (
+            <button
+              data-group="type"
+              data-value={t}
+              data-active-class={typeActiveClass[t]}
+              class={`px-2 py-1 border transition-colors ${t === 'all' ? typeActiveClass.all : inactive}`}
+            >{t}</button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="flex gap-2 items-start">
+        <span class="w-16 text-right text-stone-400 shrink-0 pt-1">status</span>
+        <div class="flex flex-wrap gap-2">
+          {(['all', 'shelved', 'deferred', 'passed', 'pending'] as const).map(s => (
+            <button
+              data-group="status"
+              data-value={s}
+              data-active-class={activeDefault}
+              class={`px-2 py-1 border transition-colors ${s === 'all' ? activeDefault : inactive}`}
+            >{s}</button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Shelf -->
+      <div class="flex gap-2 items-start">
+        <span class="w-16 text-right text-stone-400 shrink-0 pt-1">shelf</span>
+        <div class="flex flex-wrap gap-2">
+          {(['all', 'owned', 'digital', 'wishlisted'] as const).map(s => (
+            <button
+              data-group="shelf"
+              data-value={s}
+              data-active-class={activeDefault}
+              class={`px-2 py-1 border transition-colors ${s === 'all' ? activeDefault : inactive}`}
+            >{s}</button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Decade -->
+      <div class="flex gap-2 items-start">
+        <span class="w-16 text-right text-stone-400 shrink-0 pt-1">decade</span>
+        <div class="flex flex-wrap gap-2">
+        <button
+          data-group="decade"
+          data-value="all"
+          data-active-class={activeDefault}
+          class={`px-2 py-1 border transition-colors ${activeDefault}`}
+        >all</button>
+        {decades.map(d => (
+          <button
+            data-group="decade"
+            data-value={d}
+            data-active-class={activeDefault}
+            class={`px-2 py-1 border transition-colors ${inactive}`}
+          >{d}</button>
+        ))}
+        </div>
+      </div>
+
+      <!-- Score -->
+      <div class="flex gap-2 items-start">
+        <span class="w-16 text-right text-stone-400 shrink-0 pt-1">score</span>
+        <div class="flex flex-wrap gap-2">
+          {(['any', '5', '7', '8', '9'] as const).map(s => (
+            <button
+              data-group="score"
+              data-value={s}
+              data-active-class={activeDefault}
+              class={`px-2 py-1 border transition-colors ${s === 'any' ? activeDefault : inactive}`}
+            >{s === 'any' ? 'any' : `${s}+`}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex justify-between pt-1 border-t border-stone-200">
+        <button id="filter-reset" class="hidden text-stone-400 hover:text-stone-600 transition-colors">reset</button>
+        <span id="media-count" class="text-stone-400 ml-auto">{expandedMediaList.length} items</span>
+      </div>
+
+      </div> <!-- /filter-rows -->
+    </div>
+
+    <p id="media-empty" class="hidden font-mono text-sm text-stone-400 py-8 text-center">
+      no items match your filters
+    </p>
+
+    <div id="media-grid" class="grid gap-6 lg:grid-cols-2 items-start">
+      {expandedMediaList.map((m, i) => {
+        const shelfNorm =
+          m.shelfStatus === 'not-owned' ? 'wishlisted' :
+          m.shelfStatus === 'digital-only' ? 'digital' : 'owned';
+        const decade = m.releaseDate
+          ? `${Math.floor(parseInt(m.releaseDate.substring(0, 4)) / 10) * 10}s`
+          : '';
+        return (
+          <div
+            class="media-card-wrapper"
+            data-index={String(i)}
+            data-type={m.mediaType}
+            data-result={m.result ?? 'pending'}
+            data-shelf={shelfNorm}
+            data-decade={decade}
+            data-score={m.score != null ? String(m.score) : ''}
+            data-title={m.title.toLowerCase()}
+            data-creators={m.creatives?.map(c => c.name.toLowerCase()).join(' ') ?? ''}
+            data-release={m.releaseDate ?? ''}
+            data-review={m.reviewDate ? m.reviewDate.toISOString() : ''}
+          >
+            <MediaCard itemData={m} />
+          </div>
+        );
+      })}
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  type FilterKey = 'type' | 'status' | 'shelf' | 'decade' | 'score';
+
+  const state = {
+    search: '',
+    type: 'all',
+    status: 'all',
+    shelf: 'all',
+    decade: 'all',
+    score: 'any',
+    sort: 'default',
+  };
+
+  const grid = document.getElementById('media-grid')!;
+  const countEl = document.getElementById('media-count')!;
+  const emptyEl = document.getElementById('media-empty')!;
+  const resetBtn = document.getElementById('filter-reset')!;
+
+  const defaults = { search: '', type: 'all', status: 'all', shelf: 'all', decade: 'all', score: 'any', sort: 'default' };
+
+  function isDefault() {
+    return Object.keys(defaults).every(k => state[k as keyof typeof state] === defaults[k as keyof typeof defaults]);
+  }
+
+  function checkReset() {
+    resetBtn.classList.toggle('hidden', isDefault());
+  }
+
+  function matchesFilters(el: HTMLElement): boolean {
+    if (state.search) {
+      const q = state.search.toLowerCase();
+      if (!el.dataset.title!.includes(q) && !el.dataset.creators!.includes(q)) return false;
+    }
+    if (state.type   !== 'all' && el.dataset.type   !== state.type)   return false;
+    if (state.status !== 'all' && el.dataset.result !== state.status) return false;
+    if (state.shelf  !== 'all' && el.dataset.shelf  !== state.shelf)  return false;
+    if (state.decade !== 'all' && el.dataset.decade !== state.decade) return false;
+    if (state.score  !== 'any') {
+      const min = parseFloat(state.score);
+      const score = el.dataset.score ? parseFloat(el.dataset.score) : null;
+      if (score === null || score < min) return false;
+    }
+    return true;
+  }
+
+  function sortCompare(a: HTMLElement, b: HTMLElement): number {
+    switch (state.sort) {
+      case 'alpha':
+        return a.dataset.title!.localeCompare(b.dataset.title!);
+      case 'release-new':
+        return (b.dataset.release || '').localeCompare(a.dataset.release || '');
+      case 'release-old':
+        return (a.dataset.release || '').localeCompare(b.dataset.release || '');
+      case 'review-new': {
+        const ar = a.dataset.review || '';
+        const br = b.dataset.review || '';
+        if (!ar && !br) return 0;
+        if (!ar) return 1;
+        if (!br) return -1;
+        return br.localeCompare(ar);
+      }
+      case 'score-high': {
+        const aScore = a.dataset.score ? parseFloat(a.dataset.score) : -Infinity;
+        const bScore = b.dataset.score ? parseFloat(b.dataset.score) : -Infinity;
+        return bScore - aScore;
+      }
+      default:
+        return Number(a.dataset.index) - Number(b.dataset.index);
+    }
+  }
+
+  function filterAndSort() {
+    const wrappers = Array.from(grid.querySelectorAll<HTMLElement>('.media-card-wrapper'));
+
+    [...wrappers].sort(sortCompare).forEach(el => grid.appendChild(el));
+
+    let visible = 0;
+    wrappers.forEach(el => {
+      const show = matchesFilters(el);
+      el.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    const total = wrappers.length;
+    countEl.textContent = visible === total ? `${total} items` : `${visible} of ${total} items`;
+    emptyEl.classList.toggle('hidden', visible > 0);
+  }
+
+  document.getElementById('media-search')!.addEventListener('input', e => {
+    state.search = (e.target as HTMLInputElement).value.trim();
+    filterAndSort();
+    checkReset();
+  });
+
+  document.getElementById('media-sort')!.addEventListener('change', e => {
+    state.sort = (e.target as HTMLSelectElement).value;
+    filterAndSort();
+    checkReset();
+  });
+
+  const filterToggle = document.getElementById('filter-toggle');
+  const filterRows = document.getElementById('filter-rows');
+  const filterChevron = document.getElementById('filter-chevron');
+  filterToggle?.addEventListener('click', () => {
+    const open = filterRows!.classList.toggle('hidden');
+    filterToggle.setAttribute('aria-expanded', String(!open));
+    filterChevron!.style.transform = open ? '' : 'rotate(180deg)';
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('button[data-group]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.group! as FilterKey;
+      const value = btn.dataset.value!;
+      state[group] = value;
+      document.querySelectorAll<HTMLButtonElement>(`button[data-group="${group}"]`).forEach(b => {
+        b.className = `px-2 py-1 border transition-colors ${b.dataset.value === value ? b.dataset.activeClass! : 'border-stone-200 text-stone-400 hover:border-stone-400'}`;
+      });
+      filterAndSort();
+      checkReset();
+    });
+  });
+
+  resetBtn.addEventListener('click', () => {
+    Object.assign(state, defaults);
+    (document.getElementById('media-search') as HTMLInputElement).value = '';
+    (document.getElementById('media-sort') as HTMLSelectElement).value = 'default';
+    document.querySelectorAll<HTMLButtonElement>('button[data-group]').forEach(btn => {
+      const defaultVal = btn.dataset.group === 'score' ? 'any' : 'all';
+      const isActive = btn.dataset.value === defaultVal;
+      btn.className = `px-2 py-1 border transition-colors ${isActive ? btn.dataset.activeClass! : 'border-stone-200 text-stone-400 hover:border-stone-400'}`;
+    });
+    filterAndSort();
+    checkReset();
+  });
+</script>
