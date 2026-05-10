@@ -91,7 +91,7 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
       <div class="flex gap-2 items-start">
         <span class="w-16 text-right text-stone-400 shrink-0 pt-1">status</span>
         <div class="flex flex-wrap gap-2">
-          {(['all', 'shelved', 'deferred', 'passed', 'pending'] as const).map(s => (
+          {(['all', 'shelved', 'passed', 'pending'] as const).map(s => (
             <button
               data-group="status"
               data-value={s}

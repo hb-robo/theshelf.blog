@@ -2,7 +2,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { getAllMediaItems, getMediaItemById } from './mediaData.ts';
 import type { ExpandedMediaItem } from './types.ts';
 
-type Result = 'shelved' | 'deferred' | 'passed';
+type Result = 'shelved' | 'passed';
 type ShelfStatus = 'owned' | 'not-owned' | 'digital-only';
 
 interface TimelineEntry {

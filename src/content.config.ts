@@ -12,7 +12,7 @@ const reviews = defineCollection({
     media: z.array(
       z.object({
         id: z.string(),
-        result: z.enum(['shelved', 'deferred', 'passed']).optional(),
+        result: z.enum(['shelved', 'passed']).optional(),
         score: z.number().optional(),
       })
     ),
@@ -28,7 +28,7 @@ const events = defineCollection({
     source: z.enum(['site', 'rym', 'letterboxd', 'goodreads', 'glitchwave', 'backloggd']).default('site'),
     sourceUrl: z.string().url().optional(),
     score: z.number().min(1).max(10).optional(),
-    result: z.enum(['shelved', 'deferred', 'passed']).optional(),
+    result: z.enum(['shelved', 'passed']).optional(),
     shelfStatus: z.enum(['owned', 'digital-only', 'not-owned']).optional(),
     published: z.boolean().default(false),
   }),
