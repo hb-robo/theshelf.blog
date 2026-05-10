@@ -12,7 +12,7 @@ const { title, date, heroImage, excerpt } = itemData.data;
 const media: CollectionEntry<"reviews">["data"]["media"] = itemData.data.media;
 const formattedDate = date.toLocaleDateString("fr-CA");
 
-const shelvedCount = media.filter((m) => m.result == "shelved").length;
+const shelvedCount = media.filter((m) => m.status == "shelved").length;
 const totalCount = media.length;
 const missedCount = totalCount - shelvedCount;
 

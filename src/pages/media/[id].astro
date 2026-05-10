@@ -29,7 +29,7 @@ const reviewAppearances = allReviews
       date: r.data.date,
       title: r.data.title,
       slug: r.id,
-      result: m.result,
+      status: m.status,
       score: m.score,
       published: r.data.published,
     };
@@ -60,9 +60,6 @@ const releaseDate = item.releaseDate
 const SOURCE_LABELS: Record<string, string> = {
   rym: 'RYM', letterboxd: 'Letterboxd', goodreads: 'GoodReads',
   glitchwave: 'Glitchwave', backloggd: 'Backloggd',
-};
-const STATUS_LABELS: Record<string, string> = {
-  owned: 'owned', 'digital-only': 'digital', 'not-owned': 'not owned',
 };
 const EVENT_LABELS: Record<string, string> = {
   acquisition: 'acquired', disposition: 'let go', verdict: 'verdict', note: 'note',
@@ -98,17 +95,11 @@ const EVENT_LABELS: Record<string, string> = {
             {item.score}
           </div>
         )}
-        {item.result === 'shelved' && (
-          <span class="text-emerald-600 font-mono text-sm">shelved</span>
-        )}
-{item.result === 'passed' && (
-          <span class="text-red-400 font-mono text-sm">passed on</span>
-        )}
-        {item.shelfStatus && (
-          <span class="text-xs font-mono text-stone-400 border border-stone-200 px-2 py-1">
-            {STATUS_LABELS[item.shelfStatus]}
-          </span>
-        )}
+        {item.status === 'shelved' && <span class="text-emerald-600 font-mono text-sm">shelved</span>}
+        {item.status === 'wishlist' && <span class="text-sky-500 font-mono text-sm">wishlist</span>}
+        {item.status === 'pending' && <span class="text-amber-500 font-mono text-sm">pending</span>}
+        {item.status === 'chopping-block' && <span class="text-orange-500 font-mono text-sm">chopping block</span>}
+        {item.status === 'pass' && <span class="text-stone-400 font-mono text-sm">pass</span>}
         {item.articleSlug && (
           <a
             href={`/reviews/${item.articleSlug}`}
@@ -174,12 +165,11 @@ const EVENT_LABELS: Record<string, string> = {
                           {entry.data.score}
                         </span>
                       )}
-                      {entry.data.result === 'shelved' && (
-                        <span class="text-emerald-600 text-xs">shelved</span>
-                      )}
-{entry.data.result === 'passed' && (
-                        <span class="text-red-400 text-xs">passed on</span>
-                      )}
+                      {entry.data.status === 'shelved' && <span class="text-emerald-600 text-xs">shelved</span>}
+                      {entry.data.status === 'wishlist' && <span class="text-sky-500 text-xs">wishlist</span>}
+                      {entry.data.status === 'pending' && <span class="text-amber-500 text-xs">pending</span>}
+                      {entry.data.status === 'chopping-block' && <span class="text-orange-500 text-xs">chopping block</span>}
+                      {entry.data.status === 'pass' && <span class="text-stone-400 text-xs">pass</span>}
                     </div>
                   </div>
 
@@ -211,12 +201,11 @@ const EVENT_LABELS: Record<string, string> = {
                         {entry.score}
                       </span>
                     )}
-                    {entry.result === 'shelved' && (
-                      <span class="text-emerald-600 text-xs">shelved</span>
-                    )}
-{entry.result === 'passed' && (
-                      <span class="text-red-400 text-xs">passed on</span>
-                    )}
+                    {entry.status === 'shelved' && <span class="text-emerald-600 text-xs">shelved</span>}
+                    {entry.status === 'wishlist' && <span class="text-sky-500 text-xs">wishlist</span>}
+                    {entry.status === 'pending' && <span class="text-amber-500 text-xs">pending</span>}
+                    {entry.status === 'chopping-block' && <span class="text-orange-500 text-xs">chopping block</span>}
+                    {entry.status === 'pass' && <span class="text-stone-400 text-xs">pass</span>}
                   </div>
                 </div>
               )}

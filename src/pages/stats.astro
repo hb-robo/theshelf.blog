@@ -10,7 +10,7 @@ const publishedMedia = allMedia.filter(m => m.published);
 
 const totalMedia = allMedia.length;
 const reviewed = publishedMedia.length;
-const onShelf = publishedMedia.filter(m => m.result === 'shelved').length;
+const onShelf = publishedMedia.filter(m => m.status === 'shelved').length;
 const unreviewed = totalMedia - reviewed;
 
 const scoreCounts: Record<string, number> = {};
@@ -143,16 +143,15 @@ const totalByType: Record<string, number> = {
   game:  allMedia.filter(m => m.mediaType === 'game').length,
 };
 
-const shelvedMedia = publishedMedia.filter(m => m.result === 'shelved');
+const shelvedMedia = publishedMedia.filter(m => m.status === 'shelved');
 const collectionCounts = {
-  owned: shelvedMedia.filter(m => m.shelfStatus === 'owned').length,
-  digital: shelvedMedia.filter(m => m.shelfStatus === 'digital-only').length,
-  wishlisted: shelvedMedia.filter(m => m.shelfStatus === 'not-owned').length,
+  shelved: shelvedMedia.length,
+  wishlist: publishedMedia.filter(m => m.status === 'wishlist').length,
 };
 const collectionTotal = shelvedMedia.length;
 
 const typeStats = Object.entries(byType).map(([type, items]) => {
-  const onShelfItems = items.filter(m => m.result === 'shelved');
+  const onShelfItems = items.filter(m => m.status === 'shelved');
   return {
     type,
     total: items.length,

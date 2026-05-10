@@ -6,20 +6,9 @@ import { getExpandedMediaList } from '../lib/expandMediaItems.ts';
 
 const allMedia: ExpandedMediaItem[] = await getExpandedMediaList();
 
-const shelfItems = allMedia.filter(
-  m => m.published
-  && m.result === 'shelved'
-  && m.shelfStatus === 'owned'
-);
-const wishlistItems = allMedia.filter(
-  m => m.published
-  && m.result === 'shelved'
-  && m.shelfStatus === 'not-owned'
-);
-const backlogItems = allMedia.filter(
-  m => !m.published
-  && m.shelfStatus === 'owned'
-)
+const shelfItems = allMedia.filter(m => m.status === 'shelved');
+const wishlistItems = allMedia.filter(m => m.status === 'wishlist');
+const backlogItems = allMedia.filter(m => m.status === 'pending');
 
 const totalOnShelf = shelfItems.length;
 ---

@@ -105,9 +105,9 @@ const mediaColor = mediaColors[itemData.mediaType];
             )
           }
           {
-            itemData.published && itemData.result ? (
+            itemData.published && itemData.status ? (
               <>
-                {itemData.result === "shelved" && (
+                {itemData.status === "shelved" && (
                   <span class="text-emerald-600 inline-flex items-center gap-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +121,7 @@ const mediaColor = mediaColors[itemData.mediaType];
                   </span>
                 )}
 
-{itemData.result === "passed" && (
+                {itemData.status === "pass" && (
                   <span class="text-stone-400 inline-flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
                       <g fill="currentColor">

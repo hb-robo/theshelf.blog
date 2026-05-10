@@ -29,8 +29,7 @@ export type MediaItem = {
 
 export type ExpandedMediaItem = MediaItem & {
   score?: number | null;
-  result?: 'shelved' | 'passed' | null;
-  shelfStatus?: 'owned' | 'not-owned' | 'digital-only' | null;
+  status?: 'shelved' | 'wishlist' | 'pending' | 'chopping-block' | 'pass' | null;
   articleSlug?: string | null;
   reviewDate?: Date | null;
   published?: boolean | null;

@@ -2,7 +2,7 @@
 mediaId: samurai-champloo-departure
 date: 2026-05-09
 eventType: disposition
-shelfStatus: not-owned
+status: wishlist
 published: true
 ---
 

@@ -91,7 +91,7 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
       <div class="flex gap-2 items-start">
         <span class="w-16 text-right text-stone-400 shrink-0 pt-1">status</span>
         <div class="flex flex-wrap gap-2">
-          {(['all', 'shelved', 'passed', 'pending'] as const).map(s => (
+          {(['all', 'shelved', 'wishlist', 'pending', 'chopping-block', 'pass'] as const).map(s => (
             <button
               data-group="status"
               data-value={s}
@@ -167,9 +167,6 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
 
     <div id="media-grid" class="grid gap-6 lg:grid-cols-2 items-start">
       {expandedMediaList.map((m, i) => {
-        const shelfNorm =
-          m.shelfStatus === 'not-owned' ? 'wishlisted' :
-          m.shelfStatus === 'digital-only' ? 'digital' : 'owned';
         const decade = m.releaseDate
           ? `${Math.floor(parseInt(m.releaseDate.substring(0, 4)) / 10) * 10}s`
           : '';
@@ -178,8 +175,7 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
             class="media-card-wrapper"
             data-index={String(i)}
             data-type={m.mediaType}
-            data-result={m.result ?? 'pending'}
-            data-shelf={shelfNorm}
+            data-status={m.status ?? ''}
             data-decade={decade}
             data-score={m.score != null ? String(m.score) : ''}
             data-title={m.title.toLowerCase()}
@@ -229,7 +225,7 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
       if (!el.dataset.title!.includes(q) && !el.dataset.creators!.includes(q)) return false;
     }
     if (state.type   !== 'all' && el.dataset.type   !== state.type)   return false;
-    if (state.status !== 'all' && el.dataset.result !== state.status) return false;
+    if (state.status !== 'all' && el.dataset.status !== state.status) return false;
     if (state.shelf  !== 'all' && el.dataset.shelf  !== state.shelf)  return false;
     if (state.decade !== 'all' && el.dataset.decade !== state.decade) return false;
     if (state.score  !== 'any') {

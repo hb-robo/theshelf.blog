@@ -26,7 +26,7 @@ type FeedEvent = {
   mediaTitle: string;
   eventType: string;
   score?: number;
-  result?: string;
+  status?: string;
   body?: string;
 };
 
@@ -36,7 +36,7 @@ type FeedReview = {
   date: Date;
   title: string;
   slug: string;
-  media: Array<{ id: string; title: string; score?: number; result?: string }>;
+  media: Array<{ id: string; title: string; score?: number; status?: string }>;
 };
 
 type FeedEntry = FeedEvent | FeedReview;
@@ -50,7 +50,7 @@ const eventEntries: FeedEvent[] = allEvents
     mediaTitle: mediaTitleMap.get(e.data.mediaId) ?? e.data.mediaId,
     eventType: e.data.eventType,
     score: e.data.score,
-    result: e.data.result,
+    status: e.data.status,
     body: e.body?.trim() || undefined,
   }));
 
@@ -59,11 +59,11 @@ const reviewEntries: FeedReview[] = publishedReviews.map(r => ({
   date: r.data.date,
   title: r.data.title,
   slug: r.id,
-  media: r.data.media.map((m: { id: string; score?: number; result?: string }) => ({
+  media: r.data.media.map((m: { id: string; score?: number; status?: string }) => ({
     id: m.id,
     title: mediaTitleMap.get(m.id) ?? m.id,
     score: m.score,
-    result: m.result,
+    status: m.status,
   })),
 }));
 
@@ -78,7 +78,7 @@ const EVENT_LABELS: Record<string, string> = {
 const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
 const publishedMedia = expandedMediaList.filter((m) => m.published);
 const stripItems = expandedMediaList
-  .filter(m => m.published && m.result === 'shelved')
+  .filter(m => m.status === 'shelved')
   .sort((a, b) => {
     if (!a.reviewDate) return 1;
     if (!b.reviewDate) return -1;
@@ -88,7 +88,7 @@ const stripItems = expandedMediaList
 const totalReviews: number = publishedReviews.length;
 const totalMedia: number = publishedMedia.length;
 const totalOnShelf: number = publishedMedia.filter(
-  (m) => m.result === 'shelved'
+  (m) => m.status === 'shelved'
 ).length;
 const approvalRate =
   totalMedia > 0 ? Math.round((totalOnShelf / totalMedia) * 100) : 0;
@@ -178,8 +178,11 @@ const approvalRate =
                     )}
                   </div>
                   <div class="flex items-center gap-2 shrink-0 min-h-6">
-                    {entry.result === 'shelved' && <span class="text-emerald-600 text-xs">shelved</span>}
-                    {entry.result === 'passed' && <span class="text-red-400 text-xs">passed on</span>}
+                    {entry.status === 'shelved' && <span class="text-emerald-600 text-xs">shelved</span>}
+                    {entry.status === 'wishlist' && <span class="text-sky-500 text-xs">wishlist</span>}
+                    {entry.status === 'pending' && <span class="text-amber-500 text-xs">pending</span>}
+                    {entry.status === 'chopping-block' && <span class="text-orange-500 text-xs">chopping block</span>}
+                    {entry.status === 'pass' && <span class="text-stone-400 text-xs">pass</span>}
                     {entry.score && (
                       <span class={`w-6 h-6 flex items-center justify-center font-bold text-xs ${getScoreColor(entry.score)}`}>
                         {entry.score}
@@ -211,8 +214,11 @@ const approvalRate =
                         {m.title}
                       </a>
                       <div class="flex items-center gap-2 shrink-0 min-h-6">
-                        {m.result === 'shelved' && <span class="text-emerald-600 text-xs">shelved</span>}
-                        {m.result === 'passed' && <span class="text-red-400 text-xs">passed on</span>}
+                        {m.status === 'shelved' && <span class="text-emerald-600 text-xs">shelved</span>}
+                        {m.status === 'wishlist' && <span class="text-sky-500 text-xs">wishlist</span>}
+                        {m.status === 'pending' && <span class="text-amber-500 text-xs">pending</span>}
+                        {m.status === 'chopping-block' && <span class="text-orange-500 text-xs">chopping block</span>}
+                        {m.status === 'pass' && <span class="text-stone-400 text-xs">pass</span>}
                         {m.score && (
                           <span class={`w-6 h-6 flex items-center justify-center font-bold text-xs ${getScoreColor(m.score)}`}>
                             {m.score}

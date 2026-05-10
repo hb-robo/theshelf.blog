@@ -13,7 +13,7 @@ const reviews = publishedReviews.sort((a, b) =>
 
 const enriched = reviews.map((review, i) => {
   const media = review.data.media ?? [];
-  const shelvedCount = media.filter(m => m.result === 'shelved').length;
+  const shelvedCount = media.filter(m => m.status === 'shelved').length;
   const types = [...new Set(
     media.map(m => getMediaItemById(m.id)?.mediaType).filter((t): t is string => !!t)
   )];

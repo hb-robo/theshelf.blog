@@ -1,22 +1,25 @@
 ---
-type Result = "shelved" | "passed";
+type Status = "shelved" | "wishlist" | "pending" | "chopping-block" | "pass";
 
 export interface Props {
-  result?: Result;
+  result?: Status;
   score?: number;
   compact?: boolean;
 }
 
 const { result, score, compact = false } = Astro.props as Props;
 
-const resultColors: Record<Result, string> = {
+const statusColors: Record<Status, string> = {
   "shelved": "text-emerald-600",
-  "passed": "text-stone-400"
+  "wishlist": "text-sky-500",
+  "pending": "text-amber-500",
+  "chopping-block": "text-orange-500",
+  "pass": "text-stone-400",
 };
 
 ---
 
-<span class={`inline-flex items-center gap-1 font-mono ${result ? resultColors[result] : 'text-stone-400'} ${compact ? "text-sm" : "text-base"}`}>
+<span class={`inline-flex items-center gap-1 font-mono ${result ? statusColors[result] : 'text-stone-400'} ${compact ? "text-sm" : "text-base"}`}>
   {result ?? '—'}
   {score && <span class="ml-1">· {score}/10</span>}
 </span>

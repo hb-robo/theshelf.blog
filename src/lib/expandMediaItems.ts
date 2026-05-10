@@ -1,31 +1,28 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { getAllMediaItems, getMediaItemById } from './mediaData.ts';
 import type { ExpandedMediaItem } from './types.ts';
+import { validateMediaItems, validateEvents } from './validate.ts';
 
-type Result = 'shelved' | 'passed';
-type ShelfStatus = 'owned' | 'not-owned' | 'digital-only';
+type Status = 'shelved' | 'wishlist' | 'pending' | 'chopping-block' | 'pass';
 
 interface TimelineEntry {
   date: Date;
   score?: number;
-  result?: Result;
-  shelfStatus?: ShelfStatus;
+  status?: Status;
   published: boolean;
   articleSlug?: string;
 }
 
 function deriveState(timeline: TimelineEntry[]) {
   let score: number | undefined;
-  let result: Result | undefined;
-  let shelfStatus: ShelfStatus | undefined;
+  let status: Status | undefined;
   let published = false;
   let articleSlug: string | undefined;
   let reviewDate: Date | undefined;
 
   for (const entry of timeline) {
     if (entry.score !== undefined) score = entry.score;
-    if (entry.result !== undefined) result = entry.result;
-    if (entry.shelfStatus !== undefined) shelfStatus = entry.shelfStatus;
+    if (entry.status !== undefined) status = entry.status;
     if (entry.published) {
       published = true;
       if (entry.articleSlug) {
@@ -35,7 +32,7 @@ function deriveState(timeline: TimelineEntry[]) {
     }
   }
 
-  return { score: score ?? null, result: result ?? null, shelfStatus: shelfStatus ?? null, published, articleSlug: articleSlug ?? null, reviewDate: reviewDate ?? null };
+  return { score: score ?? null, status: status ?? null, published, articleSlug: articleSlug ?? null, reviewDate: reviewDate ?? null };
 }
 
 function buildTimeline(
@@ -48,8 +45,7 @@ function buildTimeline(
     .map(e => ({
       date: e.data.date,
       score: e.data.score,
-      result: e.data.result,
-      shelfStatus: e.data.shelfStatus,
+      status: e.data.status,
       published: e.data.published,
     }));
 
@@ -59,7 +55,7 @@ function buildTimeline(
       .map(m => ({
         date: r.data.date,
         score: m.score,
-        result: m.result,
+        status: m.status,
         published: r.data.published,
         articleSlug: r.id,
       }))
@@ -75,11 +71,15 @@ export async function getExpandedMediaList(): Promise<ExpandedMediaItem[]> {
     getCollection('reviews'),
   ]);
 
-  return mediaItems.map(mediaItem => {
+  const expanded = mediaItems.map(mediaItem => {
     const timeline = buildTimeline(mediaItem.id, allEvents, allReviews);
     const derived = deriveState(timeline);
     return { ...mediaItem, ...derived } as ExpandedMediaItem;
   });
+
+  validateEvents(allEvents);
+  validateMediaItems(expanded, allEvents);
+  return expanded;
 }
 
 export async function getExpandedMediaById(mediaId: string): Promise<ExpandedMediaItem | null> {
@@ -104,7 +104,7 @@ export async function getMostRecentReviewForMedia(mediaId: string) {
         .filter(m => m.id === mediaId)
         .map(m => ({
           score: m.score,
-          result: m.result,
+          status: m.status,
           articleSlug: r.id,
           reviewDate: r.data.date,
           published: r.data.published,
