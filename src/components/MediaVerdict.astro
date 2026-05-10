@@ -2,12 +2,12 @@
 type Status = "shelved" | "wishlist" | "pending" | "chopping-block" | "pass";
 
 export interface Props {
-  result?: Status;
+  status?: Status;
   score?: number;
   compact?: boolean;
 }
 
-const { result, score, compact = false } = Astro.props as Props;
+const { status, score, compact = false } = Astro.props as Props;
 
 const statusColors: Record<Status, string> = {
   "shelved": "text-emerald-600",
@@ -19,7 +19,7 @@ const statusColors: Record<Status, string> = {
 
 ---
 
-<span class={`inline-flex items-center gap-1 font-mono ${result ? statusColors[result] : 'text-stone-400'} ${compact ? "text-sm" : "text-base"}`}>
-  {result ?? '—'}
+<span class={`inline-flex items-center gap-1 font-mono ${status ? statusColors[status] : 'text-stone-400'} ${compact ? "text-sm" : "text-base"}`}>
+  {status ?? '—'}
   {score && <span class="ml-1">· {score}/10</span>}
 </span>

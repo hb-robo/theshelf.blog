@@ -6,6 +6,7 @@ import type { ExpandedMediaItem } from "../lib/types";
 import { getExpandedMediaList } from "../lib/expandMediaItems";
 import { getScoreColor } from "../lib/cardElements";
 import { getAllMediaItems } from "../lib/mediaData";
+import { deriveEventLabel, HAVE_IT_STATUSES } from "../lib/eventLabel";
 
 const [allReviews, allEvents] = await Promise.all([
   getCollection("reviews"),
@@ -24,7 +25,7 @@ type FeedEvent = {
   date: Date;
   mediaId: string;
   mediaTitle: string;
-  eventType: string;
+  label: string;
   score?: number;
   status?: string;
   body?: string;
@@ -43,16 +44,24 @@ type FeedEntry = FeedEvent | FeedReview;
 
 const eventEntries: FeedEvent[] = allEvents
   .filter(e => e.data.published)
-  .map(e => ({
-    kind: 'event' as const,
-    date: e.data.date,
-    mediaId: e.data.mediaId,
-    mediaTitle: mediaTitleMap.get(e.data.mediaId) ?? e.data.mediaId,
-    eventType: e.data.eventType,
-    score: e.data.score,
-    status: e.data.status,
-    body: e.body?.trim() || undefined,
-  }));
+  .map(e => {
+    const priorOwned = allEvents.some(other =>
+      other.data.mediaId === e.data.mediaId &&
+      other.data.date < e.data.date &&
+      other.data.status !== undefined &&
+      HAVE_IT_STATUSES.has(other.data.status)
+    );
+    return {
+      kind: 'event' as const,
+      date: e.data.date,
+      mediaId: e.data.mediaId,
+      mediaTitle: mediaTitleMap.get(e.data.mediaId) ?? e.data.mediaId,
+      label: deriveEventLabel({ score: e.data.score, status: e.data.status, priorOwned }),
+      score: e.data.score,
+      status: e.data.status,
+      body: e.body?.trim() || undefined,
+    };
+  });
 
 const reviewEntries: FeedReview[] = publishedReviews.map(r => ({
   kind: 'review' as const,
@@ -71,9 +80,6 @@ const feed: FeedEntry[] = [...eventEntries, ...reviewEntries]
   .sort((a, b) => b.date.getTime() - a.date.getTime())
   .slice(0, 10);
 
-const EVENT_LABELS: Record<string, string> = {
-  acquisition: 'acquired', disposition: 'let go', verdict: 'verdict', note: 'note',
-};
 
 const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
 const publishedMedia = expandedMediaList.filter((m) => m.published);
@@ -165,7 +171,7 @@ const approvalRate =
                 <div class="flex items-center justify-between gap-2">
                   <div class="flex items-center gap-2 min-w-0">
                     <span class="text-xs uppercase tracking-widest text-stone-500 shrink-0">
-                      {EVENT_LABELS[entry.eventType] ?? entry.eventType}
+                      {entry.label}
                     </span>
                     <a
                       href={`/media/${entry.mediaId}`}

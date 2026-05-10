@@ -1,7 +1,6 @@
 ---
 mediaId: virgin-suicides-coppola
 date: 2025-01-01
-eventType: acquisition
-status: shelved
+status: pending
 published: false
 ---

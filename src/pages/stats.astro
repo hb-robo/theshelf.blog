@@ -145,10 +145,13 @@ const totalByType: Record<string, number> = {
 
 const shelvedMedia = publishedMedia.filter(m => m.status === 'shelved');
 const collectionCounts = {
-  shelved: shelvedMedia.length,
-  wishlist: publishedMedia.filter(m => m.status === 'wishlist').length,
+  shelved:       publishedMedia.filter(m => m.status === 'shelved').length,
+  wishlist:      publishedMedia.filter(m => m.status === 'wishlist').length,
+  pending:       publishedMedia.filter(m => m.status === 'pending').length,
+  'chopping-block': publishedMedia.filter(m => m.status === 'chopping-block').length,
+  pass:          publishedMedia.filter(m => m.status === 'pass').length,
 };
-const collectionTotal = shelvedMedia.length;
+const collectionTotal = Object.values(collectionCounts).reduce((a, b) => a + b, 0);
 
 const typeStats = Object.entries(byType).map(([type, items]) => {
   const onShelfItems = items.filter(m => m.status === 'shelved');
@@ -542,28 +545,36 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
 
     <section>
       <h2 class="text-2xl font-mono mb-6 text-stone-900">collection status</h2>
-      <p class="text-xs font-mono text-stone-400 mb-4 -mt-4">shelved items only</p>
+      <p class="text-xs font-mono text-stone-400 mb-4 -mt-4">all published items</p>
       <div class="border border-stone-200 p-6 space-y-4">
         <div class="w-full h-4 overflow-hidden flex">
-          {collectionCounts.owned > 0 && (
-            <div class="h-full bg-violet-400" style={`width: ${(collectionCounts.owned / collectionTotal) * 100}%`} />
+          {collectionCounts.shelved > 0 && (
+            <div class="h-full bg-emerald-400" style={`width: ${(collectionCounts.shelved / collectionTotal) * 100}%`} />
           )}
-          {collectionCounts.digital > 0 && (
-            <div class="h-full bg-orange-400" style={`width: ${(collectionCounts.digital / collectionTotal) * 100}%`} />
+          {collectionCounts.wishlist > 0 && (
+            <div class="h-full bg-sky-400" style={`width: ${(collectionCounts.wishlist / collectionTotal) * 100}%`} />
           )}
-          {collectionCounts.wishlisted > 0 && (
-            <div class="h-full bg-stone-200" style={`width: ${(collectionCounts.wishlisted / collectionTotal) * 100}%`} />
+          {collectionCounts.pending > 0 && (
+            <div class="h-full bg-amber-400" style={`width: ${(collectionCounts.pending / collectionTotal) * 100}%`} />
+          )}
+          {collectionCounts['chopping-block'] > 0 && (
+            <div class="h-full bg-orange-400" style={`width: ${(collectionCounts['chopping-block'] / collectionTotal) * 100}%`} />
+          )}
+          {collectionCounts.pass > 0 && (
+            <div class="h-full bg-stone-200" style={`width: ${(collectionCounts.pass / collectionTotal) * 100}%`} />
           )}
         </div>
 
         <div class="space-y-2">
           {([
-            { key: 'owned',      label: 'owned',      count: collectionCounts.owned,      color: 'bg-violet-400' },
-            { key: 'digital',    label: 'digital-only',    count: collectionCounts.digital,    color: 'bg-orange-400' },
-            { key: 'wishlisted', label: 'wishlisted', count: collectionCounts.wishlisted, color: 'bg-stone-200' },
+            { label: 'shelved',        count: collectionCounts.shelved,             color: 'bg-emerald-400' },
+            { label: 'wishlist',       count: collectionCounts.wishlist,            color: 'bg-sky-400' },
+            { label: 'pending',        count: collectionCounts.pending,             color: 'bg-amber-400' },
+            { label: 'chopping block', count: collectionCounts['chopping-block'],   color: 'bg-orange-400' },
+            { label: 'pass',           count: collectionCounts.pass,                color: 'bg-stone-200' },
           ] as const).map(({ label, count, color }) => (
             <div class="flex items-center gap-3">
-              <div class="w-22 text-right font-mono text-stone-400 text-xs">{label}</div>
+              <div class="w-28 text-right font-mono text-stone-400 text-xs">{label}</div>
               <div class="flex-1 h-4 overflow-hidden">
                 <div
                   class={`h-full ${color}`}
@@ -576,8 +587,8 @@ const typeStats = Object.entries(byType).map(([type, items]) => {
         </div>
 
         <div class="flex justify-between font-mono text-xs text-stone-400 pt-1 border-t border-stone-200">
-          <span>{collectionCounts.owned + collectionCounts.digital} in collection</span>
-          <span>{collectionCounts.wishlisted} wishlisted</span>
+          <span>{collectionCounts.shelved + collectionCounts.pending + collectionCounts['chopping-block']} in hand</span>
+          <span>{collectionCounts.wishlist} on wishlist</span>
         </div>
       </div>
     </section>

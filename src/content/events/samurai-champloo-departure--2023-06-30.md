@@ -1,7 +1,6 @@
 ---
 mediaId: samurai-champloo-departure
 date: 2023-06-30
-eventType: note
 score: 9
 status: shelved
 published: true

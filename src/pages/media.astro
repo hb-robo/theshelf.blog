@@ -102,21 +102,6 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
         </div>
       </div>
 
-      <!-- Shelf -->
-      <div class="flex gap-2 items-start">
-        <span class="w-16 text-right text-stone-400 shrink-0 pt-1">shelf</span>
-        <div class="flex flex-wrap gap-2">
-          {(['all', 'owned', 'digital', 'wishlisted'] as const).map(s => (
-            <button
-              data-group="shelf"
-              data-value={s}
-              data-active-class={activeDefault}
-              class={`px-2 py-1 border transition-colors ${s === 'all' ? activeDefault : inactive}`}
-            >{s}</button>
-          ))}
-        </div>
-      </div>
-
       <!-- Decade -->
       <div class="flex gap-2 items-start">
         <span class="w-16 text-right text-stone-400 shrink-0 pt-1">decade</span>
@@ -192,13 +177,12 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
 </BaseLayout>
 
 <script>
-  type FilterKey = 'type' | 'status' | 'shelf' | 'decade' | 'score';
+  type FilterKey = 'type' | 'status' | 'decade' | 'score';
 
   const state = {
     search: '',
     type: 'all',
     status: 'all',
-    shelf: 'all',
     decade: 'all',
     score: 'any',
     sort: 'default',
@@ -209,7 +193,7 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
   const emptyEl = document.getElementById('media-empty')!;
   const resetBtn = document.getElementById('filter-reset')!;
 
-  const defaults = { search: '', type: 'all', status: 'all', shelf: 'all', decade: 'all', score: 'any', sort: 'default' };
+  const defaults = { search: '', type: 'all', status: 'all', decade: 'all', score: 'any', sort: 'default' };
 
   function isDefault() {
     return Object.keys(defaults).every(k => state[k as keyof typeof state] === defaults[k as keyof typeof defaults]);
@@ -226,7 +210,6 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
     }
     if (state.type   !== 'all' && el.dataset.type   !== state.type)   return false;
     if (state.status !== 'all' && el.dataset.status !== state.status) return false;
-    if (state.shelf  !== 'all' && el.dataset.shelf  !== state.shelf)  return false;
     if (state.decade !== 'all' && el.dataset.decade !== state.decade) return false;
     if (state.score  !== 'any') {
       const min = parseFloat(state.score);

@@ -24,7 +24,6 @@ const events = defineCollection({
   schema: z.object({
     mediaId: z.string(),
     date: z.date(),
-    eventType: z.enum(['note', 'acquisition', 'disposition', 'verdict']),
     source: z.enum(['site', 'rym', 'letterboxd', 'goodreads', 'glitchwave', 'backloggd']).default('site'),
     sourceUrl: z.string().url().optional(),
     score: z.number().min(1).max(10).optional(),

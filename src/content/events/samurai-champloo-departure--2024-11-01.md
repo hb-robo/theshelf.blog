@@ -1,7 +1,6 @@
 ---
 mediaId: samurai-champloo-departure
 date: 2024-11-01
-eventType: note
 published: true
 ---
 

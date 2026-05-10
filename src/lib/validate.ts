@@ -1,27 +1,28 @@
 import type { ExpandedMediaItem } from './types.ts';
 import type { CollectionEntry } from 'astro:content';
+import { SCORE_REQUIRED_STATUSES } from './eventLabel.ts';
 
-const SCORE_REQUIRED_STATUSES = new Set(['shelved', 'chopping-block']);
-const HAVE_IT_STATUSES = new Set(['shelved', 'pending', 'chopping-block']);
-const NOT_HAVE_IT_STATUSES = new Set(['wishlist', 'pass']);
+const VERDICT_STATUSES = new Set(['shelved', 'wishlist', 'chopping-block', 'pass']);
 
 export function validateEvents(allEvents: CollectionEntry<'events'>[]): void {
   const violations: string[] = [];
 
   for (const e of allEvents) {
-    const { mediaId, eventType, status, score } = e.data;
+    const { mediaId, status, score } = e.data;
     const ref = `  ${mediaId} (${e.id})`;
+    const hasBody = !!e.body?.trim();
 
-    if (eventType === 'verdict' && !status && !score) {
-      violations.push(`${ref}: verdict with no status or score`);
+    if (!score && !status && !hasBody) {
+      violations.push(`${ref}: empty event — no score, status, or body`);
     }
 
-    if (eventType === 'acquisition' && status && !HAVE_IT_STATUSES.has(status)) {
-      violations.push(`${ref}: acquisition ends in non-ownership status "${status}"`);
-    }
-
-    if (eventType === 'disposition' && status && !NOT_HAVE_IT_STATUSES.has(status)) {
-      violations.push(`${ref}: disposition ends in ownership status "${status}"`);
+    if (status && SCORE_REQUIRED_STATUSES.has(status) && !score) {
+      const priorScore = allEvents.some(
+        other => other.data.mediaId === mediaId && other.data.date < e.data.date && other.data.score !== undefined
+      );
+      if (!priorScore) {
+        violations.push(`${ref}: enters "${status}" with no prior score — use "pending" until scored`);
+      }
     }
   }
 
@@ -39,7 +40,6 @@ export function validateMediaItems(
   for (const item of items) {
     const { id, status, score, articleSlug } = item;
 
-    const VERDICT_STATUSES = new Set(['shelved', 'wishlist', 'chopping-block', 'pass']);
     if (articleSlug && (!status || !VERDICT_STATUSES.has(status))) {
       violations.push(`  ${id}: has a review but no verdict status (currently: ${status ?? 'none'})`);
     }

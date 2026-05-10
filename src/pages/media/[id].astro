@@ -4,6 +4,7 @@ import { getAllMediaItems } from '../../lib/mediaData';
 import { getExpandedMediaById } from '../../lib/expandMediaItems';
 import { getCollection, render } from 'astro:content';
 import { getScoreColor, getPriorityCreatives, formatCreativeLine } from '../../lib/cardElements';
+import { deriveEventLabel, HAVE_IT_STATUSES } from '../../lib/eventLabel';
 
 export async function getStaticPaths() {
   const mediaItems = getAllMediaItems();
@@ -38,7 +39,15 @@ const reviewAppearances = allReviews
 const renderedEvents = await Promise.all(
   mediaEvents.map(async e => {
     const { Content } = await render(e);
-    return { kind: 'event' as const, date: e.data.date, data: e.data, Content };
+    const hasBody = !!e.body?.trim();
+    const priorOwned = allEvents.some(other =>
+      other.data.mediaId === id &&
+      other.data.date < e.data.date &&
+      other.data.status !== undefined &&
+      HAVE_IT_STATUSES.has(other.data.status)
+    );
+    const label = deriveEventLabel({ score: e.data.score, status: e.data.status, priorOwned });
+    return { kind: 'event' as const, date: e.data.date, data: e.data, hasBody, label, Content };
   })
 );
 
@@ -60,9 +69,6 @@ const releaseDate = item.releaseDate
 const SOURCE_LABELS: Record<string, string> = {
   rym: 'RYM', letterboxd: 'Letterboxd', goodreads: 'GoodReads',
   glitchwave: 'Glitchwave', backloggd: 'Backloggd',
-};
-const EVENT_LABELS: Record<string, string> = {
-  acquisition: 'acquired', disposition: 'let go', verdict: 'verdict', note: 'note',
 };
 ---
 
@@ -124,7 +130,7 @@ const EVENT_LABELS: Record<string, string> = {
     )}
 
     {changelog.map(entry => {
-      const hasBody = entry.kind === 'event' && entry.data.published;
+      const hasBody = entry.kind === 'event' && entry.hasBody;
       const compact = !hasBody;
       return (
         <div class={`border-b border-stone-100 font-mono ${compact ? 'py-2' : 'py-4'}`}>
@@ -156,7 +162,7 @@ const EVENT_LABELS: Record<string, string> = {
                         )
                       )}
                       <span class="text-xs uppercase tracking-widest text-stone-500">
-                        {EVENT_LABELS[entry.data.eventType] ?? entry.data.eventType}
+                        {entry.label}
                       </span>
                     </div>
                     <div class="flex items-center gap-2">
