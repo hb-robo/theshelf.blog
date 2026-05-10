@@ -13,9 +13,8 @@ const media: CollectionEntry<"reviews">["data"]["media"] = itemData.data.media;
 const formattedDate = date.toLocaleDateString("fr-CA");
 
 const shelvedCount = media.filter((m) => m.result == "shelved").length;
-const deferredCount = media.filter((m) => m.result == "deferred").length;
 const totalCount = media.length;
-const missedCount = totalCount - shelvedCount - deferredCount;
+const missedCount = totalCount - shelvedCount;
 
 const displayExcerpt = excerpt || generateExcerpt(shelvedCount, missedCount);
 
@@ -78,15 +77,7 @@ const enrichedMediaList = media.map((mediaItem) => ({
                   {shelvedCount}
                 </span>
               )}
-              {deferredCount > 0 && (
-                <span class="text-yellow-500 inline-flex items-center gap-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32" class="w-5 h-5">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16.5 17l3 3l-3 3M12 17l3 3l-3 3M5 12h22m-6-4V4M11 8V4M7 28h18a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2"/>
-                  </svg>
-                  {deferredCount}
-                </span>
-              )}
-              {missedCount > 0 && (
+{missedCount > 0 && (
                 <span class="text-red-500 inline-flex items-center gap-1">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
                     <g fill="currentColor">

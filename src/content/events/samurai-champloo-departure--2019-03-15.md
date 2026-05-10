@@ -1,6 +1,6 @@
 ---
 mediaId: samurai-champloo-departure
-date: 2025-01-01
+date: 2019-03-15
 eventType: acquisition
 shelfStatus: owned
 published: false

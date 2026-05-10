@@ -1,18 +1,79 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ReviewCard from "../components/ReviewCard.astro";
 import SpineDisplay from "../components/SpineDisplay.astro";
 import { getCollection } from "astro:content";
 import type { ExpandedMediaItem } from "../lib/types";
 import { getExpandedMediaList } from "../lib/expandMediaItems";
+import { getScoreColor } from "../lib/cardElements";
+import { getAllMediaItems } from "../lib/mediaData";
 
-const allReviews = await getCollection("reviews");
+const [allReviews, allEvents] = await Promise.all([
+  getCollection("reviews"),
+  getCollection("events"),
+]);
+
 const publishedReviews = allReviews.filter((r) => r.data.published);
-const recentReviews = publishedReviews
-  .sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-  )
-  .slice(0, 3);
+
+// Build a title lookup from the flat media list
+const allMediaItems = getAllMediaItems();
+const mediaTitleMap = new Map(allMediaItems.map(m => [m.id, m.title]));
+
+// Published events (each is one entry)
+type FeedEvent = {
+  kind: 'event';
+  date: Date;
+  mediaId: string;
+  mediaTitle: string;
+  eventType: string;
+  score?: number;
+  result?: string;
+  body?: string;
+};
+
+// Published reviews (coalesced: one entry per review, with all media outcomes)
+type FeedReview = {
+  kind: 'review';
+  date: Date;
+  title: string;
+  slug: string;
+  media: Array<{ id: string; title: string; score?: number; result?: string }>;
+};
+
+type FeedEntry = FeedEvent | FeedReview;
+
+const eventEntries: FeedEvent[] = allEvents
+  .filter(e => e.data.published)
+  .map(e => ({
+    kind: 'event' as const,
+    date: e.data.date,
+    mediaId: e.data.mediaId,
+    mediaTitle: mediaTitleMap.get(e.data.mediaId) ?? e.data.mediaId,
+    eventType: e.data.eventType,
+    score: e.data.score,
+    result: e.data.result,
+    body: e.body?.trim() || undefined,
+  }));
+
+const reviewEntries: FeedReview[] = publishedReviews.map(r => ({
+  kind: 'review' as const,
+  date: r.data.date,
+  title: r.data.title,
+  slug: r.id,
+  media: r.data.media.map((m: { id: string; score?: number; result?: string }) => ({
+    id: m.id,
+    title: mediaTitleMap.get(m.id) ?? m.id,
+    score: m.score,
+    result: m.result,
+  })),
+}));
+
+const feed: FeedEntry[] = [...eventEntries, ...reviewEntries]
+  .sort((a, b) => b.date.getTime() - a.date.getTime())
+  .slice(0, 10);
+
+const EVENT_LABELS: Record<string, string> = {
+  acquisition: 'acquired', disposition: 'let go', verdict: 'verdict', note: 'note',
+};
 
 const expandedMediaList: ExpandedMediaItem[] = await getExpandedMediaList();
 const publishedMedia = expandedMediaList.filter((m) => m.published);
@@ -58,17 +119,6 @@ const approvalRate =
     </div>
   </section>
 
-  <!-- Recent Reviews -->
-  <section class="max-w-4xl mx-auto px-4 py-8">
-    <div class="flex justify-between items-center border-b border-stone-200 py-3 mb-6">
-      <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">recent thoughts</span>
-      <a href="/reviews" class="text-xs font-mono text-stone-400 hover:text-stone-900 transition-colors">view all →</a>
-    </div>
-    <div class="space-y-6">
-      {recentReviews.map((review) => <ReviewCard itemData={review} />)}
-    </div>
-  </section>
-
   <!-- Stats Overview -->
   <section class="max-w-4xl mx-auto px-4 py-8">
     <div class="flex justify-between items-center border-b border-stone-200 py-3 mb-6">
@@ -93,5 +143,90 @@ const approvalRate =
         <div class="text-xs text-stone-400 uppercase tracking-widest">approval</div>
       </div>
     </div>
+  </section>
+
+  <!-- Activity Feed -->
+  <section class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center border-b border-stone-200 py-3 mb-2">
+      <span class="text-xs font-mono text-stone-400 uppercase tracking-widest">recent activity</span>
+      <a href="/reviews" class="text-xs font-mono text-stone-400 hover:text-stone-900 transition-colors">all reviews →</a>
+    </div>
+
+    {feed.map(entry => (
+      <div class="border-b border-stone-100 font-mono py-3">
+        <div class="flex items-baseline gap-4">
+          <time class="text-xs text-stone-400 shrink-0 w-24">
+            {entry.date.toLocaleDateString('fr-CA')}
+          </time>
+
+          <div class="flex-1 min-w-0">
+            {entry.kind === 'event' && (
+              <div>
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="text-xs uppercase tracking-widest text-stone-500 shrink-0">
+                      {EVENT_LABELS[entry.eventType] ?? entry.eventType}
+                    </span>
+                    <a
+                      href={`/media/${entry.mediaId}`}
+                      class="text-xs font-bold text-stone-700 hover:text-stone-500 transition-colors truncate"
+                    >
+                      {entry.mediaTitle}
+                    </a>
+                    {entry.body && (
+                      <span class="text-xs text-stone-300 shrink-0">¶</span>
+                    )}
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0 min-h-6">
+                    {entry.result === 'shelved' && <span class="text-emerald-600 text-xs">shelved</span>}
+                    {entry.result === 'passed' && <span class="text-red-400 text-xs">passed on</span>}
+                    {entry.score && (
+                      <span class={`w-6 h-6 flex items-center justify-center font-bold text-xs ${getScoreColor(entry.score)}`}>
+                        {entry.score}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {entry.kind === 'review' && (
+              <div>
+                <div class="flex items-center gap-2 min-w-0 mb-1.5">
+                  <span class="text-xs uppercase tracking-widest text-stone-500 shrink-0">review</span>
+                  <a
+                    href={`/reviews/${entry.slug}`}
+                    class="text-xs font-bold text-stone-700 hover:text-stone-500 transition-colors truncate"
+                  >
+                    {entry.title}
+                  </a>
+                </div>
+                <div class="flex flex-col gap-0.5">
+                  {entry.media.map(m => (
+                    <div class="flex items-center justify-between gap-2">
+                      <a
+                        href={`/media/${m.id}`}
+                        class="text-xs text-stone-500 hover:text-stone-700 transition-colors truncate"
+                      >
+                        {m.title}
+                      </a>
+                      <div class="flex items-center gap-2 shrink-0 min-h-6">
+                        {m.result === 'shelved' && <span class="text-emerald-600 text-xs">shelved</span>}
+                        {m.result === 'passed' && <span class="text-red-400 text-xs">passed on</span>}
+                        {m.score && (
+                          <span class={`w-6 h-6 flex items-center justify-center font-bold text-xs ${getScoreColor(m.score)}`}>
+                            {m.score}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    ))}
   </section>
 </BaseLayout>
