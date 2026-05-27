@@ -15,7 +15,7 @@ const enriched = reviews.map((review, i) => {
   const media = review.data.media ?? [];
   const shelvedCount = media.filter(m => m.status === 'shelved').length;
   const types = [...new Set(
-    media.map(m => getMediaItemById(m.id)?.mediaType).filter((t): t is string => !!t)
+    media.map(m => getMediaItemById(m.id)?.mediaType).filter(t => t !== undefined)
   )];
   return {
     review,
@@ -55,10 +55,12 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
           autocomplete="off"
           placeholder="search reviews..."
           class="flex-1 border border-stone-200 px-3 py-1.5 text-xs font-mono text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-400 bg-transparent"
+          aria-label="reviews-search"
         />
         <select
           id="reviews-sort"
           class="border border-stone-200 px-2 py-1.5 text-xs font-mono text-stone-400 focus:outline-none focus:border-stone-400 bg-transparent cursor-pointer"
+          aria-label="reviews-sort"
         >
           <option value="date-new">newest first</option>
           <option value="date-old">oldest first</option>
@@ -173,8 +175,7 @@ const activeDefault = 'border-stone-900 bg-stone-900 text-white';
       const types = el.dataset.types!.split(' ');
       if (!types.includes(state.type)) return false;
     }
-    if (state.outcome === 'shelved' && Number(el.dataset.shelved) === 0) return false;
-    return true;
+    return !(state.outcome === 'shelved' && Number(el.dataset.shelved) === 0);
   }
 
   function sortCompare(a: HTMLElement, b: HTMLElement): number {

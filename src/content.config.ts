@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const reviews = defineCollection({
@@ -25,7 +26,7 @@ const events = defineCollection({
     mediaId: z.string(),
     date: z.date(),
     source: z.enum(['site', 'rym', 'letterboxd', 'goodreads', 'glitchwave', 'backloggd']).default('site'),
-    sourceUrl: z.string().url().optional(),
+    sourceUrl: z.url().optional(),
     score: z.number().min(1).max(10).optional(),
     status: z.enum(['shelved', 'wishlist', 'pending', 'chopping-block', 'pass']).optional(),
     published: z.boolean().default(false),
