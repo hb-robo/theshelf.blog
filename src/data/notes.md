@@ -242,6 +242,13 @@ Purchased from eBay.com
 - Tales of Graces f (US, PS3) for 17.23 USD
 - Tony Hawk Underground 2 Remix (US, PSP) for 27.16 USD
 
+Purchased from eBay.com (by force? rejected cancelation)
+- Reality Fighters (US, PSV) for 6.90 USD
+- Need for Speed: Most Wanted (US, PSV) for 13.98 USD
+- Dragon's Crown (US, PSV) for 18.59 USD
+- Uncharted: Golden Abyss (US, PSV) for 26.16 USD
+- Mortal Kombat (US, PSV) for 17.13 USD
+- Assassin's Creed III: Liberation (US, PSV, loose) for 9.09
 
 
 2026-07-22
@@ -281,3 +288,22 @@ Purchased from eBay.com
 - Stranglehold (US, X360) for 11.16 USD
 - Tekken 6 (US, X360) for 11.59 USD
 - Tenchu Z (US, X360) for 19.78 USD
+
+
+2026-07-28
+
+Purchased from Mercari
+
+- Skate 3 (US, PS3, Greatest Hits) for 5.81 USD
+- Killzone 3 (US, PS3) for 4.09 USD
+- Uncharted 2: Among Thieves (US, PS3) for 2.97 USD
+- Rocksmith 2014 (US, PS3) for 4.29 USD
+- Borderlands (US, PS3) for 3.77 USD
+- Bioshock: Infinite (US, PS3) for 2.00 USD
+- Red Dead Redemption (US, PS3) for 4.97 USD
+- Dark Souls II (US, PS3) for 5.97 USD
+- God of War Origins Collection (US, PS3) for 19.60 USD
+- Lair (US, PS3) for 4.10 USD
+- Ace Combat: Assault Horizon (US, PS3) for 4.72 USD
+- Gran Turismo 5 (US, PS3) for 3.67 USD
+- Destiny: Taken King Legendary Edition for 2.90 USD
