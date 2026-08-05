@@ -100,6 +100,27 @@ Purchased from Amazon.com
 - A System for Writing by Bob Doto for 23.75 USD
 
 
+2024-12-17
+
+Purchased from eBay.com (I presume - no record)
+
+- Far Cry 4 - Limited Edition (US, 360) for 1.89 USD
+- Dead Island: Game of the Year (US, 360, Platinum Hits) for 3.18 USD
+- Call of Duty: Ghosts (US, 360) for 1.71 USD
+- Fallout: New Vegas - Ultimate Edition (US, 360, Platinum Hits) for 6.63 USD
+- Call of Duty: Advanced Warfare - Day Zero (US, 360) for 2.17 USD
+- Call of Duty: Black Ops II (US, 360) for 3.57 USD
+- Call of Duty: World at War (US, 360) for 2.20 USD
+- Sleeping Dogs (US, 360) for 1.68 USD
+- Grand Theft Auto V (US, 360) for 1.75 USD
+- Medal of Honor: Warfighter - Limited Edition (US, 360) for 2.17 USD
+- LEGO Marvel Super Heroes (US, 360) for 1.47 USD
+- Hitman: Absolution (US, 360) for 1.58 USD
+- WWE 2K16 (US, 360) for 2.25 USD
+- Far Cry 2 (US, 360) for 1.52 USD
+- Dishonored (US, 360) for 1.22 USD
+
+
 2024-12-22
 
 Purchased from eBay.com
@@ -122,6 +143,16 @@ Purchased from eBay.com
 
 - Stray (US, PS5) for 23.21 USD
 - Sackboy: A Big Adventure (US, PS5) for 23.17 USD
+
+
+2025-10-27
+
+Purchased from the Volo Antique Mall in Volo, IL
+
+- Crackdown (US, 360) for 8.86 USD
+- Lost Planet: Extreme Condition (US, 360) for 10.13 USD
+- Naruto: Rise of a Ninja (US, 360) for 34.77 USD
+- Naruto: The Broken Bond (US, 360) for 49.82 USD
 
 
 2025-12-22
@@ -225,8 +256,6 @@ Borrowed from Albany Public Library
 - The Hour of the Star by Clarice Lispector
 
 
-
-
 2026-07-21
 
 Purchased from eBay.com
@@ -307,3 +336,29 @@ Purchased from Mercari
 - Ace Combat: Assault Horizon (US, PS3) for 4.72 USD
 - Gran Turismo 5 (US, PS3) for 3.67 USD
 - Destiny: Taken King Legendary Edition for 2.90 USD
+
+Purchased from eBay.com
+
+- Odin Sphere: Leifthrasir (US, PSV) for 54.29 USD
+- Mary Skelter: Nightmares (US, PSV) for 64.52 USD
+- Senran Kagura: Shinovi Versus (US, PSV) for 34.36 USD
+- Ys: Memories of Celceta (US, PSV) for 19.64 USD
+
+
+2026-08-04
+- Saints Row (US, X360, wavy cover art) for 8.30 USD
+- Saints Row 2 (US, X360) for 4.93 USD
+- Assassin's Creed (US, X360, Platinum Hits) for 3.41 USD
+- Homefront (US, X360) for 3.27 USD
+- Assassin's Creed: Revelations (US, X360, Signature Edition) for 2.90 USD
+- Sega GT 2002 & JSRF (US, Xbox) for 7.48 USD
+- NHL Legacy Edition (US, 360) for 7.20 USD
+- Street Fighter X Tekken (US, 360) for 6.94 USD
+- Red Dead Redemption (US, 360) for 5.92 USD
+- Halo 4 (US, 360) for 5.43 USD
+- Assassin's Creed (US, 360) for 4.98 USD
+- Call of Juarez: Bound in Blood (US, 360) for 4.65 USD
+- Sonic's Ultimate Genesis Collection [Platinum Hits] (US, 360) for 4.58 USD
+- Halo: Reach (US, 360) for 4.21 USD
+- Battlefield 4 (US, 360) for 3.04 USD
+- Sniper Ghost Warrior (US, 360) for 2.76 USD
