@@ -256,6 +256,12 @@ Borrowed from Albany Public Library
 - The Hour of the Star by Clarice Lispector
 
 
+2026-07-16
+
+Purchased from Limited Run Games
+- Little Kitty, Big City (US, PS5) for 44.91 USD (yikes)
+
+
 2026-07-21
 
 Purchased from eBay.com
@@ -345,7 +351,15 @@ Purchased from eBay.com
 - Ys: Memories of Celceta (US, PSV) for 19.64 USD
 
 
+2026-08-03
+
+Sold on eBay.com
+- Singularity (US, X360) for 10.96 USD (net)
+
+
 2026-08-04
+
+Purchased from eBay.com
 - Saints Row (US, X360, wavy cover art) for 8.30 USD
 - Saints Row 2 (US, X360) for 4.93 USD
 - Assassin's Creed (US, X360, Platinum Hits) for 3.41 USD
@@ -362,3 +376,14 @@ Purchased from eBay.com
 - Halo: Reach (US, 360) for 4.21 USD
 - Battlefield 4 (US, 360) for 3.04 USD
 - Sniper Ghost Warrior (US, 360) for 2.76 USD
+
+2026-08-04
+
+Sold on eBay.com
+- The Darkness (US, X360) for 12.71 USD (net)
+- Bloodborne (US, PS4) for 12.90 USD (net)
+
+
+
+
+
