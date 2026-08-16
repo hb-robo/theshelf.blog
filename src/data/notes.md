@@ -343,6 +343,7 @@ Purchased from Mercari
 - Gran Turismo 5 (US, PS3) for 3.67 USD
 - Destiny: Taken King Legendary Edition for 2.90 USD
 
+
 Purchased from eBay.com
 
 - Odin Sphere: Leifthrasir (US, PSV) for 54.29 USD
@@ -384,6 +385,16 @@ Sold on eBay.com
 - Bloodborne (US, PS4) for 12.90 USD (net)
 
 
+2026-08-05
+- Final Fantasy XIII (US, X360) for 3.48 USD
+- Final Fantasy XIII-2 (US, X360) for 4.69 USD
+- Skate 3 (US, X360) for 4.90 USD
+- Brutal Legend (US, X360) for 3.74 USD
+- Assassin's Creed II (US, X360) for 2.81 USD
+- Disney Universe (US, X360) for 3.07 USD
 
 
+2026-08-14
 
+Purchased from Yellow Lab Vintage & Books in Troy, NY
+- Stories of Five Decades by Hermann Hesse for 8.64 USD
