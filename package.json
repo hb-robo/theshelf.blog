@@ -9,15 +9,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^7.0.2",
-    "astro": "^7.0.6"
+    "@astrojs/mdx": "^7.0.7",
+    "astro": "^7.2.4"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.1.17",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^25.6.2",
-    "js-yaml": "^4.1.1",
-    "tailwindcss": "^4.1.17"
+    "@types/node": "^25.9.5",
+    "js-yaml": "^4.3.1",
+    "tailwindcss": "^4.3.3"
   }
 }
