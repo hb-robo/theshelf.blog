@@ -7,9 +7,6 @@
   ],
   "assets": {
     "directory": "./dist"
-  },
-  "build": {
-    "command": "pnpm run build"
   }
 }
 
