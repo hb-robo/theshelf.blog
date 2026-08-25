@@ -5,7 +5,7 @@
   "compatibility_flags": [
     "nodejs_compat" 
   ],
-  "main": "dist/server/entry.mjs",
+  "main": ".astro/cloudflare-runtime-entry.mjs",
   "assets": {
     "directory": "./dist"
   }
