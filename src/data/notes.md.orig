@@ -226,11 +226,11 @@ Purchased at Kyobo Book Store Gwanghwamun in Jongno-dong, Seoul
 
 - The Story of Hong Gildong for 16 USD
 - The Nine-Cloud Dream by Kim Man-jung for 17 USD
-- Please Look After Mom by Kyung-sook Shin for 11 GBP
-- Cursed Bunny by Bora Chung for 11 GBP
-- Your Utopia by Bora Chung for 15 GBP
-- The Vegetarian by Han Kang for 10 GBP
-- Human Acts by Han Kang for 10 GBP
+- Please Look After Mom by Kyung-sook Shin for 11 BPD
+- Cursed Bunny by Bora Chung for 11 BPD
+- Your Utopia by Bora Chung for 15 BPD
+- The Vegetarian by Han Kang for 10 BPD
+- Human Acts by Han Kang for 10 BPD
 
 
 2026-07-07
@@ -386,6 +386,7 @@ Sold on eBay.com
 - Bloodborne (US, PS4) for 12.90 USD (net)
 
 
+<<<<<<< Updated upstream
 2026-08-05
 - Final Fantasy XIII (US, X360) for 3.48 USD
 - Final Fantasy XIII-2 (US, X360) for 4.69 USD
@@ -395,6 +396,11 @@ Sold on eBay.com
 - Disney Universe (US, X360) for 3.07 USD
 
 
+2026-08-14
+
+Purchased from Yellow Lab Vintage & Books in Troy, NY
+- Stories of Five Decades by Hermann Hesse for 8.64 USD
+=======
 2026-08-10
 
 Returned to Albany Public Library
@@ -414,9 +420,4 @@ Purchased from Mercari
 - Borderlands: Handsome Jack Collection (US, XB1) for 5.76 USD
 - Prey (US, XB1) for 5.12 USD
 - Dragon Age: Inquisition (US, XB1) for 3.85 USD
-
-
-2026-08-14
-
-Purchased from Yellow Lab Vintage & Books in Troy, NY
-- Stories of Five Decades by Hermann Hesse for 8.64 USD
+>>>>>>> Stashed changes
