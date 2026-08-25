@@ -5,9 +5,11 @@
   "compatibility_flags": [
     "nodejs_compat" 
   ],
-  "main": ".astro/cloudflare-runtime-entry.mjs",
   "assets": {
     "directory": "./dist"
+  },
+  "build": {
+    "command": "pnpm run build"
   }
 }
 
