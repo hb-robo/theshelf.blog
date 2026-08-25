@@ -12,6 +12,7 @@
     "@astrojs/cloudflare": "^14.2.4",
     "@astrojs/mdx": "^7.0.7",
     "astro": "^7.2.4",
+    "drizzle-orm": "^0.45.2",
     "wrangler": "^4.125.0"
   },
   "devDependencies": {
@@ -19,6 +20,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.9.5",
+    "drizzle-kit": "^0.18.1",
     "js-yaml": "^4.3.1",
     "tailwindcss": "^4.3.3"
   }

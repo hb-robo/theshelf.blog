@@ -1,0 +1,6 @@
+allowBuilds:
+  es5-ext: set this to true or false
+  esbuild: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - '@astrojs/cloudflare@14.2.4'
