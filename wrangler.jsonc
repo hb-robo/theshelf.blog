@@ -5,9 +5,9 @@
   "compatibility_flags": [
     "nodejs_compat" 
   ],
+  "main": ".astro/dist/server/entry.mjs",
   "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS"
+    "directory": "./dist"
   }
 }
 
