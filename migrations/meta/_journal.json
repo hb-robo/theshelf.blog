@@ -22,6 +22,13 @@
       "when": 1787623810418,
       "tag": "0002_loud_arachne",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1787950724517,
+      "tag": "0003_slimy_zeigeist",
+      "breakpoints": true
     }
   ]
 }

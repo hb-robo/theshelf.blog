@@ -23,6 +23,7 @@ export const reviews = sqliteTable('reviews', {
   published: integer('published', { mode: 'boolean' }).notNull().default(false),
   heroImage: text('hero_image'),
   excerpt: text('excerpt'),
+  body: text('body').notNull().default(''), 
 });
 
 // 3. EVENTS (Points back to a media item)
