@@ -1,7 +1,10 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@db/*": ["./src/db/*"] 
+    }
   },
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"]
