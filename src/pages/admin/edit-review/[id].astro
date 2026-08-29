@@ -1,35 +1,54 @@
 ---
+export const prerender = false; // Forces this admin route to be server-rendered dynamically
+
 import { getDB } from "@db/db";
 import { reviews, mediaItems } from "@db/schema";
 import { eq } from "drizzle-orm";
 
-// Generate static paths at build time
-export async function getStaticPaths() {
-  const db = getDB(process.env);
-
-  const allReviews = await db.select({ id: reviews.id }).from(reviews);
-
-  return allReviews.map((review) => ({
-    params: { id: review.id },
-  }));
-}
-
 const { id } = Astro.params;
 const db = getDB(Astro.locals.runtime?.env);
 
-// Fetch data for the specific pre-rendered page
+if (!id) return Astro.redirect("/admin");
+
+// 1. Fetch the existing record to pre-populate form fields
 const existingReview = await db
   .select()
   .from(reviews)
   .where(eq(reviews.id, id))
   .get();
-
 const existingMedia = await db
   .select()
   .from(mediaItems)
   .orderBy(mediaItems.title);
 
 if (!existingReview) return Astro.redirect("/admin");
+
+// 2. Process form edits using an update block
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const title = data.get("title") as string;
+    const mediaId = data.get("mediaId") as string;
+    const body = data.get("body") as string;
+    const excerpt = data.get("excerpt") as string;
+    const published = data.get("published") === "true";
+
+    await db
+      .update(reviews)
+      .set({
+        title,
+        mediaId,
+        body,
+        excerpt,
+        published,
+      })
+      .where(eq(reviews.id, id));
+
+    return Astro.redirect("/admin?success=updated");
+  } catch (error) {
+    console.error("Failed to update review:", error);
+  }
+}
 ---
 
 <html>
