@@ -4,7 +4,8 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from "@astrojs/mdx";
 
-// https://astro.build/config
+import cloudflare from '@astrojs/cloudflare';
+
 export default defineConfig({
   site: 'https://theshelf.blog',
   trailingSlash: "never",
@@ -13,5 +14,6 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [mdx()]
+  integrations: [mdx()],
+  adapter: cloudflare(),
 });

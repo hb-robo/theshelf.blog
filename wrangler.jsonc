@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"compatibility_date": "2026-08-29",
+	"compatibility_flags": ["global_fetch_strictly_public"],
+	"name": "theshelf-blog",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "theshelf_db", 
+			"database_name": "theshelf-db",
+			"database_id": "77e4af55-5de5-4eb6-8fc5-f0bcbfd569c5",
+			"remote": true
+		}
+	]
+}
