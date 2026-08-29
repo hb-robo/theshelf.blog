@@ -1,0 +1,8 @@
+name = "theshelf.blog"
+compatibility_date = "2024-04-03"
+
+[[d1_databases]]
+binding = "theshelf_db"
+database_name = "theshelf-db"
+database_id = "77e4af55-5de5-4eb6-8fc5-f0bcbfd569c5"
+remote = true
